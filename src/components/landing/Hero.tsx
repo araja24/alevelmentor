@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { FadeIn } from "./FadeIn";
+import { WaitlistForm } from "./WaitlistForm";
 
 function FloatingCard({
   children,
@@ -44,7 +44,7 @@ export function Hero() {
         <FadeIn className="flex justify-center mb-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-violet-200/60 bg-violet-50/80 px-4 py-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-violet-500 animate-pulse" />
-            <span className="text-xs font-medium text-violet-700">AI-Powered Revision System</span>
+            <span className="text-xs font-medium text-violet-700">Structured Revision System</span>
           </div>
         </FadeIn>
 
@@ -62,28 +62,22 @@ export function Hero() {
         {/* Subheadline */}
         <FadeIn delay={0.2} className="text-center mt-6">
           <p className="text-lg text-zinc-500 max-w-lg mx-auto leading-relaxed">
-            AI-generated revision roadmaps, real-time performance tracking,
-            and exam-focused insights — every day until results day.
+            Personalised revision roadmaps, real-time performance tracking,
+            and exam-focused insights — structured around your targets until results day.
           </p>
         </FadeIn>
 
-        {/* CTAs */}
-        <FadeIn delay={0.3} className="flex items-center justify-center gap-3 mt-10">
-          <Link
-            href="/signup"
-            className="group relative inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-zinc-800 hover:shadow-lg hover:shadow-zinc-900/10"
-          >
-            Get My A* Roadmap
-            <svg className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </Link>
-          <a
-            href="#how-it-works"
-            className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-6 py-3 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-50 hover:border-zinc-300"
-          >
-            See How It Works
-          </a>
+        {/* Waitlist form */}
+        <FadeIn delay={0.3} className="mt-10 max-w-md mx-auto">
+          <WaitlistForm compact />
+          <p className="text-center mt-3">
+            <a
+              href="#how-it-works"
+              className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors"
+            >
+              See how it works &darr;
+            </a>
+          </p>
         </FadeIn>
 
         {/* Floating UI mockup */}
@@ -257,7 +251,7 @@ export function Hero() {
 
         {/* Social proof */}
         <FadeIn delay={0.5} className="mt-16 text-center">
-          <p className="text-xs text-zinc-400 uppercase tracking-wider font-medium mb-4">Trusted by ambitious students across the UK</p>
+          <p className="text-xs text-zinc-400 uppercase tracking-wider font-medium mb-4">Built for ambitious A-Level students</p>
           <div className="flex items-center justify-center gap-8">
             <div className="text-center">
               <p className="text-2xl font-bold text-zinc-900">2,400+</p>

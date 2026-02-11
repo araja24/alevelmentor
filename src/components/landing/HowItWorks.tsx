@@ -16,7 +16,7 @@ const steps = [
   },
   {
     number: "02",
-    title: "AI Roadmap",
+    title: "Your Roadmap",
     description: "We generate a personalized plan from today until exam day — every topic, every paper, every weak area covered.",
     icon: (
       <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">

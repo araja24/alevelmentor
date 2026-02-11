@@ -40,7 +40,7 @@ export function SmartRoadmap() {
                 Every day planned.<br />Every topic covered.
               </h2>
               <p className="text-zinc-500 leading-relaxed mb-6">
-                Your AI builds a day-by-day revision schedule from now until your last exam. Topics, papers, weak areas — all prioritized automatically.
+                A day-by-day revision schedule from now until your last exam. Topics, papers, weak areas — all prioritised and structured automatically.
               </p>
               <ul className="space-y-3">
                 {[

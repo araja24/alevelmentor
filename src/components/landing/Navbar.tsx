@@ -10,11 +10,8 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-100/80 bg-white/70 backdrop-blur-xl">
       <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center">
-            <span className="text-white text-sm font-bold">A</span>
-          </div>
-          <span className="text-[17px] font-semibold text-zinc-900 tracking-tight">
-            Alevelmentor
+          <span className="text-[20px] font-semibold text-zinc-900 tracking-tight">
+            alevel<span className="text-[#5a35f8]">mentor</span>
           </span>
         </Link>
 
@@ -40,12 +37,12 @@ export function Navbar() {
           >
             Sign in
           </Link>
-          <Link
-            href="/signup"
+          <a
+            href="#join"
             className="text-[13px] font-medium text-white bg-zinc-900 hover:bg-zinc-800 transition-colors px-4 py-2 rounded-lg"
           >
-            Get Started
-          </Link>
+            Join Waitlist
+          </a>
         </div>
 
         <button
@@ -75,7 +72,7 @@ export function Navbar() {
           <a href="#ai-mentor" className="block text-sm text-zinc-600 py-1" onClick={() => setMobileOpen(false)}>AI Mentor</a>
           <div className="pt-3 border-t border-zinc-100 flex flex-col gap-2">
             <Link href="/login" className="text-sm text-zinc-600 py-2">Sign in</Link>
-            <Link href="/signup" className="text-sm font-medium text-white bg-zinc-900 rounded-lg py-2.5 text-center">Get Started</Link>
+            <a href="#join" className="text-sm font-medium text-white bg-zinc-900 rounded-lg py-2.5 text-center" onClick={() => setMobileOpen(false)}>Join Waitlist</a>
           </div>
         </div>
       )}
