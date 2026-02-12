@@ -1,25 +1,33 @@
+import { AnimatedBackground } from "@/components/landing/AnimatedBackground";
+import { MouseGlow } from "@/components/landing/MouseGlow";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
-import { Hook } from "@/components/landing/Hook";
-import { HowItWorks } from "@/components/landing/HowItWorks";
-import { SmartRoadmap } from "@/components/landing/SmartRoadmap";
-import { DataAnalysis } from "@/components/landing/DataAnalysis";
-import { AIMentor } from "@/components/landing/AIMentor";
-import { DashboardPreview } from "@/components/landing/DashboardPreview";
+import { SocialProof } from "@/components/landing/SocialProof";
+import { Problem } from "@/components/landing/Problem";
+import { Solution } from "@/components/landing/Solution";
+import { FeaturePreviews } from "@/components/landing/FeaturePreviews";
+import { AnalyticsPreview } from "@/components/landing/AnalyticsPreview";
+import { Pricing } from "@/components/landing/Pricing";
+import { Testimonials } from "@/components/landing/Testimonials";
+import { FAQ } from "@/components/landing/FAQ";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white font-[family-name:var(--font-geist-sans)]">
+    <div className="relative min-h-screen font-[family-name:var(--font-geist-sans)]">
+      <AnimatedBackground />
+      <MouseGlow />
       <Navbar />
       <Hero />
-      <Hook />
-      <HowItWorks />
-      <SmartRoadmap />
-      <DataAnalysis />
-      <AIMentor />
-      <DashboardPreview />
+      <SocialProof />
+      <Problem />
+      <Solution />
+      <FeaturePreviews />
+      <AnalyticsPreview />
+      <Pricing />
+      <Testimonials />
+      <FAQ />
       <FinalCTA />
       <Footer />
     </div>

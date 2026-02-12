@@ -3,6 +3,7 @@
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 interface WaitlistData {
   rank: number;
@@ -12,16 +13,7 @@ interface WaitlistData {
   already_registered: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// Success state — rank, referral link, copy
-// ---------------------------------------------------------------------------
-function SuccessState({
-  data,
-  compact,
-}: {
-  data: WaitlistData;
-  compact: boolean;
-}) {
+function SuccessState({ data }: { data: WaitlistData }) {
   const [copied, setCopied] = useState(false);
 
   const origin =
@@ -42,14 +34,7 @@ function SuccessState({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <div
-        className={`rounded-2xl border p-6 ${
-          compact
-            ? "border-zinc-200/60 bg-white/80 backdrop-blur-sm"
-            : "border-zinc-700/60 bg-zinc-800/60 backdrop-blur-sm"
-        }`}
-      >
-        {/* Header */}
+      <div className="rounded-2xl border border-border bg-card backdrop-blur-sm p-6">
         <div className="flex items-center gap-2 justify-center mb-4">
           <div className="h-6 w-6 rounded-full bg-emerald-500 flex items-center justify-center">
             <svg
@@ -66,73 +51,35 @@ function SuccessState({
               />
             </svg>
           </div>
-          <p
-            className={`text-sm font-semibold ${
-              compact ? "text-zinc-900" : "text-white"
-            }`}
-          >
+          <p className="text-sm font-semibold">
             {data.already_registered ? "Welcome back" : "You\u2019re on the list"}
           </p>
         </div>
 
-        {/* Rank */}
         <div className="text-center mb-4">
-          <span
-            className={`text-4xl font-bold ${
-              compact ? "text-zinc-900" : "text-white"
-            }`}
-          >
-            #{data.rank}
-          </span>
-          <span
-            className={`text-sm ml-1.5 ${
-              compact ? "text-zinc-500" : "text-zinc-400"
-            }`}
-          >
-            in line
-          </span>
+          <span className="text-4xl font-bold">#{data.rank}</span>
+          <span className="text-sm ml-1.5 text-muted-foreground">in line</span>
           {data.total_count > 0 && (
-            <p
-              className={`text-xs mt-1 ${
-                compact ? "text-zinc-400" : "text-zinc-500"
-              }`}
-            >
+            <p className="text-xs mt-1 text-muted-foreground">
               of {data.total_count.toLocaleString()} students
             </p>
           )}
         </div>
 
-        {/* Referral link */}
-        <div
-          className={`rounded-xl border p-3 mb-4 ${
-            compact
-              ? "border-zinc-200 bg-zinc-50"
-              : "border-zinc-700 bg-zinc-900/50"
-          }`}
-        >
-          <p
-            className={`text-[11px] font-medium mb-2 ${
-              compact ? "text-zinc-500" : "text-zinc-400"
-            }`}
-          >
+        <div className="rounded-xl border border-border bg-muted/50 p-3 mb-4">
+          <p className="text-[11px] font-medium mb-2 text-muted-foreground">
             Your referral link
           </p>
           <div className="flex items-center gap-2">
-            <code
-              className={`text-xs flex-1 truncate ${
-                compact ? "text-zinc-700" : "text-zinc-300"
-              }`}
-            >
+            <code className="text-xs flex-1 truncate text-foreground/80">
               {referralLink}
             </code>
             <button
               onClick={copyLink}
               className={`shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                 copied
-                  ? "bg-emerald-100 text-emerald-700"
-                  : compact
-                    ? "bg-zinc-900 text-white hover:bg-zinc-800"
-                    : "bg-white text-zinc-900 hover:bg-zinc-100"
+                  ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
+                  : "bg-muted text-foreground hover:bg-muted-foreground/10 border border-border"
               }`}
             >
               {copied ? "Copied!" : "Copy"}
@@ -140,28 +87,15 @@ function SuccessState({
           </div>
         </div>
 
-        {/* Referral info */}
-        <p
-          className={`text-xs text-center ${
-            compact ? "text-zinc-500" : "text-zinc-400"
-          }`}
-        >
+        <p className="text-xs text-center text-muted-foreground">
           Each referral moves you up.{" "}
-          <span
-            className={`font-medium ${
-              compact ? "text-violet-600" : "text-violet-400"
-            }`}
-          >
+          <span className="font-medium text-[#5a35f8]">
             Top 100 unlock early beta access.
           </span>
         </p>
 
         {data.referral_count > 0 && (
-          <p
-            className={`text-xs text-center mt-2 font-medium ${
-              compact ? "text-emerald-600" : "text-emerald-400"
-            }`}
-          >
+          <p className="text-xs text-center mt-2 font-medium text-emerald-600 dark:text-emerald-400">
             {data.referral_count} referral
             {data.referral_count !== 1 ? "s" : ""} so far
           </p>
@@ -171,9 +105,6 @@ function SuccessState({
   );
 }
 
-// ---------------------------------------------------------------------------
-// Inner form (reads search params — must be wrapped in Suspense)
-// ---------------------------------------------------------------------------
 function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
   const searchParams = useSearchParams();
   const ref = searchParams.get("ref");
@@ -213,12 +144,10 @@ function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
     }
   }
 
-  // ---- Success view ----
   if (state === "success" && data) {
-    return <SuccessState data={data} compact={compact} />;
+    return <SuccessState data={data} />;
   }
 
-  // ---- Form view ----
   return (
     <div>
       <form
@@ -232,20 +161,12 @@ function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             required
-            className={`flex-1 rounded-xl border px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-violet-500/20 ${
-              compact
-                ? "border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-violet-400"
-                : "border-zinc-700 bg-zinc-800/50 text-white placeholder:text-zinc-500 focus:border-violet-500"
-            }`}
+            className="flex-1 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#5a35f8]/20 focus:border-[#5a35f8]/40"
           />
           <button
             type="submit"
             disabled={state === "loading"}
-            className={`group shrink-0 rounded-xl px-6 py-3 text-sm font-medium transition-all disabled:opacity-50 ${
-              compact
-                ? "bg-zinc-900 text-white hover:bg-zinc-800"
-                : "bg-white text-zinc-900 hover:bg-zinc-100"
-            }`}
+            className="group shrink-0 rounded-xl px-6 py-3 text-sm font-medium transition-all disabled:opacity-50 bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white hover:from-[#4f2dd6] hover:to-[#6b4de8] shadow-lg shadow-[#5a35f8]/25 hover:shadow-[#5a35f8]/40"
           >
             {state === "loading" ? (
               <span className="flex items-center justify-center gap-2">
@@ -274,19 +195,7 @@ function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
             ) : (
               <span className="flex items-center justify-center gap-2">
                 Join Waitlist
-                <svg
-                  className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                  />
-                </svg>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </span>
             )}
           </button>
@@ -299,9 +208,7 @@ function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className={`mt-3 text-sm text-center ${
-              compact ? "text-red-600" : "text-red-400"
-            }`}
+            className="mt-3 text-sm text-center text-red-500"
           >
             {error}{" "}
             <button
@@ -317,9 +224,6 @@ function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Skeleton while Suspense resolves search params
-// ---------------------------------------------------------------------------
 function WaitlistFormSkeleton({ compact }: { compact?: boolean }) {
   return (
     <div
@@ -327,23 +231,12 @@ function WaitlistFormSkeleton({ compact }: { compact?: boolean }) {
         compact ? "" : "max-w-md mx-auto"
       }`}
     >
-      <div
-        className={`flex-1 h-12 rounded-xl animate-pulse ${
-          compact ? "bg-zinc-100" : "bg-zinc-800"
-        }`}
-      />
-      <div
-        className={`h-12 w-36 rounded-xl animate-pulse ${
-          compact ? "bg-zinc-200" : "bg-zinc-700"
-        }`}
-      />
+      <div className="flex-1 h-12 rounded-xl animate-pulse bg-muted" />
+      <div className="h-12 w-36 rounded-xl animate-pulse bg-muted" />
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Exported component — wraps inner in Suspense for useSearchParams
-// ---------------------------------------------------------------------------
 export function WaitlistForm({ compact = false }: { compact?: boolean }) {
   return (
     <Suspense fallback={<WaitlistFormSkeleton compact={compact} />}>
