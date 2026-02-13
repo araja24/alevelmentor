@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ReactNode } from "react";
+import { ease, dur, viewport, viewportLoose } from "@/lib/motion";
 
 interface RevealSectionProps {
   children: ReactNode;
@@ -31,13 +32,13 @@ export function RevealSection({
   const prefersReduced = useReducedMotion();
   const Component = as === "section" ? motion.section : motion.div;
 
-  // Reduced motion: simple opacity fade only
+  // Reduced motion: opacity fade only, no transform
   if (prefersReduced) {
     return (
       <Component
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={viewportLoose}
         transition={{ duration: 0.4, delay }}
         className={className}
       >
@@ -63,11 +64,11 @@ export function RevealSection({
         x: 0,
         y: 0,
       }}
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={viewport}
       transition={{
-        duration: 0.6,
+        duration: dur.base,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: ease.out,
         staggerChildren,
       }}
       className={className}
@@ -77,7 +78,7 @@ export function RevealSection({
   );
 }
 
-/* Stagger child wrapper — wrap each child element for staggered reveals */
+/* Stagger child wrapper — pair with RevealSection for sequential reveals */
 export function RevealChild({
   children,
   className = "",
@@ -99,8 +100,8 @@ export function RevealChild({
       }}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      viewport={viewport}
+      transition={{ duration: dur.base, ease: ease.out }}
       className={className}
     >
       {children}

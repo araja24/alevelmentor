@@ -1,5 +1,5 @@
 import { AnimatedBackground } from "@/components/landing/AnimatedBackground";
-import { MouseGlow } from "@/components/landing/MouseGlow";
+import SplashCursor from "@/components/landing/SplashCursor";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { SocialProof } from "@/components/landing/SocialProof";
@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen font-[family-name:var(--font-geist-sans)]">
       <AnimatedBackground />
-      <MouseGlow />
+      <SplashCursor />
       <Navbar />
       <Hero />
       <SocialProof />
