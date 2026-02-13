@@ -123,6 +123,7 @@ export function AnalyticsPreview() {
                         borderRadius: "12px",
                         color: "var(--foreground)",
                         fontSize: "12px",
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                       }}
                     />
                     <Area
@@ -192,8 +193,11 @@ export function AnalyticsPreview() {
                         borderRadius: "12px",
                         color: "var(--foreground)",
                         fontSize: "12px",
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                       }}
-                      formatter={(value) => [`${value} marks`, "Lost"]}
+                      cursor={{ fill: "rgba(90,53,248,0.06)" }}
+                      formatter={(value) => [`Lost: ${value} marks`]}
+                      labelFormatter={(label) => String(label)}
                     />
                     <Bar
                       dataKey="marks"

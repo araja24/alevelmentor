@@ -25,8 +25,8 @@ export default function Home() {
       <Solution />
       <FeaturePreviews />
       <AnalyticsPreview />
-      <Pricing />
       <Testimonials />
+      <Pricing />
       <FAQ />
       <FinalCTA />
       <Footer />

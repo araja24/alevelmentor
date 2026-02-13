@@ -54,10 +54,10 @@ export function Problem() {
           </p>
         </FadeIn>
 
-        <div className="grid sm:grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5 items-stretch">
           {problems.map((p, i) => (
-            <FadeIn key={p.title} delay={i * 0.08}>
-              <div className="rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-[#5a35f8]/20">
+            <FadeIn key={p.title} delay={i * 0.08} className="h-full">
+              <div className="h-full rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-[#5a35f8]/20">
                 <div className={`h-10 w-10 rounded-xl ${p.bg} flex items-center justify-center mb-4`}>
                   <p.icon className={`h-5 w-5 ${p.color}`} />
                 </div>

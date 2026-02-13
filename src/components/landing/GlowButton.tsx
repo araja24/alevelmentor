@@ -33,7 +33,7 @@ export function GlowButton({
   }
 
   const baseStyles = cn(
-    "relative inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-sm font-semibold transition-all duration-300 overflow-hidden",
+    "relative inline-flex items-center justify-center gap-2 rounded-xl px-5 sm:px-7 py-3 sm:py-3.5 text-sm font-semibold whitespace-nowrap transition-all duration-300 overflow-hidden",
     variant === "primary"
       ? "bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white shadow-lg shadow-[#5a35f8]/25 hover:shadow-[#5a35f8]/40 hover:-translate-y-0.5"
       : "border border-border bg-card/50 text-foreground backdrop-blur-sm hover:bg-muted hover:-translate-y-0.5",

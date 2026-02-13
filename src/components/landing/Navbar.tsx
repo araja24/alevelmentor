@@ -18,14 +18,14 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
-      <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
+      <div className="mx-auto max-w-6xl px-6 h-16 grid grid-cols-[auto_1fr_auto] items-center">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-[20px] font-semibold tracking-tight">
             alevel<span className="text-[#5a35f8]">mentor</span>
           </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center justify-center gap-8">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -37,7 +37,7 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center justify-end gap-3">
           <ThemeToggle />
           <Link
             href="/login"
@@ -50,7 +50,7 @@ export function Navbar() {
           </GlowButton>
         </div>
 
-        <div className="flex md:hidden items-center gap-2">
+        <div className="flex md:hidden items-center justify-end gap-2 col-span-2">
           <ThemeToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
