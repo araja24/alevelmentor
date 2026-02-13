@@ -224,7 +224,13 @@ export function ScrollWalkthrough() {
                       style={
                         prefersReduced
                           ? undefined
-                          : { opacity: useTransform(barScale, [0, 1], [0.3, 1]) }
+                          : {
+                              opacity: useTransform(
+                                barScale as any,
+                                [0, 1],
+                                [0.3, 1]
+                              ) as any,
+                            }
                       }
                     >
                       <p className="text-[11px] text-muted-foreground">
