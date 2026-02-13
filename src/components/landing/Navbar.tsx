@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -17,11 +17,25 @@ const navLinks = [
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeHref, setActiveHref] = useState<string>(navLinks[0]?.href);
+  const [scrolled, setScrolled] = useState(false);
   const prefersReduced = useReducedMotion();
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 72);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
-      <div className="mx-auto max-w-6xl px-6 h-16 grid grid-cols-[auto_1fr_auto] items-center">
+    <nav
+      className={[
+        "fixed z-50 transition-all duration-500",
+        scrolled
+          ? "top-4 left-1/2 -translate-x-1/2 w-[min(calc(100%-32px),920px)] rounded-full border border-border/60 bg-background/60 backdrop-blur-[40px] [backdrop-filter:blur(40px)_saturate(160%)] shadow-lg shadow-black/5 dark:shadow-black/20"
+          : "top-0 left-0 right-0 border-b border-border bg-background/70 backdrop-blur-[20px]",
+      ].join(" ")}
+    >
+      <div className="mx-auto max-w-6xl px-6 h-14 grid grid-cols-[auto_1fr_auto] items-center">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-[20px] font-semibold tracking-tight">
             alevel<span className="text-[#5a35f8]">mentor</span>

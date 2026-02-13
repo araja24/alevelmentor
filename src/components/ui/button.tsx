@@ -14,7 +14,7 @@ const buttonVariants = cva(
         ghost:
           "text-muted-foreground hover:text-foreground hover:bg-muted",
         gradient:
-          "bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white shadow-lg shadow-[#5a35f8]/25 hover:shadow-[#5a35f8]/40 hover:-translate-y-0.5",
+          "btn-shine bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white shadow-lg shadow-[#5a35f8]/25 hover:shadow-[#5a35f8]/40 hover:-translate-y-0.5",
       },
       size: {
         default: "h-11 px-6 py-2.5",

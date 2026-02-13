@@ -1,9 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { RevealSection } from "./RevealSection";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Calendar, Brain, Target } from "lucide-react";
+import { useRef } from "react";
 
 function FloatingCard({
   children,
@@ -34,6 +35,23 @@ function FloatingCard({
 }
 
 export function Hero() {
+  const tiltRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 30 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 30 });
+
+  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = tiltRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  }
+  function onMouseLeave() {
+    mouseX.set(0);
+    mouseY.set(0);
+  }
+
   return (
     <section className="relative pt-36 pb-24 px-6 overflow-hidden">
       <div className="relative mx-auto max-w-6xl">
@@ -53,7 +71,7 @@ export function Hero() {
             <span className="text-foreground">Your roadmap.</span>
             <br />
             <span className="relative inline-block">
-              <span className="gradient-text">Your A*.</span>
+              <span className="gradient-text-animated">Your A*.</span>
               {/* Animated underline glow */}
               <span className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-[#5a35f8]/60 animate-underline-glow" />
             </span>
@@ -89,9 +107,19 @@ export function Hero() {
         </RevealSection>
 
         {/* Floating UI mockup */}
-        <div className="relative mt-24 mx-auto max-w-4xl">
+        <div
+          ref={tiltRef}
+          className="relative mt-24 mx-auto max-w-4xl"
+          onMouseMove={onMouseMove}
+          onMouseLeave={onMouseLeave}
+          style={{ perspective: "1200px" }}
+        >
           <RevealSection delay={0.4}>
-            <div className="relative mx-auto max-w-2xl rounded-2xl border border-border bg-card shadow-2xl shadow-[#5a35f8]/5 overflow-hidden">
+            <motion.div
+              style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+              className="relative mx-auto max-w-2xl"
+            >
+            <div className="relative mx-auto max-w-2xl rounded-2xl border border-border bg-card shadow-2xl shadow-[#5a35f8]/10 overflow-hidden">
               {/* App header bar */}
               <div className="flex items-center gap-2 px-5 py-3.5 border-b border-border bg-muted/30">
                 <div className="flex gap-1.5">
@@ -207,6 +235,7 @@ export function Hero() {
                 </div>
               </div>
             </div>
+            </motion.div>
           </RevealSection>
 
           {/* Floating cards */}

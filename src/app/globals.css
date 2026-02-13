@@ -149,6 +149,18 @@ body {
 .animate-underline-glow { animation: underline-glow 3s ease-in-out infinite; }
 .animate-particle-rise { animation: particle-rise 18s linear infinite; }
 
+@keyframes btn-shine-sweep {
+  0%, 70%, 100% { left: -100%; opacity: 0; }
+  72% { opacity: 1; }
+  90% { left: 150%; opacity: 0; }
+}
+
+@keyframes gradient-text-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* ─── Glass Utility ─── */
 .dark .glass {
   background: rgba(255, 255, 255, 0.03);
@@ -167,6 +179,38 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ─── Animated Gradient Text ─── */
+.gradient-text-animated {
+  background: linear-gradient(135deg, #5a35f8 0%, #8b6cf9 25%, #a78bfa 50%, #7c5cf9 75%, #5a35f8 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-text-shift 5s ease infinite;
+}
+
+/* ─── Button shine sweep ─── */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 55%;
+  height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 65%
+  );
+  animation: btn-shine-sweep 5s ease-in-out infinite;
+  pointer-events: none;
 }
 
 /* ─── Microinteraction: card hover lift ─── */
@@ -218,6 +262,12 @@ body {
   .animate-marquee,
   .animate-underline-glow,
   .animate-particle-rise {
+    animation: none !important;
+  }
+  .gradient-text-animated {
+    animation: none !important;
+  }
+  .btn-shine::after {
     animation: none !important;
   }
 

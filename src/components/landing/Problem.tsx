@@ -3,6 +3,42 @@
 import { RevealSection } from "./RevealSection";
 import { motion } from "framer-motion";
 import { BookX, Clock, BrainCog, AlertTriangle } from "lucide-react";
+import { useRef, useState } from "react";
+
+function SpotlightCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ x: 0, y: 0, opacity: 0 });
+
+  function onMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top, opacity: 1 });
+  }
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={() => setPos((p) => ({ ...p, opacity: 0 }))}
+      className={`relative overflow-hidden ${className}`}
+    >
+      <div
+        className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-500 z-0"
+        style={{
+          opacity: pos.opacity,
+          background: `radial-gradient(380px circle at ${pos.x}px ${pos.y}px, rgba(90,53,248,0.10), transparent 70%)`,
+        }}
+      />
+      {children}
+    </div>
+  );
+}
 
 const problems = [
   {
@@ -65,15 +101,15 @@ export function Problem() {
               transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="h-full"
             >
-              <div className="h-full rounded-2xl border border-border bg-card p-6 card-hover">
-                <div className={`h-10 w-10 rounded-xl ${p.bg} flex items-center justify-center mb-4`}>
+              <SpotlightCard className="h-full rounded-2xl border border-border bg-card p-6 card-hover group hover:border-[#5a35f8]/25 transition-colors duration-300">
+                <div className={`h-10 w-10 rounded-xl ${p.bg} flex items-center justify-center mb-4 relative z-10`}>
                   <p.icon className={`h-5 w-5 ${p.color}`} />
                 </div>
-                <h3 className="text-base font-semibold mb-2">{p.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <h3 className="text-base font-semibold mb-2 relative z-10">{p.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed relative z-10">
                   {p.description}
                 </p>
-              </div>
+              </SpotlightCard>
             </motion.div>
           ))}
         </div>

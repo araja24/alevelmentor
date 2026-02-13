@@ -89,6 +89,23 @@ export function AnimatedBackground() {
         </>
       )}
 
+      {/* Noise texture overlay — adds premium tangible depth */}
+      <svg
+        className="absolute inset-0 w-full h-full opacity-[0.035] dark:opacity-[0.05] pointer-events-none"
+        aria-hidden="true"
+      >
+        <filter id="bg-noise">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.7"
+            numOctaves="4"
+            stitchTiles="stitch"
+          />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#bg-noise)" />
+      </svg>
+
       {/* Grid pattern overlay — stays for reduced motion users as it's static */}
       <div
         className="absolute inset-0 opacity-[0.02] dark:opacity-[0.018]"

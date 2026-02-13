@@ -1,9 +1,8 @@
 "use client";
 
 import { RevealSection } from "./RevealSection";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { Brain, Map, BarChart3, FileText, TrendingUp, Check, ArrowRight } from "lucide-react";
+import { Brain, Map, BarChart3, FileText, TrendingUp, ArrowRight } from "lucide-react";
 
 function AppWindow({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
@@ -272,33 +271,59 @@ export function FeaturePreviews() {
           </p>
         </RevealSection>
 
-        <RevealSection delay={0.1}>
-          <Tabs defaultValue="mentor" className="w-full">
-            <TabsList className="flex flex-wrap justify-center gap-1 bg-transparent h-auto mb-8">
-              <TabsTrigger value="mentor" className="gap-1.5 data-[state=active]:bg-[#5a35f8]/10 data-[state=active]:text-[#5a35f8]">
-                <Brain className="h-3.5 w-3.5" /> AI Mentor
-              </TabsTrigger>
-              <TabsTrigger value="roadmap" className="gap-1.5 data-[state=active]:bg-[#5a35f8]/10 data-[state=active]:text-[#5a35f8]">
-                <Map className="h-3.5 w-3.5" /> Roadmap
-              </TabsTrigger>
-              <TabsTrigger value="analytics" className="gap-1.5 data-[state=active]:bg-[#5a35f8]/10 data-[state=active]:text-[#5a35f8]">
-                <BarChart3 className="h-3.5 w-3.5" /> Analytics
-              </TabsTrigger>
-              <TabsTrigger value="papers" className="gap-1.5 data-[state=active]:bg-[#5a35f8]/10 data-[state=active]:text-[#5a35f8]">
-                <FileText className="h-3.5 w-3.5" /> Past Papers
-              </TabsTrigger>
-              <TabsTrigger value="predictor" className="gap-1.5 data-[state=active]:bg-[#5a35f8]/10 data-[state=active]:text-[#5a35f8]">
-                <TrendingUp className="h-3.5 w-3.5" /> Grade Predictor
-              </TabsTrigger>
-            </TabsList>
+        {/* Bento grid — all features visible at once */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {/* AI Mentor — hero cell, spans 2 cols on lg */}
+          <motion.div
+            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-2"
+          >
+            <AIMentorPreview />
+          </motion.div>
 
-            <TabsContent value="mentor"><AIMentorPreview /></TabsContent>
-            <TabsContent value="roadmap"><RoadmapPreview /></TabsContent>
-            <TabsContent value="analytics"><AnalyticsPreviewMini /></TabsContent>
-            <TabsContent value="papers"><PastPaperPreview /></TabsContent>
-            <TabsContent value="predictor"><GradePredictorPreview /></TabsContent>
-          </Tabs>
-        </RevealSection>
+          {/* Grade Predictor — tall cell */}
+          <motion.div
+            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <GradePredictorPreview />
+          </motion.div>
+
+          {/* Roadmap */}
+          <motion.div
+            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <RoadmapPreview />
+          </motion.div>
+
+          {/* Analytics */}
+          <motion.div
+            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <AnalyticsPreviewMini />
+          </motion.div>
+
+          {/* Past Papers */}
+          <motion.div
+            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <PastPaperPreview />
+          </motion.div>
+        </div>
       </div>
     </section>
   );
