@@ -1,6 +1,6 @@
 "use client";
 
-import { FadeIn } from "./FadeIn";
+import { RevealSection } from "./RevealSection";
 import { GlowButton } from "./GlowButton";
 import { Check, X } from "lucide-react";
 import { motion } from "framer-motion";
@@ -63,7 +63,7 @@ export function Pricing() {
   return (
     <section id="pricing" className="py-28 px-6 relative">
       <div className="mx-auto max-w-6xl">
-        <FadeIn className="text-center mb-16">
+        <RevealSection className="text-center mb-16">
           <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
             Pricing
           </p>
@@ -73,13 +73,19 @@ export function Pricing() {
           <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
             Less than the cost of a single tutor session. Cancel anytime.
           </p>
-        </FadeIn>
+        </RevealSection>
 
         <div className="grid md:grid-cols-3 gap-6 items-stretch">
           {plans.map((plan, i) => (
-            <FadeIn key={plan.name} delay={i * 0.1}>
+            <motion.div
+              key={plan.name}
+              initial={{ opacity: 0, y: 30, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
               <motion.div
-                className={`relative rounded-2xl p-px overflow-hidden h-full`}
+                className="relative rounded-2xl p-px overflow-hidden h-full"
                 whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
@@ -159,7 +165,7 @@ export function Pricing() {
                   </div>
                 </div>
               </motion.div>
-            </FadeIn>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { FadeIn } from "./FadeIn";
+import { RevealSection } from "./RevealSection";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 const faqs = [
@@ -50,7 +50,7 @@ export function FAQ() {
   return (
     <section id="faq" className="py-24 px-6 relative">
       <div className="mx-auto max-w-3xl">
-        <FadeIn className="text-center mb-12">
+        <RevealSection className="text-center mb-12">
           <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
             FAQ
           </p>
@@ -60,9 +60,9 @@ export function FAQ() {
           <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
             Everything you need to know about alevelmentor.
           </p>
-        </FadeIn>
+        </RevealSection>
 
-        <FadeIn delay={0.1}>
+        <RevealSection delay={0.1}>
           <Accordion type="single">
             {faqs.map((faq, i) => (
               <AccordionItem key={i} value={`faq-${i}`}>
@@ -77,7 +77,7 @@ export function FAQ() {
               </AccordionItem>
             ))}
           </Accordion>
-        </FadeIn>
+        </RevealSection>
       </div>
     </section>
   );

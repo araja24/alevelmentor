@@ -1,6 +1,6 @@
 "use client";
 
-import { FadeIn } from "./FadeIn";
+import { RevealSection } from "./RevealSection";
 import { Star } from "lucide-react";
 import {
   Carousel,
@@ -54,7 +54,7 @@ export function Testimonials() {
   return (
     <section className="py-24 px-6 relative overflow-hidden">
       <div className="mx-auto max-w-5xl">
-        <FadeIn className="text-center mb-12">
+        <RevealSection className="text-center mb-12">
           <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
             Student Results
           </p>
@@ -65,9 +65,9 @@ export function Testimonials() {
             Hundreds of A-Level students have used alevelmentor to transform
             their predicted grades. Here&apos;s what they say.
           </p>
-        </FadeIn>
+        </RevealSection>
 
-        <FadeIn delay={0.1}>
+        <RevealSection delay={0.1}>
           <Carousel
             opts={{ align: "start", loop: true }}
             plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}
@@ -76,7 +76,7 @@ export function Testimonials() {
             <CarouselContent className="-ml-4">
               {testimonials.map((t, i) => (
                 <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                  <div className="h-full rounded-2xl border border-border bg-card p-6">
+                  <div className="h-full rounded-2xl border border-border bg-card p-6 card-hover">
                     <div className="flex gap-0.5 mb-4">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
@@ -108,7 +108,7 @@ export function Testimonials() {
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
-        </FadeIn>
+        </RevealSection>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 "use client";
 
-import { FadeIn } from "./FadeIn";
+import { RevealSection } from "./RevealSection";
+import { motion } from "framer-motion";
 import { BookX, Clock, BrainCog, AlertTriangle } from "lucide-react";
 
 const problems = [
@@ -42,7 +43,7 @@ export function Problem() {
   return (
     <section className="py-24 px-6 relative">
       <div className="mx-auto max-w-5xl">
-        <FadeIn className="text-center mb-14">
+        <RevealSection className="text-center mb-14">
           <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
             The Problem
           </p>
@@ -52,12 +53,19 @@ export function Problem() {
           <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
             Most students waste hours revising the wrong things. Sound familiar?
           </p>
-        </FadeIn>
+        </RevealSection>
 
         <div className="grid sm:grid-cols-2 gap-5 items-stretch">
           {problems.map((p, i) => (
-            <FadeIn key={p.title} delay={i * 0.08} className="h-full">
-              <div className="h-full rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-[#5a35f8]/20">
+            <motion.div
+              key={p.title}
+              initial={{ opacity: 0, y: 30, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="h-full"
+            >
+              <div className="h-full rounded-2xl border border-border bg-card p-6 card-hover">
                 <div className={`h-10 w-10 rounded-xl ${p.bg} flex items-center justify-center mb-4`}>
                   <p.icon className={`h-5 w-5 ${p.color}`} />
                 </div>
@@ -66,7 +74,7 @@ export function Problem() {
                   {p.description}
                 </p>
               </div>
-            </FadeIn>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import { FadeIn } from "./FadeIn";
-import { motion } from "framer-motion";
+import { RevealSection } from "./RevealSection";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   AreaChart,
   Area,
@@ -36,10 +36,16 @@ const weakTopicsData = [
 ];
 
 export function AnalyticsPreview() {
+  const prefersReduced = useReducedMotion();
+  const animDuration = prefersReduced ? 0 : 2000;
+  const animBegin = prefersReduced ? 0 : 300;
+  const barAnimDuration = prefersReduced ? 0 : 1500;
+  const barAnimBegin = prefersReduced ? 0 : 500;
+
   return (
     <section id="analytics" className="py-28 px-6 relative">
       <div className="mx-auto max-w-6xl">
-        <FadeIn className="text-center mb-16">
+        <RevealSection className="text-center mb-16">
           <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
             Live Analytics
           </p>
@@ -50,13 +56,13 @@ export function AnalyticsPreview() {
             Real-time data on your performance, weak areas, and trajectory.
             No guessing — just clarity.
           </p>
-        </FadeIn>
+        </RevealSection>
 
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Performance Growth Chart */}
-          <FadeIn delay={0.1}>
+          <RevealSection delay={0.1}>
             <motion.div
-              className="rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-[#5a35f8]/20"
+              className="rounded-2xl border border-border bg-card p-6 card-hover"
               whileHover={{ y: -2 }}
             >
               <div className="flex items-center justify-between mb-6">
@@ -132,19 +138,20 @@ export function AnalyticsPreview() {
                       stroke="#5a35f8"
                       strokeWidth={2}
                       fill="url(#areaGradient)"
-                      animationDuration={2000}
-                      animationBegin={300}
+                      animationDuration={animDuration}
+                      animationBegin={animBegin}
+                      animationEasing="ease-out"
                     />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             </motion.div>
-          </FadeIn>
+          </RevealSection>
 
           {/* Weak Topics Chart */}
-          <FadeIn delay={0.2}>
+          <RevealSection delay={0.2}>
             <motion.div
-              className="rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-[#5a35f8]/20"
+              className="rounded-2xl border border-border bg-card p-6 card-hover"
               whileHover={{ y: -2 }}
             >
               <div className="flex items-center justify-between mb-6">
@@ -202,14 +209,15 @@ export function AnalyticsPreview() {
                     <Bar
                       dataKey="marks"
                       radius={[0, 6, 6, 0]}
-                      animationDuration={1500}
-                      animationBegin={500}
+                      animationDuration={barAnimDuration}
+                      animationBegin={barAnimBegin}
+                      animationEasing="ease-out"
                     />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </motion.div>
-          </FadeIn>
+          </RevealSection>
         </div>
       </div>
     </section>

@@ -1,7 +1,8 @@
 "use client";
 
-import { FadeIn } from "./FadeIn";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { RevealSection } from "./RevealSection";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Check, Sparkles, ArrowRight } from "lucide-react";
 
 const chatMessages = [
@@ -19,10 +20,20 @@ const calendarTasks = [
 ];
 
 export function Solution() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Subtle parallax: chat slides up slightly faster than calendar
+  const chatY = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const calendarY = useTransform(scrollYProgress, [0, 1], [50, -20]);
+
   return (
-    <section className="py-24 px-6 relative">
+    <section ref={sectionRef} className="py-24 px-6 relative">
       <div className="mx-auto max-w-6xl">
-        <FadeIn className="text-center mb-16">
+        <RevealSection className="text-center mb-16">
           <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
             The Solution
           </p>
@@ -34,12 +45,12 @@ export function Solution() {
             Tell us your subjects and targets. We create a day-by-day roadmap
             that adapts as you improve.
           </p>
-        </FadeIn>
+        </RevealSection>
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* AI Mentor Chat Preview */}
-          <FadeIn delay={0.1}>
-            <div className="rounded-2xl border border-border bg-card overflow-hidden">
+          <RevealSection delay={0.1}>
+            <motion.div style={{ y: chatY }} className="rounded-2xl border border-border bg-card overflow-hidden card-hover">
               <div className="px-5 py-3 border-b border-border bg-muted/30 flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-[#5a35f8]" />
                 <span className="text-sm font-medium">AI Mentor</span>
@@ -53,10 +64,10 @@ export function Solution() {
                 {chatMessages.map((msg, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, y: 12, scale: 0.97 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.2 + 0.3 }}
+                    transition={{ delay: i * 0.2 + 0.3, ease: [0.22, 1, 0.36, 1] }}
                     className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     <div
@@ -88,12 +99,12 @@ export function Solution() {
                   ))}
                 </motion.div>
               </div>
-            </div>
-          </FadeIn>
+            </motion.div>
+          </RevealSection>
 
           {/* Calendar / Roadmap Preview */}
-          <FadeIn delay={0.2}>
-            <div className="rounded-2xl border border-border bg-card overflow-hidden">
+          <RevealSection delay={0.2}>
+            <motion.div style={{ y: calendarY }} className="rounded-2xl border border-border bg-card overflow-hidden card-hover">
               <div className="px-5 py-3 border-b border-border bg-muted/30 flex items-center gap-2">
                 <div className="h-4 w-4 rounded bg-[#5a35f8]/20 flex items-center justify-center">
                   <div className="h-2 w-2 rounded-sm bg-[#5a35f8]" />
@@ -106,10 +117,10 @@ export function Solution() {
                 {calendarTasks.map((task, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, x: -8 }}
+                    initial={{ opacity: 0, x: -12 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 + 0.3 }}
+                    transition={{ delay: i * 0.1 + 0.3, ease: [0.22, 1, 0.36, 1] }}
                     className="flex items-center gap-3 rounded-xl border border-border px-4 py-3 bg-muted/20"
                   >
                     <span className="text-xs font-mono text-muted-foreground w-8 shrink-0">
@@ -152,8 +163,8 @@ export function Solution() {
                   </div>
                 </div>
               </div>
-            </div>
-          </FadeIn>
+            </motion.div>
+          </RevealSection>
         </div>
       </div>
     </section>

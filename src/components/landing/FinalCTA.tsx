@@ -1,13 +1,13 @@
 "use client";
 
-import { FadeIn } from "./FadeIn";
+import { RevealSection } from "./RevealSection";
 import { WaitlistForm } from "./WaitlistForm";
 
 export function FinalCTA() {
   return (
     <section id="join" className="py-28 px-6 relative">
       <div className="mx-auto max-w-3xl">
-        <FadeIn>
+        <RevealSection>
           <div className="relative rounded-3xl border border-border bg-card backdrop-blur-sm px-8 py-20 sm:px-16 text-center overflow-hidden">
             {/* Decorative gradient orbs */}
             <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full bg-[#5a35f8]/10 blur-3xl pointer-events-none animate-pulse-glow" />
@@ -31,7 +31,7 @@ export function FinalCTA() {
               </p>
             </div>
           </div>
-        </FadeIn>
+        </RevealSection>
       </div>
     </section>
   );

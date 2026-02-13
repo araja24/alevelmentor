@@ -94,6 +94,18 @@ body {
   66% { transform: translateY(5px) translateX(-5px); }
 }
 
+@keyframes float-drift {
+  0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.15; }
+  25% { transform: translateY(-15px) translateX(8px) scale(1.05); opacity: 0.25; }
+  50% { transform: translateY(-5px) translateX(-6px) scale(0.97); opacity: 0.18; }
+  75% { transform: translateY(-20px) translateX(4px) scale(1.02); opacity: 0.22; }
+}
+
+@keyframes gradient-drift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 @keyframes pulse-glow {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 0.8; }
@@ -119,13 +131,23 @@ body {
   30% { opacity: 1; transform: translateY(-4px); }
 }
 
+@keyframes particle-rise {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100vh) translateX(30px) scale(0.3); opacity: 0; }
+}
+
 .animate-aurora { animation: aurora 20s ease-in-out infinite; }
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+.animate-float-drift { animation: float-drift 12s ease-in-out infinite; }
+.animate-gradient-drift { animation: gradient-drift 15s ease infinite; background-size: 200% 200%; }
 .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
 .animate-shimmer { animation: shimmer 3s ease-in-out infinite; background-size: 200% auto; }
 .animate-marquee { animation: marquee 30s linear infinite; }
 .animate-underline-glow { animation: underline-glow 3s ease-in-out infinite; }
+.animate-particle-rise { animation: particle-rise 18s linear infinite; }
 
 /* ─── Glass Utility ─── */
 .dark .glass {
@@ -145,4 +167,66 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ─── Microinteraction: card hover lift ─── */
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+.dark .card-hover:hover {
+  box-shadow: 0 8px 30px rgba(90, 53, 248, 0.06);
+}
+
+/* ─── Input focus glow (dark mode only) ─── */
+.dark .input-glow:focus {
+  box-shadow: 0 0 0 3px rgba(90, 53, 248, 0.15), 0 0 16px rgba(90, 53, 248, 0.08);
+}
+
+/* ─── Nav link underline slide ─── */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 1.5px;
+  background: #5a35f8;
+  border-radius: 1px;
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1), left 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* ─── Accessibility: prefers-reduced-motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-aurora,
+  .animate-float,
+  .animate-float-slow,
+  .animate-float-drift,
+  .animate-gradient-drift,
+  .animate-pulse-glow,
+  .animate-shimmer,
+  .animate-marquee,
+  .animate-underline-glow,
+  .animate-particle-rise {
+    animation: none !important;
+  }
+
+  .card-hover:hover {
+    transform: none !important;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

@@ -1,13 +1,13 @@
 "use client";
 
-import { FadeIn } from "./FadeIn";
+import { RevealSection } from "./RevealSection";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { Brain, Map, BarChart3, FileText, TrendingUp, Check, ArrowRight } from "lucide-react";
 
 function AppWindow({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-lg">
+    <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-lg card-hover">
       <div className="px-5 py-3 border-b border-border bg-muted/30 flex items-center gap-2">
         <Icon className="h-4 w-4 text-[#5a35f8]" />
         <span className="text-sm font-medium">{title}</span>
@@ -18,24 +18,34 @@ function AppWindow({ title, icon: Icon, children }: { title: string; icon: React
 }
 
 function AIMentorPreview() {
+  const msgs = [
+    { role: "user", text: "Why do transition metals form coloured compounds?" },
+    { role: "ai", text: "When light hits a transition metal complex, d-d transitions occur. Electrons absorb specific wavelengths and jump between split d-orbitals. The colour we see is the complementary colour." },
+    { role: "tip", text: "Exam tip: For AQA, always mention crystal field splitting and the d-d electron transition in your answer." },
+  ];
+
   return (
     <AppWindow title="AI Mentor" icon={Brain}>
       <div className="space-y-3 min-h-[260px]">
-        <div className="flex justify-end">
-          <div className="bg-[#5a35f8] text-white text-sm rounded-2xl rounded-br-md px-4 py-2.5 max-w-[80%]">
-            Why do transition metals form coloured compounds?
-          </div>
-        </div>
-        <div className="flex justify-start">
-          <div className="bg-muted text-sm rounded-2xl rounded-bl-md px-4 py-2.5 max-w-[80%] leading-relaxed">
-            When light hits a transition metal complex, d-d transitions occur. Electrons absorb specific wavelengths and jump between split d-orbitals. The colour we see is the complementary colour.
-          </div>
-        </div>
-        <div className="flex justify-start">
-          <div className="bg-muted text-sm rounded-2xl rounded-bl-md px-4 py-2.5 max-w-[80%]">
-            <span className="text-[#5a35f8] font-medium">Exam tip:</span> For AQA, always mention crystal field splitting and the d-d electron transition in your answer.
-          </div>
-        </div>
+        {msgs.map((m, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 8, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className={m.role === "user" ? "flex justify-end" : "flex justify-start"}
+          >
+            <div className={`rounded-2xl px-4 py-2.5 text-sm max-w-[80%] leading-relaxed ${
+              m.role === "user"
+                ? "bg-[#5a35f8] text-white rounded-br-md"
+                : "bg-muted rounded-bl-md"
+            }`}>
+              {m.role === "tip" && <span className="text-[#5a35f8] font-medium">Exam tip: </span>}
+              {m.role === "tip" ? m.text.replace("Exam tip: ", "") : m.text}
+            </div>
+          </motion.div>
+        ))}
       </div>
     </AppWindow>
   );
@@ -57,7 +67,7 @@ function RoadmapPreview() {
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.15 }}
+            transition={{ delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="rounded-xl border border-border p-4 bg-muted/20"
           >
             <div className="flex items-center justify-between mb-2">
@@ -121,7 +131,7 @@ function AnalyticsPreviewMini() {
                   initial={{ width: 0 }}
                   whileInView={{ width: `${b.score}%` }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
                 />
               </div>
               <span className="text-xs font-medium w-8 text-right">{b.score}%</span>
@@ -135,7 +145,7 @@ function AnalyticsPreviewMini() {
 
 function PastPaperPreview() {
   const questions = [
-    { q: "Explain the bonding in BF₃ using hybridisation.", marks: 4, difficulty: "Medium", topic: "Bonding" },
+    { q: "Explain the bonding in BF\u2083 using hybridisation.", marks: 4, difficulty: "Medium", topic: "Bonding" },
     { q: "Calculate the enthalpy change for...", marks: 6, difficulty: "Hard", topic: "Energetics" },
     { q: "Draw the mechanism for nucleophilic addition.", marks: 3, difficulty: "Easy", topic: "Organic" },
   ];
@@ -153,7 +163,8 @@ function PastPaperPreview() {
             initial={{ opacity: 0, y: 6 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
+            transition={{ delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ scale: 1.01 }}
             className="group rounded-xl border border-border p-3.5 bg-muted/20 hover:border-[#5a35f8]/20 transition-colors cursor-pointer"
           >
             <div className="flex items-start justify-between gap-2">
@@ -208,10 +219,10 @@ function GradePredictorPreview() {
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-2">
             <motion.span
               className="text-4xl font-bold"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.8 }}
+              transition={{ delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
               A*
             </motion.span>
@@ -224,12 +235,19 @@ function GradePredictorPreview() {
             { label: "Chemistry", grade: "A*", prob: "82%" },
             { label: "Biology", grade: "A", prob: "71%" },
             { label: "Maths", grade: "A*", prob: "89%" },
-          ].map((s) => (
-            <div key={s.label} className="text-center rounded-xl border border-border p-3 bg-muted/20">
+          ].map((s, i) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 1 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="text-center rounded-xl border border-border p-3 bg-muted/20"
+            >
               <p className="text-[10px] text-muted-foreground">{s.label}</p>
               <p className="text-lg font-bold mt-0.5">{s.grade}</p>
               <p className="text-[10px] text-[#5a35f8] font-medium">{s.prob}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -241,7 +259,7 @@ export function FeaturePreviews() {
   return (
     <section id="features" className="py-24 px-6 relative">
       <div className="mx-auto max-w-5xl">
-        <FadeIn className="text-center mb-12">
+        <RevealSection className="text-center mb-12">
           <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
             Features
           </p>
@@ -252,9 +270,9 @@ export function FeaturePreviews() {
             Not another generic study app. Built from the ground up for A-Level
             students who refuse to leave their grades to chance.
           </p>
-        </FadeIn>
+        </RevealSection>
 
-        <FadeIn delay={0.1}>
+        <RevealSection delay={0.1}>
           <Tabs defaultValue="mentor" className="w-full">
             <TabsList className="flex flex-wrap justify-center gap-1 bg-transparent h-auto mb-8">
               <TabsTrigger value="mentor" className="gap-1.5 data-[state=active]:bg-[#5a35f8]/10 data-[state=active]:text-[#5a35f8]">
@@ -280,7 +298,7 @@ export function FeaturePreviews() {
             <TabsContent value="papers"><PastPaperPreview /></TabsContent>
             <TabsContent value="predictor"><GradePredictorPreview /></TabsContent>
           </Tabs>
-        </FadeIn>
+        </RevealSection>
       </div>
     </section>
   );

@@ -30,9 +30,9 @@ function SuccessState({ data }: { data: WaitlistData }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="rounded-2xl border border-border bg-card backdrop-blur-sm p-6">
         <div className="flex items-center gap-2 justify-center mb-4">
@@ -74,8 +74,10 @@ function SuccessState({ data }: { data: WaitlistData }) {
             <code className="text-xs flex-1 truncate text-foreground/80">
               {referralLink}
             </code>
-            <button
+            <motion.button
               onClick={copyLink}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               className={`shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                 copied
                   ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
@@ -83,7 +85,7 @@ function SuccessState({ data }: { data: WaitlistData }) {
               }`}
             >
               {copied ? "Copied!" : "Copy"}
-            </button>
+            </motion.button>
           </div>
         </div>
 
@@ -161,11 +163,13 @@ function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             required
-            className="flex-1 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#5a35f8]/20 focus:border-[#5a35f8]/40"
+            className="input-glow flex-1 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#5a35f8]/20 focus:border-[#5a35f8]/40"
           />
-          <button
+          <motion.button
             type="submit"
             disabled={state === "loading"}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             className="group shrink-0 rounded-xl px-6 py-3 text-sm font-medium transition-all disabled:opacity-50 bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white hover:from-[#4f2dd6] hover:to-[#6b4de8] shadow-lg shadow-[#5a35f8]/25 hover:shadow-[#5a35f8]/40"
           >
             {state === "loading" ? (
@@ -198,7 +202,7 @@ function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </span>
             )}
-          </button>
+          </motion.button>
         </div>
       </form>
 

@@ -61,22 +61,35 @@ export function GlowButton({
     </>
   );
 
+  // Microinteraction: scale on hover/tap
+  const motionProps = {
+    whileHover: { scale: 1.02 },
+    whileTap: { scale: 0.98 },
+    transition: { type: "spring" as const, stiffness: 400, damping: 20 },
+  };
+
   if (href) {
     return (
-      <a href={href} className={baseStyles} onClick={handleClick}>
+      <motion.a
+        href={href}
+        className={baseStyles}
+        onClick={handleClick}
+        {...motionProps}
+      >
         {content}
-      </a>
+      </motion.a>
     );
   }
 
   return (
-    <button
+    <motion.button
       type={type}
       className={baseStyles}
       onClick={handleClick}
       disabled={disabled}
+      {...motionProps}
     >
       {content}
-    </button>
+    </motion.button>
   );
 }

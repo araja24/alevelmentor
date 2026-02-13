@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FadeIn } from "./FadeIn";
+import { RevealSection } from "./RevealSection";
 import { WaitlistForm } from "./WaitlistForm";
-import { GlowButton } from "./GlowButton";
+import { buttonVariants } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Calendar, Brain, Target } from "lucide-react";
 
 function FloatingCard({
@@ -39,15 +39,15 @@ export function Hero() {
     <section className="relative pt-36 pb-24 px-6 overflow-hidden">
       <div className="relative mx-auto max-w-6xl">
         {/* Badge */}
-        <FadeIn className="flex justify-center mb-8">
+        <RevealSection className="flex justify-center mb-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#5a35f8]/20 bg-[#5a35f8]/10 px-4 py-1.5 backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-[#5a35f8] animate-pulse" />
             <span className="text-xs font-medium text-[#5a35f8] dark:text-[#8b6cf9]">Now accepting early access signups</span>
           </div>
-        </FadeIn>
+        </RevealSection>
 
         {/* Headline */}
-        <FadeIn delay={0.1} className="text-center">
+        <RevealSection delay={0.1} className="text-center">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.08]">
             <span className="text-foreground">Your grades.</span>
             <br />
@@ -59,30 +59,30 @@ export function Hero() {
               <span className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-[#5a35f8]/60 animate-underline-glow" />
             </span>
           </h1>
-        </FadeIn>
+        </RevealSection>
 
         {/* Subheadline */}
-        <FadeIn delay={0.2} className="text-center mt-6">
+        <RevealSection delay={0.2} className="text-center mt-6">
           <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
             Every topic mapped. Every weak area targeted. Every day planned from
             now until your last exam. The structured system ambitious students
             use to outperform.
           </p>
-        </FadeIn>
+        </RevealSection>
 
         {/* CTAs */}
-        <FadeIn delay={0.3} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <GlowButton href="#join" variant="primary">
+        <RevealSection delay={0.3} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#join" className={buttonVariants({ variant: "gradient" })}>
             Join the Waitlist <ArrowRight className="h-4 w-4" />
-          </GlowButton>
-          <GlowButton href="#features" variant="secondary">
+          </a>
+          <a href="#features" className={buttonVariants({ variant: "outline" })}>
             See How It Works
-          </GlowButton>
-        </FadeIn>
+          </a>
+        </RevealSection>
 
         {/* Floating UI mockup */}
         <div className="relative mt-24 mx-auto max-w-4xl">
-          <FadeIn delay={0.4}>
+          <RevealSection delay={0.4}>
             <div className="relative mx-auto max-w-2xl rounded-2xl border border-border bg-card shadow-2xl shadow-[#5a35f8]/5 overflow-hidden">
               {/* App header bar */}
               <div className="flex items-center gap-2 px-5 py-3.5 border-b border-border bg-muted/30">
@@ -124,8 +124,11 @@ export function Hero() {
                       { task: "Electrochemistry — Weak Areas", done: false },
                       { task: "Thermodynamics Practice Qs", done: false },
                     ].map((item, i) => (
-                      <div
+                      <motion.div
                         key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.6 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                         className="flex items-center gap-3 rounded-xl border border-border px-3 py-2.5 bg-muted/30"
                       >
                         <div
@@ -160,7 +163,7 @@ export function Hero() {
                         >
                           {item.task}
                         </span>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
@@ -179,11 +182,14 @@ export function Hero() {
                         <stop offset="100%" stopColor="#5a35f8" stopOpacity="0" />
                       </linearGradient>
                     </defs>
-                    <path
+                    <motion.path
                       d="M0 65 Q30 60 60 55 Q90 50 120 42 Q150 35 180 30 Q210 28 240 20 Q270 15 300 8"
                       stroke="#5a35f8"
                       strokeWidth="2"
                       strokeLinecap="round"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ duration: 1.5, delay: 1, ease: "easeOut" }}
                     />
                     <path
                       d="M0 65 Q30 60 60 55 Q90 50 120 42 Q150 35 180 30 Q210 28 240 20 Q270 15 300 8 L300 80 L0 80 Z"
@@ -193,7 +199,7 @@ export function Hero() {
                 </div>
               </div>
             </div>
-          </FadeIn>
+          </RevealSection>
 
           {/* Floating cards */}
           <FloatingCard className="absolute -top-4 -left-8 sm:-left-16 hidden sm:block" delay={0.6} y={-8}>
@@ -222,19 +228,34 @@ export function Hero() {
               <div className="mt-2 space-y-1.5">
                 <div className="flex items-center gap-2">
                   <div className="h-1.5 flex-1 rounded-full bg-muted">
-                    <div className="h-1.5 rounded-full bg-red-500 w-[85%]" />
+                    <motion.div
+                      className="h-1.5 rounded-full bg-red-500"
+                      initial={{ width: 0 }}
+                      animate={{ width: "85%" }}
+                      transition={{ duration: 0.8, delay: 1.2 }}
+                    />
                   </div>
                   <span className="text-[10px] text-muted-foreground w-6 text-right">85%</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="h-1.5 flex-1 rounded-full bg-muted">
-                    <div className="h-1.5 rounded-full bg-amber-500 w-[60%]" />
+                    <motion.div
+                      className="h-1.5 rounded-full bg-amber-500"
+                      initial={{ width: 0 }}
+                      animate={{ width: "60%" }}
+                      transition={{ duration: 0.8, delay: 1.4 }}
+                    />
                   </div>
                   <span className="text-[10px] text-muted-foreground w-6 text-right">60%</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="h-1.5 flex-1 rounded-full bg-muted">
-                    <div className="h-1.5 rounded-full bg-emerald-500 w-[30%]" />
+                    <motion.div
+                      className="h-1.5 rounded-full bg-emerald-500"
+                      initial={{ width: 0 }}
+                      animate={{ width: "30%" }}
+                      transition={{ duration: 0.8, delay: 1.6 }}
+                    />
                   </div>
                   <span className="text-[10px] text-muted-foreground w-6 text-right">30%</span>
                 </div>
