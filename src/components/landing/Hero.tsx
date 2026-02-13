@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import { RevealSection } from "./RevealSection";
-import { WaitlistForm } from "./WaitlistForm";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Calendar, Brain, Target } from "lucide-react";
 
 function FloatingCard({
@@ -71,10 +70,19 @@ export function Hero() {
         </RevealSection>
 
         {/* CTAs */}
-        <RevealSection delay={0.3} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="#join" className={buttonVariants({ variant: "gradient" })}>
-            Join the Waitlist <ArrowRight className="h-4 w-4" />
-          </a>
+        <RevealSection
+          delay={0.3}
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          <Button asChild variant="gradient">
+            <a
+              href="#join"
+              className="flex items-center gap-2 whitespace-nowrap"
+            >
+              <span>Join Waitlist</span>
+              <ArrowRight className="h-4 w-4" />
+            </a>
+          </Button>
           <a href="#features" className={buttonVariants({ variant: "outline" })}>
             See How It Works
           </a>

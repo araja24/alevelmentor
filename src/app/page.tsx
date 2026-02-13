@@ -7,6 +7,7 @@ import { Problem } from "@/components/landing/Problem";
 import { Solution } from "@/components/landing/Solution";
 import { FeaturePreviews } from "@/components/landing/FeaturePreviews";
 import { AnalyticsPreview } from "@/components/landing/AnalyticsPreview";
+import { ScrollWalkthrough } from "@/components/landing/ScrollWalkthrough";
 import { Pricing } from "@/components/landing/Pricing";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { FAQ } from "@/components/landing/FAQ";
@@ -25,6 +26,7 @@ export default function Home() {
       <Solution />
       <FeaturePreviews />
       <AnalyticsPreview />
+      <ScrollWalkthrough />
       <Testimonials />
       <Pricing />
       <FAQ />

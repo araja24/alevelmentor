@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { GlowButton } from "./GlowButton";
+import { Menu, X, ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
@@ -15,6 +16,8 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState<string>(navLinks[0]?.href);
+  const prefersReduced = useReducedMotion();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
@@ -27,13 +30,28 @@ export function Navbar() {
 
         <div className="hidden md:flex items-center justify-center gap-8">
           {navLinks.map((link) => (
-            <a
+            <button
               key={link.href}
-              href={link.href}
-              className="nav-link text-[13px] text-muted-foreground hover:text-foreground transition-colors duration-200"
+              type="button"
+              onClick={() => {
+                setActiveHref(link.href);
+                window.location.hash = link.href;
+              }}
+              onMouseEnter={() => setActiveHref(link.href)}
+              className="relative text-[13px] text-muted-foreground hover:text-foreground transition-colors duration-200"
             >
-              {link.label}
-            </a>
+              <span>{link.label}</span>
+              {activeHref === link.href &&
+                (!prefersReduced ? (
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute left-0 right-0 -bottom-1 h-[2px] rounded-full bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9]"
+                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                ) : (
+                  <span className="absolute left-0 right-0 -bottom-1 h-[2px] rounded-full bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9]" />
+                ))}
+            </button>
           ))}
         </div>
 
@@ -45,9 +63,15 @@ export function Navbar() {
           >
             Sign in
           </Link>
-          <GlowButton href="#join" className="text-[13px] px-5 py-2.5">
-            Join Waitlist
-          </GlowButton>
+          <Button asChild variant="gradient" className="text-[14px]">
+            <a
+              href="#join"
+              className="flex items-center gap-1.5 whitespace-nowrap"
+            >
+              <span>Join Waitlist</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+          </Button>
         </div>
 
         <div className="flex md:hidden items-center justify-end gap-2 col-span-2">

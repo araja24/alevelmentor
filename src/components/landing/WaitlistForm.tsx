@@ -3,6 +3,7 @@
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 interface WaitlistData {
@@ -74,18 +75,19 @@ function SuccessState({ data }: { data: WaitlistData }) {
             <code className="text-xs flex-1 truncate text-foreground/80">
               {referralLink}
             </code>
-            <motion.button
-              onClick={copyLink}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className={`shrink-0 px-3 py-1.5 text-[11px] ${
                 copied
-                  ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
-                  : "bg-muted text-foreground hover:bg-muted-foreground/10 border border-border"
+                  ? "border-emerald-500/30 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                  : ""
               }`}
+              onClick={copyLink}
             >
               {copied ? "Copied!" : "Copy"}
-            </motion.button>
+            </Button>
           </div>
         </div>
 
@@ -165,12 +167,11 @@ function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
             required
             className="input-glow flex-1 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#5a35f8]/20 focus:border-[#5a35f8]/40"
           />
-          <motion.button
+          <Button
             type="submit"
             disabled={state === "loading"}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="group shrink-0 rounded-xl px-6 py-3 text-sm font-medium transition-all disabled:opacity-50 bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white hover:from-[#4f2dd6] hover:to-[#6b4de8] shadow-lg shadow-[#5a35f8]/25 hover:shadow-[#5a35f8]/40"
+            variant="gradient"
+            className="group shrink-0 whitespace-nowrap"
           >
             {state === "loading" ? (
               <span className="flex items-center justify-center gap-2">
@@ -202,7 +203,7 @@ function WaitlistFormInner({ compact = false }: { compact?: boolean }) {
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </span>
             )}
-          </motion.button>
+          </Button>
         </div>
       </form>
 

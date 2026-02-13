@@ -1,9 +1,9 @@
 "use client";
 
 import { RevealSection } from "./RevealSection";
-import { GlowButton } from "./GlowButton";
 import { Check, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 const plans = [
   {
@@ -154,13 +154,13 @@ export function Pricing() {
                     </div>
 
                     <div className="mt-7">
-                      <GlowButton
-                        href="#join"
-                        variant={plan.popular ? "primary" : "secondary"}
+                      <Button
+                        asChild
+                        variant={plan.popular ? "gradient" : "outline"}
                         className="w-full justify-center text-sm"
                       >
-                        {plan.cta}
-                      </GlowButton>
+                        <a href="#join">{plan.cta}</a>
+                      </Button>
                     </div>
                   </div>
                 </div>

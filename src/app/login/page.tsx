@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { AnimatedBackground } from "@/components/landing/AnimatedBackground";
 import { ThemeToggle } from "@/components/landing/ThemeToggle";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -71,9 +72,11 @@ export default function LoginPage() {
             Sign in to your Alevelmentor account
           </p>
 
-          <button
+          <Button
+            type="button"
+            variant="outline"
+            className="mb-6 flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-card text-sm font-medium hover:bg-muted"
             onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium transition-colors hover:bg-muted mb-6"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
@@ -94,7 +97,7 @@ export default function LoginPage() {
               />
             </svg>
             Continue with Google
-          </button>
+          </Button>
 
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
@@ -139,13 +142,14 @@ export default function LoginPage() {
               <p className="text-sm text-destructive">{error}</p>
             )}
 
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-[#5a35f8] px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-[#4f2dd6] disabled:opacity-50"
+              variant="gradient"
+              className="w-full rounded-xl text-sm font-medium"
             >
               {loading ? "Signing in..." : "Sign in"}
-            </button>
+            </Button>
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">

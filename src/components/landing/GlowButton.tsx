@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface GlowButtonProps {
@@ -14,6 +14,10 @@ interface GlowButtonProps {
   disabled?: boolean;
 }
 
+/**
+ * Unified primary CTA for "Join Waitlist".
+ * Slimmer, more mature, and with restrained glow that respects reduced motion.
+ */
 export function GlowButton({
   children,
   className = "",
@@ -24,36 +28,43 @@ export function GlowButton({
   disabled = false,
 }: GlowButtonProps) {
   const [ripple, setRipple] = useState<{ x: number; y: number } | null>(null);
+  const prefersReduced = useReducedMotion();
 
   function handleClick(e: React.MouseEvent) {
-    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     setRipple({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    setTimeout(() => setRipple(null), 600);
+    setTimeout(() => setRipple(null), 450);
     onClick?.();
   }
 
   const baseStyles = cn(
-    "relative inline-flex items-center justify-center gap-2 rounded-xl px-5 sm:px-7 py-3 sm:py-3.5 text-sm font-semibold whitespace-nowrap transition-all duration-300 overflow-hidden",
+    // overall sizing + typography
+    "relative inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold whitespace-nowrap",
+    // shared transitions
+    "transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5a35f8]/50",
     variant === "primary"
-      ? "bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white shadow-lg shadow-[#5a35f8]/25 hover:shadow-[#5a35f8]/40 hover:-translate-y-0.5"
-      : "border border-border bg-card/50 text-foreground backdrop-blur-sm hover:bg-muted hover:-translate-y-0.5",
+      ? // primary gradient: slightly toned-down, less chunky shadow
+        "bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white shadow-md shadow-[#5a35f8]/25 hover:shadow-lg hover:shadow-[#5a35f8]/35"
+      : "border border-border bg-card/60 text-foreground backdrop-blur-sm hover:bg-muted",
     disabled && "opacity-50 pointer-events-none",
     className
   );
 
   const content = (
     <>
-      {/* Hover glow overlay */}
-      <div className="absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100 bg-gradient-to-r from-[#5a35f8]/20 to-[#7c5cf9]/20" />
+      {/* Hover glow overlay — subtle, only when motion is allowed */}
+      {!prefersReduced && variant === "primary" && (
+        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 hover:opacity-100 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.16),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(139,108,249,0.25),transparent_55%)]" />
+      )}
 
-      {/* Ripple */}
-      {ripple && (
+      {/* Ripple — very soft, motion-aware */}
+      {!prefersReduced && ripple && (
         <motion.span
-          className="absolute rounded-full bg-white/20"
+          className="absolute rounded-full bg-white/14"
           style={{ left: ripple.x, top: ripple.y }}
           initial={{ width: 0, height: 0, opacity: 0.5 }}
-          animate={{ width: 300, height: 300, opacity: 0, x: -150, y: -150 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          animate={{ width: 200, height: 200, opacity: 0, x: -100, y: -100 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
         />
       )}
 
@@ -61,12 +72,14 @@ export function GlowButton({
     </>
   );
 
-  // Microinteraction: scale on hover/tap
-  const motionProps = {
-    whileHover: { scale: 1.02 },
-    whileTap: { scale: 0.98 },
-    transition: { type: "spring" as const, stiffness: 400, damping: 20 },
-  };
+  // Microinteraction: small scale on hover/tap, disabled for reduced motion
+  const motionProps = prefersReduced
+    ? {}
+    : {
+        whileHover: { scale: 1.02 },
+        whileTap: { scale: 0.985 },
+        transition: { type: "spring" as const, stiffness: 380, damping: 24 },
+      };
 
   if (href) {
     return (
