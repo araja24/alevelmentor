@@ -33,7 +33,7 @@ export function AdminNotificationEmail({
     <Html lang="en">
       <Head />
       <Preview>
-        🔔 New signup: {newUserEmail} — #{rank} of {totalCount}
+        🔔 New signup: {newUserEmail} — #{rank.toString()} of {totalCount.toString()}
       </Preview>
       <Body style={main}>
         <Container style={wrapper}>

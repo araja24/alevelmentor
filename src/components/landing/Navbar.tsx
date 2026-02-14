@@ -6,12 +6,10 @@ import { useState, useEffect } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "./ThemeToggle";
-
 const navLinks = [
   { label: "Features", href: "#features" },
-  { label: "Analytics", href: "#analytics" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "How It Works", href: "#solution" },
+  { label: "Community", href: "#testimonials" },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -77,7 +75,6 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center justify-end gap-3">
-          <ThemeToggle />
           <Link
             href="/login"
             className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-2"
@@ -96,7 +93,6 @@ export function Navbar() {
         </div>
 
         <div className="flex md:hidden items-center justify-end gap-2 col-span-2">
-          <ThemeToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-2 text-muted-foreground hover:text-foreground transition-colors"

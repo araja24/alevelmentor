@@ -33,7 +33,7 @@ export function WelcomeEmail({
     <Html lang="en">
       <Head />
       <Preview>
-        You&apos;re #{rank} on the alevelmentor waitlist — share your link to
+        You&apos;re #{rank.toString()} on the alevelmentor waitlist — share your link to
         move up
       </Preview>
       <Body style={main}>

@@ -1,171 +1,150 @@
 "use client";
 
-import { useRef } from "react";
 import { RevealSection } from "./RevealSection";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Check, Sparkles, ArrowRight } from "lucide-react";
-
-const chatMessages = [
-  { role: "user" as const, text: "I keep losing marks on electrochemistry. What should I focus on?" },
-  { role: "ai" as const, text: "Great question! Based on your past papers, you struggle most with cell potentials and electrode equations. Let me create a targeted plan..." },
-  { role: "ai" as const, text: "I\u2019ve added 3 focused sessions this week. Start with half-cell notation \u2014 that\u2019s your quickest win." },
-];
-
-const calendarTasks = [
-  { day: "Mon", task: "Half-cell notation", done: true },
-  { day: "Tue", task: "Cell potentials", done: true },
-  { day: "Wed", task: "Electrode equations", done: false },
-  { day: "Thu", task: "Electrolysis practice", done: false },
-  { day: "Fri", task: "Past paper Q7-12", done: false },
-];
 
 export function Solution() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Subtle parallax: chat slides up slightly faster than calendar
-  const chatY = useTransform(scrollYProgress, [0, 1], [30, -30]);
-  const calendarY = useTransform(scrollYProgress, [0, 1], [50, -20]);
-
   return (
-    <section ref={sectionRef} className="py-24 px-6 relative">
-      <div className="mx-auto max-w-6xl">
+    <section id="solution" className="py-32 px-6 relative overflow-hidden">
+      <div className="mx-auto max-w-5xl">
+        {/* Heading */}
         <RevealSection className="text-center mb-16">
-          <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
-            The Solution
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Your AI mentor builds the plan.<br className="hidden sm:block" />
-            You just follow it.
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#fafafa]">
+            <span className="gradient-text-animated">Your entire revision,</span>
+            <br />
+            in one place.
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
-            Tell us your subjects and targets. We create a day-by-day roadmap
-            that adapts as you improve.
+          <p className="text-[#a1a1aa] mt-5 max-w-lg mx-auto leading-relaxed">
+            From personalised roadmaps to AI-powered insights — everything you
+            need to hit your target grades, structured and ready.
           </p>
         </RevealSection>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* AI Mentor Chat Preview */}
-          <RevealSection delay={0.1}>
-            <motion.div style={{ y: chatY }} className="rounded-2xl border border-border bg-card overflow-hidden card-hover">
-              <div className="px-5 py-3 border-b border-border bg-muted/30 flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-[#5a35f8]" />
-                <span className="text-sm font-medium">AI Mentor</span>
-                <div className="ml-auto flex items-center gap-1.5">
-                  <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                  <span className="text-[10px] text-muted-foreground">Online</span>
-                </div>
+        {/* Device mockups */}
+        <RevealSection delay={0.2} className="relative mx-auto max-w-4xl">
+          <div className="purple-glow">
+            {/* Laptop */}
+            <div className="laptop-frame">
+              <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111116] border-b border-[#27272a]">
+                <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+                <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+                <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+                <div className="mx-auto text-[10px] text-[#71717a]">alevelmentor.com/dashboard</div>
               </div>
-
-              <div className="p-5 space-y-4 min-h-[280px]">
-                {chatMessages.map((msg, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 12, scale: 0.97 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.2 + 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    <div
-                      className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                        msg.role === "user"
-                          ? "bg-[#5a35f8] text-white rounded-br-md"
-                          : "bg-muted text-foreground rounded-bl-md"
-                      }`}
-                    >
-                      {msg.text}
+              <div className="p-6 bg-[#18181b] min-h-[320px]">
+                {/* Sidebar + main area */}
+                <div className="flex gap-5">
+                  {/* Sidebar */}
+                  <div className="hidden sm:block w-40 shrink-0 space-y-3">
+                    <div className="rounded-lg bg-[#5a35f8]/10 border border-[#5a35f8]/20 px-3 py-2">
+                      <p className="text-[11px] font-medium text-[#5a35f8]">📍 Roadmap</p>
                     </div>
-                  </motion.div>
-                ))}
+                    {["🧠 AI Mentor", "📊 Analytics", "📄 Past Papers", "⚙️ Settings"].map((item) => (
+                      <div key={item} className="px-3 py-2">
+                        <p className="text-[11px] text-[#71717a]">{item}</p>
+                      </div>
+                    ))}
 
-                {/* Typing indicator */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 1.2 }}
-                  className="flex gap-1 px-4 py-3 bg-muted rounded-2xl rounded-bl-md w-fit"
-                >
-                  {[0, 1, 2].map((i) => (
-                    <div
-                      key={i}
-                      className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50"
-                      style={{ animation: `typing-dot 1.4s ease-in-out ${i * 0.2}s infinite` }}
-                    />
-                  ))}
-                </motion.div>
-              </div>
-            </motion.div>
-          </RevealSection>
-
-          {/* Calendar / Roadmap Preview */}
-          <RevealSection delay={0.2}>
-            <motion.div style={{ y: calendarY }} className="rounded-2xl border border-border bg-card overflow-hidden card-hover">
-              <div className="px-5 py-3 border-b border-border bg-muted/30 flex items-center gap-2">
-                <div className="h-4 w-4 rounded bg-[#5a35f8]/20 flex items-center justify-center">
-                  <div className="h-2 w-2 rounded-sm bg-[#5a35f8]" />
-                </div>
-                <span className="text-sm font-medium">Smart Roadmap</span>
-                <span className="ml-auto text-[10px] text-muted-foreground">This week</span>
-              </div>
-
-              <div className="p-5 space-y-3 min-h-[280px]">
-                {calendarTasks.map((task, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 + 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex items-center gap-3 rounded-xl border border-border px-4 py-3 bg-muted/20"
-                  >
-                    <span className="text-xs font-mono text-muted-foreground w-8 shrink-0">
-                      {task.day}
-                    </span>
-                    <div
-                      className={`h-4 w-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                        task.done
-                          ? "border-emerald-500 bg-emerald-500"
-                          : "border-muted-foreground/30"
-                      }`}
-                    >
-                      {task.done && (
-                        <Check className="h-2.5 w-2.5 text-white" strokeWidth={3} />
-                      )}
+                    <div className="mt-4 pt-3 border-t border-[#27272a]">
+                      <p className="text-[10px] text-[#52525b] mb-2">Subjects</p>
+                      {["Chemistry", "Maths", "Physics"].map((s) => (
+                        <div key={s} className="flex items-center gap-2 py-1">
+                          <div className="h-2 w-2 rounded-full bg-[#5a35f8]" />
+                          <span className="text-[11px] text-[#a1a1aa]">{s}</span>
+                        </div>
+                      ))}
                     </div>
-                    <span
-                      className={`text-sm flex-1 ${
-                        task.done ? "text-muted-foreground line-through" : "text-foreground/80"
-                      }`}
-                    >
-                      {task.task}
-                    </span>
-                    {!task.done && (
-                      <ArrowRight className="h-3 w-3 text-muted-foreground/50" />
-                    )}
-                  </motion.div>
-                ))}
+                  </div>
 
-                <div className="flex items-center justify-between pt-2 px-1">
-                  <span className="text-xs text-muted-foreground">2 of 5 completed</span>
-                  <div className="h-1.5 w-24 rounded-full bg-muted overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full bg-[#5a35f8]"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "40%" }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: 0.5 }}
-                    />
+                  {/* Main content */}
+                  <div className="flex-1 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-[#71717a] font-medium">Week 12 of 18</p>
+                        <p className="text-base font-semibold text-[#fafafa] mt-0.5">Chemistry Roadmap</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[10px] text-[#71717a]">Progress</p>
+                        <p className="text-sm font-bold text-emerald-400">67%</p>
+                      </div>
+                    </div>
+
+                    {/* Progress bar */}
+                    <div className="h-1.5 rounded-full bg-[#27272a]">
+                      <div className="h-1.5 rounded-full bg-[#5a35f8]" style={{ width: "67%" }} />
+                    </div>
+
+                    {/* Task cards */}
+                    <div className="space-y-2">
+                      {[
+                        { task: "Organic Mechanisms Revision", status: "done" },
+                        { task: "Equilibria — Practice Qs", status: "done" },
+                        { task: "Electrochemistry Notes", status: "current" },
+                        { task: "Acids & Bases Past Paper", status: "todo" },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-3 rounded-lg border border-[#27272a] px-3 py-2 bg-[#111116]">
+                          <div
+                            className={`h-3.5 w-3.5 rounded-full border-2 flex items-center justify-center ${
+                              item.status === "done"
+                                ? "border-emerald-500 bg-emerald-500"
+                                : item.status === "current"
+                                ? "border-[#5a35f8] bg-[#5a35f8]/20"
+                                : "border-[#3f3f46]"
+                            }`}
+                          >
+                            {item.status === "done" && (
+                              <svg className="h-2 w-2 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                              </svg>
+                            )}
+                          </div>
+                          <span className={`text-xs ${item.status === "done" ? "text-[#71717a] line-through" : "text-[#e4e4e7]"}`}>
+                            {item.task}
+                          </span>
+                          {item.status === "current" && (
+                            <span className="ml-auto text-[9px] text-[#5a35f8] font-medium bg-[#5a35f8]/10 px-1.5 py-0.5 rounded">
+                              In Progress
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </RevealSection>
-        </div>
+            </div>
+
+            {/* Phone overlay — AI chat */}
+            <div className="absolute -bottom-8 -left-2 sm:left-8 z-10">
+              <div className="phone-frame w-[150px] sm:w-[175px]">
+                <div className="p-3 bg-[#18181b] space-y-2.5">
+                  <div className="flex items-center gap-2 pb-2 border-b border-[#27272a]">
+                    <div className="h-5 w-5 rounded-full bg-gradient-to-br from-[#5a35f8] to-[#7c5cf9] flex items-center justify-center">
+                      <span className="text-[8px] text-white">AI</span>
+                    </div>
+                    <p className="text-[10px] font-medium text-[#fafafa]">AI Mentor</p>
+                    <div className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  </div>
+                  {/* User message */}
+                  <div className="flex justify-end">
+                    <div className="rounded-lg rounded-br-sm bg-[#5a35f8] px-2.5 py-1.5 max-w-[90%]">
+                      <p className="text-[9px] text-white leading-relaxed">
+                        Explain electrophilic addition
+                      </p>
+                    </div>
+                  </div>
+                  {/* AI reply */}
+                  <div className="flex justify-start">
+                    <div className="rounded-lg rounded-bl-sm bg-[#1f1f26] px-2.5 py-1.5 max-w-[95%]">
+                      <p className="text-[9px] text-[#a1a1aa] leading-relaxed">
+                        An electrophile attacks the electron-rich C=C bond, forming a carbocation intermediate...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </RevealSection>
       </div>
     </section>
   );

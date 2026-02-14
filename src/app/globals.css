@@ -250,6 +250,89 @@ body {
   left: 0;
 }
 
+/* ─── Laptop / Phone CSS Frames ─── */
+.laptop-frame {
+  position: relative;
+  border-radius: 12px;
+  border: 2px solid #27272a;
+  background: #18181b;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 25px 50px -12px rgba(0,0,0,0.5),
+    0 0 80px rgba(90,53,248,0.08);
+  overflow: hidden;
+}
+
+.phone-frame {
+  position: relative;
+  border-radius: 24px;
+  border: 2px solid #27272a;
+  background: #18181b;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+
+/* ─── Purple ambient glow ─── */
+.purple-glow {
+  position: relative;
+}
+.purple-glow::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(ellipse at center, rgba(90,53,248,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ─── Gradient border utility ─── */
+.gradient-border {
+  position: relative;
+  background: #18181b;
+  border-radius: 16px;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(90,53,248,0.3), rgba(139,108,249,0.1), rgba(90,53,248,0.3));
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ─── Testimonial marquee ─── */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-scroll-left {
+  animation: scroll-left 40s linear infinite;
+}
+.animate-scroll-left:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Pill badge ─── */
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 9999px;
+  border: 1px solid rgba(90,53,248,0.2);
+  background: rgba(90,53,248,0.08);
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8b6cf9;
+  backdrop-filter: blur(8px);
+}
+
 /* ─── Accessibility: prefers-reduced-motion ─── */
 @media (prefers-reduced-motion: reduce) {
   .animate-aurora,
@@ -261,7 +344,8 @@ body {
   .animate-shimmer,
   .animate-marquee,
   .animate-underline-glow,
-  .animate-particle-rise {
+  .animate-particle-rise,
+  .animate-scroll-left {
     animation: none !important;
   }
   .gradient-text-animated {

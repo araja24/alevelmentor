@@ -5,60 +5,43 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 
 const faqs = [
   {
-    question: "How does alevelmentor create my study plan?",
+    question: "Is A Level Mentor completely free?",
     answer:
-      "When you sign up, you tell us your subjects, exam boards, and target grades. Our AI analyses the syllabus, identifies all topics, and creates a day-by-day roadmap from today to your last exam. It adjusts in real-time as you complete tasks and practice papers.",
+      "Yes. A Level Mentor is 100% free for all A-Level students. We believe every student deserves access to structured revision tools regardless of their financial situation. No hidden fees, no premium tiers, no catch.",
   },
   {
-    question: "Which exam boards do you support?",
+    question: "Which subjects and exam boards do you support?",
     answer:
-      "We currently support AQA, OCR, Edexcel, and WJEC for all major A-Level subjects including Maths, Chemistry, Biology, Physics, Economics, and Psychology. More subjects are being added regularly.",
+      "We support all major A-Level subjects including Maths, Chemistry, Biology, Physics, Economics, and Psychology across AQA, OCR, Edexcel, and WJEC. More subjects are being added regularly based on student demand.",
   },
   {
-    question: "Is the AI mentor as good as a real tutor?",
+    question: "How does the AI mentor work?",
     answer:
-      "Our AI mentor is trained specifically on A-Level content and exam board specifications. It explains concepts, provides exam tips, and gives feedback on your answers. While it doesn\u2019t replace a tutor entirely, it\u2019s available 24/7 and understands your specific exam board requirements.",
+      "Our AI mentor is trained specifically on A-Level syllabi and exam board specifications. It can explain concepts, provide exam-specific tips, suggest targeted practice, and give feedback on your understanding. It\u2019s available 24/7 and adapts to your learning style.",
   },
   {
-    question: "Can I try it before paying?",
+    question: "Will this work alongside my school?",
     answer:
-      "Absolutely. The Starter plan is completely free and includes a smart roadmap for one subject, basic performance tracking, and the exam countdown timer. You can upgrade to Pro anytime for full access.",
+      "Absolutely. A Level Mentor supplements your school teaching — it doesn\u2019t replace it. Your roadmap syncs with your exam dates and adapts around your school schedule. Many students use it alongside their regular classes for extra structure.",
   },
   {
-    question: "How does the grade predictor work?",
+    question: "How accurate is the grade predictor?",
     answer:
-      "The grade predictor analyses your practice paper scores, topic completion rates, and consistency over time. It compares your performance against historical grade boundaries to calculate the probability of achieving each grade. It updates weekly as you progress.",
-  },
-  {
-    question: "Is my data safe?",
-    answer:
-      "Yes. We use end-to-end encryption and never share your data with third parties. Your study data is stored securely on EU-based servers. You can export or delete your data at any time from your account settings.",
-  },
-  {
-    question: "Can I cancel anytime?",
-    answer:
-      "Yes, you can cancel your subscription at any time with no penalties. You\u2019ll keep access until the end of your billing period. No lock-in contracts, no hidden fees.",
-  },
-  {
-    question: "Do you offer group or school plans?",
-    answer:
-      "We\u2019re working on institutional plans for schools and tutoring centres. If you\u2019re interested, email us at schools@alevelmentor.com and we\u2019ll set up a pilot programme for your students.",
+      "The grade predictor analyses your practice paper scores, topic completion rates, and consistency over time. It compares your performance against historical grade boundaries. While no prediction is guaranteed, students find it motivating and directionally accurate.",
   },
 ];
 
 export function FAQ() {
   return (
-    <section id="faq" className="py-24 px-6 relative">
+    <section id="faq" className="py-32 px-6 relative">
       <div className="mx-auto max-w-3xl">
         <RevealSection className="text-center mb-12">
-          <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
-            FAQ
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Frequently asked questions
+          <span className="pill-badge mb-4 inline-flex">FAQ</span>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mt-4 text-[#fafafa]">
+            Got questions?
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
-            Everything you need to know about alevelmentor.
+          <p className="text-[#a1a1aa] mt-4 max-w-lg mx-auto">
+            Everything you need to know about A Level Mentor.
           </p>
         </RevealSection>
 

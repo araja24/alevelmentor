@@ -1,35 +1,55 @@
 "use client";
 
+import Image from "next/image";
 import { RevealSection } from "./RevealSection";
-import { WaitlistForm } from "./WaitlistForm";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 export function FinalCTA() {
   return (
-    <section id="join" className="py-28 px-6 relative">
-      <div className="mx-auto max-w-3xl">
+    <section id="join" className="py-32 px-6 relative">
+      <div className="mx-auto max-w-3xl text-center">
         <RevealSection>
-          <div className="relative rounded-3xl border border-border bg-card backdrop-blur-sm px-8 py-20 sm:px-16 text-center overflow-hidden">
-            {/* Decorative gradient orbs */}
-            <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full bg-[#5a35f8]/10 blur-3xl pointer-events-none animate-pulse-glow" />
-            <div className="absolute bottom-0 right-1/4 w-56 h-56 rounded-full bg-[#7c5cf9]/10 blur-3xl pointer-events-none animate-pulse-glow" style={{ animationDelay: "2s" }} />
+          {/* Logo */}
+          <Image
+            src="/logo_large_light.svg"
+            alt="A Level Mentor"
+            width={200}
+            height={80}
+            className="mx-auto h-20 w-auto mb-10"
+            unoptimized
+          />
 
-            <div className="relative">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-                <span>Stop hoping for A*s.</span>
-                <br />
-                <span className="gradient-text">Start planning for them.</span>
-              </h2>
-              <p className="text-muted-foreground mt-5 max-w-md mx-auto leading-relaxed">
-                Join ambitious A-Level students who refuse to leave their grades
-                to chance. Get your roadmap. See your progress. Hit your target.
-              </p>
-              <div className="mt-10 max-w-md mx-auto">
-                <WaitlistForm />
-              </div>
-              <p className="text-xs text-muted-foreground/60 mt-6">
-                Free early access. No credit card required.
-              </p>
-            </div>
+          {/* Heading */}
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-[#fafafa]">
+            Ace your A-Levels.
+            <br />
+            <span className="gradient-text">Start revising smarter.</span>
+          </h2>
+
+          {/* CTA */}
+          <div className="mt-10">
+            <Button asChild variant="gradient" size="lg" className="text-base px-10 py-6 h-auto">
+              <a href="#join" className="flex items-center gap-2">
+                Get Started — It&apos;s Free
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </Button>
+          </div>
+
+          {/* Exam boards */}
+          <p className="mt-10 text-sm text-[#71717a]">
+            Supporting students across all major exam boards
+          </p>
+          <div className="mt-3 flex items-center justify-center gap-3 flex-wrap">
+            {["AQA", "OCR", "Edexcel", "WJEC"].map((board) => (
+              <span
+                key={board}
+                className="text-xs text-[#a1a1aa] font-medium px-3 py-1.5 rounded-full border border-[#27272a] bg-[#18181b]"
+              >
+                {board}
+              </span>
+            ))}
           </div>
         </RevealSection>
       </div>

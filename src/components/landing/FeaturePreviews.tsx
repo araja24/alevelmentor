@@ -1,329 +1,288 @@
 "use client";
 
 import { RevealSection } from "./RevealSection";
-import { motion } from "framer-motion";
-import { Brain, Map, BarChart3, FileText, TrendingUp, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 
-function AppWindow({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
+/* ── Roadmap Mockup ── */
+function RoadmapMockup() {
   return (
-    <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-lg card-hover">
-      <div className="px-5 py-3 border-b border-border bg-muted/30 flex items-center gap-2">
-        <Icon className="h-4 w-4 text-[#5a35f8]" />
-        <span className="text-sm font-medium">{title}</span>
+    <div className="purple-glow">
+      <div className="laptop-frame">
+        <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111116] border-b border-[#27272a]">
+          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+        </div>
+        <div className="p-5 bg-[#18181b] min-h-[280px]">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs font-medium text-[#fafafa]">Week 12 — Chemistry</p>
+            <span className="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
+              On track
+            </span>
+          </div>
+
+          {/* Calendar grid */}
+          <div className="grid grid-cols-7 gap-1 mb-4">
+            {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+              <div key={i} className="text-center text-[9px] text-[#52525b] font-medium pb-1">
+                {d}
+              </div>
+            ))}
+            {Array.from({ length: 14 }, (_, i) => {
+              const states = ["done", "done", "done", "done", "current", "todo", "rest",
+                "todo", "todo", "todo", "todo", "todo", "rest", "rest"];
+              const s = states[i];
+              return (
+                <div
+                  key={i}
+                  className={`aspect-square rounded-md flex items-center justify-center text-[9px] ${
+                    s === "done"
+                      ? "bg-[#5a35f8] text-white"
+                      : s === "current"
+                      ? "bg-[#5a35f8]/20 border border-[#5a35f8] text-[#5a35f8]"
+                      : s === "rest"
+                      ? "bg-[#111116] text-[#3f3f46]"
+                      : "bg-[#1f1f26] text-[#71717a]"
+                  }`}
+                >
+                  {i + 1}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Tasks for today */}
+          <p className="text-[10px] text-[#71717a] mb-2">Today&apos;s tasks</p>
+          <div className="space-y-1.5">
+            {[
+              "Electrochemistry — Revision notes",
+              "Practice Qs: Redox reactions",
+              "Review: Hess's Law worksheet",
+            ].map((t, i) => (
+              <div key={i} className="flex items-center gap-2 rounded-lg bg-[#111116] border border-[#27272a] px-3 py-2">
+                <div className="h-3 w-3 rounded-full border-2 border-[#3f3f46]" />
+                <span className="text-[11px] text-[#e4e4e7]">{t}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="p-5">{children}</div>
     </div>
   );
 }
 
-function AIMentorPreview() {
-  const msgs = [
-    { role: "user", text: "Why do transition metals form coloured compounds?" },
-    { role: "ai", text: "When light hits a transition metal complex, d-d transitions occur. Electrons absorb specific wavelengths and jump between split d-orbitals. The colour we see is the complementary colour." },
-    { role: "tip", text: "Exam tip: For AQA, always mention crystal field splitting and the d-d electron transition in your answer." },
-  ];
-
+/* ── AI Mentor Mockup ── */
+function AIMentorMockup() {
   return (
-    <AppWindow title="AI Mentor" icon={Brain}>
-      <div className="space-y-3 min-h-[260px]">
-        {msgs.map((m, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 8, scale: 0.97 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className={m.role === "user" ? "flex justify-end" : "flex justify-start"}
-          >
-            <div className={`rounded-2xl px-4 py-2.5 text-sm max-w-[80%] leading-relaxed ${
-              m.role === "user"
-                ? "bg-[#5a35f8] text-white rounded-br-md"
-                : "bg-muted rounded-bl-md"
-            }`}>
-              {m.role === "tip" && <span className="text-[#5a35f8] font-medium">Exam tip: </span>}
-              {m.role === "tip" ? m.text.replace("Exam tip: ", "") : m.text}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </AppWindow>
-  );
-}
-
-function RoadmapPreview() {
-  const weeks = [
-    { week: "Week 1", topics: ["Atomic Structure", "Bonding", "Energetics"], progress: 100 },
-    { week: "Week 2", topics: ["Kinetics", "Equilibria", "Redox"], progress: 60 },
-    { week: "Week 3", topics: ["Organic Chemistry", "Mechanisms"], progress: 0 },
-  ];
-
-  return (
-    <AppWindow title="Smart Roadmap" icon={Map}>
-      <div className="space-y-4 min-h-[260px]">
-        {weeks.map((w, i) => (
-          <motion.div
-            key={w.week}
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-xl border border-border p-4 bg-muted/20"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold">{w.week}</span>
-              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
-                w.progress === 100
-                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                  : w.progress > 0
-                    ? "bg-[#5a35f8]/10 text-[#5a35f8]"
-                    : "bg-muted text-muted-foreground"
-              }`}>
-                {w.progress === 100 ? "Complete" : w.progress > 0 ? "In progress" : "Upcoming"}
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-1.5 mb-2">
-              {w.topics.map((t) => (
-                <span key={t} className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-                  {t}
-                </span>
-              ))}
-            </div>
-            <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-              <motion.div
-                className="h-full rounded-full bg-[#5a35f8]"
-                initial={{ width: 0 }}
-                whileInView={{ width: `${w.progress}%` }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: i * 0.2 }}
-              />
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </AppWindow>
-  );
-}
-
-function AnalyticsPreviewMini() {
-  const bars = [
-    { label: "Chem P1", score: 82, color: "bg-emerald-500" },
-    { label: "Chem P2", score: 68, color: "bg-[#5a35f8]" },
-    { label: "Bio P1", score: 75, color: "bg-emerald-500" },
-    { label: "Bio P2", score: 54, color: "bg-amber-500" },
-    { label: "Maths P1", score: 91, color: "bg-emerald-500" },
-  ];
-
-  return (
-    <AppWindow title="Performance Analytics" icon={BarChart3}>
-      <div className="space-y-4 min-h-[260px]">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-muted-foreground">Recent paper scores</span>
-          <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">Avg: 74%</span>
+    <div className="purple-glow">
+      <div className="laptop-frame">
+        <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111116] border-b border-[#27272a]">
+          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
         </div>
-        <div className="space-y-3">
-          {bars.map((b, i) => (
-            <div key={b.label} className="flex items-center gap-3">
-              <span className="text-[11px] text-muted-foreground w-16 shrink-0">{b.label}</span>
-              <div className="flex-1 h-4 rounded-full bg-muted overflow-hidden">
-                <motion.div
-                  className={`h-full rounded-full ${b.color}`}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${b.score}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
-                />
+        <div className="p-5 bg-[#18181b] min-h-[280px]">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#5a35f8] to-[#7c5cf9] flex items-center justify-center">
+              <span className="text-[9px] font-bold text-white">AI</span>
+            </div>
+            <div>
+              <p className="text-xs font-medium text-[#fafafa]">AI Mentor</p>
+              <p className="text-[9px] text-emerald-400">Online</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {/* User message */}
+            <div className="flex justify-end">
+              <div className="rounded-xl rounded-br-sm bg-[#5a35f8] px-3 py-2 max-w-[75%]">
+                <p className="text-[11px] text-white leading-relaxed">
+                  Can you explain nucleophilic substitution for AQA?
+                </p>
               </div>
-              <span className="text-xs font-medium w-8 text-right">{b.score}%</span>
             </div>
-          ))}
-        </div>
-      </div>
-    </AppWindow>
-  );
-}
-
-function PastPaperPreview() {
-  const questions = [
-    { q: "Explain the bonding in BF\u2083 using hybridisation.", marks: 4, difficulty: "Medium", topic: "Bonding" },
-    { q: "Calculate the enthalpy change for...", marks: 6, difficulty: "Hard", topic: "Energetics" },
-    { q: "Draw the mechanism for nucleophilic addition.", marks: 3, difficulty: "Easy", topic: "Organic" },
-  ];
-
-  return (
-    <AppWindow title="Past Paper Engine" icon={FileText}>
-      <div className="space-y-3 min-h-[260px]">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#5a35f8]/10 text-[#5a35f8] font-medium">AQA Chemistry</span>
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground">2024 Paper 1</span>
-        </div>
-        {questions.map((q, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 6 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ scale: 1.01 }}
-            className="group rounded-xl border border-border p-3.5 bg-muted/20 hover:border-[#5a35f8]/20 transition-colors cursor-pointer"
-          >
-            <div className="flex items-start justify-between gap-2">
-              <p className="text-sm leading-relaxed flex-1">{q.q}</p>
-              <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/50 shrink-0 mt-1 group-hover:text-[#5a35f8] transition-colors" />
+            {/* AI reply */}
+            <div className="flex justify-start">
+              <div className="rounded-xl rounded-bl-sm bg-[#1f1f26] px-3 py-2 max-w-[85%]">
+                <p className="text-[11px] text-[#a1a1aa] leading-relaxed">
+                  In nucleophilic substitution, a nucleophile attacks a carbon bonded to a halogen. For
+                  AQA, focus on <span className="text-[#5a35f8] font-medium">SN1 vs SN2 mechanisms</span>.
+                  SN2 is a one-step process with backside attack...
+                </p>
+              </div>
             </div>
-            <div className="flex items-center gap-2 mt-2">
-              <span className="text-[10px] text-muted-foreground">[{q.marks} marks]</span>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                q.difficulty === "Hard" ? "bg-red-500/10 text-red-500" : q.difficulty === "Medium" ? "bg-amber-500/10 text-amber-500" : "bg-emerald-500/10 text-emerald-500"
-              }`}>
-                {q.difficulty}
-              </span>
-              <span className="text-[10px] text-muted-foreground">{q.topic}</span>
+            {/* Follow-up */}
+            <div className="flex justify-end">
+              <div className="rounded-xl rounded-br-sm bg-[#5a35f8] px-3 py-2 max-w-[70%]">
+                <p className="text-[11px] text-white leading-relaxed">
+                  Give me a practice question on this
+                </p>
+              </div>
             </div>
-          </motion.div>
-        ))}
-      </div>
-    </AppWindow>
-  );
-}
-
-function GradePredictorPreview() {
-  return (
-    <AppWindow title="Grade Predictor" icon={TrendingUp}>
-      <div className="flex flex-col items-center justify-center min-h-[260px] space-y-6">
-        {/* Gauge */}
-        <div className="relative">
-          <svg width="180" height="100" viewBox="0 0 180 100">
-            {/* Background arc */}
-            <path
-              d="M 15 90 A 75 75 0 0 1 165 90"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="10"
-              className="text-muted"
-              strokeLinecap="round"
-            />
-            {/* Filled arc */}
-            <motion.path
-              d="M 15 90 A 75 75 0 0 1 165 90"
-              fill="none"
-              stroke="#5a35f8"
-              strokeWidth="10"
-              strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 0.82 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-end pb-2">
-            <motion.span
-              className="text-4xl font-bold"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            >
-              A*
-            </motion.span>
-            <span className="text-[10px] text-muted-foreground">predicted</span>
+            {/* AI response */}
+            <div className="flex justify-start">
+              <div className="rounded-xl rounded-bl-sm bg-[#1f1f26] px-3 py-2.5 max-w-[85%]">
+                <p className="text-[11px] text-[#a1a1aa] leading-relaxed mb-2">
+                  Draw the mechanism for the reaction of 1-bromobutane with NaOH.
+                  Identify the type and explain why.
+                </p>
+                <div className="flex gap-2">
+                  <span className="text-[9px] bg-[#5a35f8]/10 text-[#5a35f8] px-2 py-0.5 rounded-full">AQA 3.3.2</span>
+                  <span className="text-[9px] bg-[#27272a] text-[#71717a] px-2 py-0.5 rounded-full">6 marks</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="grid grid-cols-3 gap-4 w-full">
-          {[
-            { label: "Chemistry", grade: "A*", prob: "82%" },
-            { label: "Biology", grade: "A", prob: "71%" },
-            { label: "Maths", grade: "A*", prob: "89%" },
-          ].map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-center rounded-xl border border-border p-3 bg-muted/20"
-            >
-              <p className="text-[10px] text-muted-foreground">{s.label}</p>
-              <p className="text-lg font-bold mt-0.5">{s.grade}</p>
-              <p className="text-[10px] text-[#5a35f8] font-medium">{s.prob}</p>
-            </motion.div>
-          ))}
-        </div>
       </div>
-    </AppWindow>
+    </div>
   );
 }
+
+/* ── Grade Predictor Mockup ── */
+function GradePredictorMockup() {
+  return (
+    <div className="purple-glow">
+      <div className="laptop-frame">
+        <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111116] border-b border-[#27272a]">
+          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+        </div>
+        <div className="p-5 bg-[#18181b] min-h-[280px]">
+          <p className="text-xs font-medium text-[#fafafa] mb-4">Grade Predictions</p>
+
+          {/* Subject grade cards */}
+          <div className="grid grid-cols-3 gap-2 mb-5">
+            {[
+              { subject: "Chemistry", grade: "A*", change: "+2", color: "text-emerald-400" },
+              { subject: "Maths", grade: "A", change: "+1", color: "text-emerald-400" },
+              { subject: "Physics", grade: "A*", change: "0", color: "text-[#71717a]" },
+            ].map((s, i) => (
+              <div key={i} className="rounded-xl bg-[#111116] border border-[#27272a] p-3 text-center">
+                <p className="text-[9px] text-[#71717a] mb-1">{s.subject}</p>
+                <p className="text-2xl font-bold text-[#fafafa]">{s.grade}</p>
+                <p className={`text-[9px] font-medium mt-1 ${s.color}`}>
+                  {s.change !== "0" ? `↑ ${s.change} grade` : "—"}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Performance chart */}
+          <div className="rounded-xl border border-[#27272a] p-4 bg-[#111116]">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[10px] text-[#71717a]">Score trend (8 weeks)</p>
+              <span className="text-[9px] text-emerald-400 font-medium">+18%</span>
+            </div>
+            <svg viewBox="0 0 200 50" className="w-full h-10" fill="none">
+              <defs>
+                <linearGradient id="predGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#5a35f8" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="#5a35f8" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M0 42 Q25 40 50 35 Q75 30 100 25 Q125 22 150 15 Q175 12 200 6"
+                stroke="#5a35f8"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M0 42 Q25 40 50 35 Q75 30 100 25 Q125 22 150 15 Q175 12 200 6 L200 50 L0 50 Z"
+                fill="url(#predGrad)"
+              />
+            </svg>
+          </div>
+
+          {/* Confidence bar */}
+          <div className="mt-4 flex items-center gap-3">
+            <p className="text-[10px] text-[#71717a] shrink-0">A* confidence</p>
+            <div className="flex-1 h-1.5 rounded-full bg-[#27272a]">
+              <div className="h-1.5 rounded-full bg-gradient-to-r from-[#5a35f8] to-[#a78bfa]" style={{ width: "78%" }} />
+            </div>
+            <span className="text-[10px] text-[#fafafa] font-medium">78%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const features = [
+  {
+    pill: "Smart Roadmap",
+    heading: "Know exactly what to study, when.",
+    body: "A Level Mentor builds a week-by-week revision plan tailored to your subjects, exam board, and exam dates. No more guessing what to revise next.",
+    cta: "Explore the Roadmap",
+    Mockup: RoadmapMockup,
+    textSide: "left" as const,
+  },
+  {
+    pill: "AI Mentor",
+    heading: "Ask anything. Get exam-ready answers.",
+    body: "Our AI is trained on A-Level syllabuses. Ask it to explain a concept, generate practice questions, or break down a mark scheme — instantly.",
+    cta: "Meet the Mentor",
+    Mockup: AIMentorMockup,
+    textSide: "right" as const,
+  },
+  {
+    pill: "Grade Predictor",
+    heading: "Watch your predicted grade climb.",
+    body: "Every past paper you complete, every topic you revise — your predicted grade updates in real time. See exactly where you stand.",
+    cta: "See Predictions",
+    Mockup: GradePredictorMockup,
+    textSide: "left" as const,
+  },
+];
 
 export function FeaturePreviews() {
   return (
-    <section id="features" className="py-24 px-6 relative">
-      <div className="mx-auto max-w-5xl">
-        <RevealSection className="text-center mb-12">
-          <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
-            Features
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Everything you need to hit A*
-          </h2>
-          <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
-            Not another generic study app. Built from the ground up for A-Level
-            students who refuse to leave their grades to chance.
-          </p>
-        </RevealSection>
+    <section id="features" className="py-32 px-6 relative">
+      <div className="mx-auto max-w-6xl space-y-32">
+        {features.map((feature, i) => {
+          const textLeft = feature.textSide === "left";
+          return (
+            <div
+              key={i}
+              className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
+            >
+              {/* Text */}
+              <RevealSection
+                direction={textLeft ? "left" : "right"}
+                className={textLeft ? "" : "lg:order-2"}
+              >
+                <span className="pill-badge mb-4 inline-flex">
+                  {feature.pill}
+                </span>
+                <h3 className="text-3xl sm:text-4xl font-bold tracking-tight mt-4 text-[#fafafa]">
+                  <span className="gradient-text">{feature.heading}</span>
+                </h3>
+                <p className="text-[#a1a1aa] mt-4 leading-relaxed max-w-md">
+                  {feature.body}
+                </p>
+                <a
+                  href="#join"
+                  className={`mt-6 inline-flex items-center gap-2 ${buttonVariants(
+                    { variant: "outline" }
+                  )}`}
+                >
+                  {feature.cta} <ArrowRight className="h-4 w-4" />
+                </a>
+              </RevealSection>
 
-        {/* Bento grid — all features visible at once */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {/* AI Mentor — hero cell, spans 2 cols on lg */}
-          <motion.div
-            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-2"
-          >
-            <AIMentorPreview />
-          </motion.div>
-
-          {/* Grade Predictor — tall cell */}
-          <motion.div
-            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <GradePredictorPreview />
-          </motion.div>
-
-          {/* Roadmap */}
-          <motion.div
-            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <RoadmapPreview />
-          </motion.div>
-
-          {/* Analytics */}
-          <motion.div
-            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <AnalyticsPreviewMini />
-          </motion.div>
-
-          {/* Past Papers */}
-          <motion.div
-            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <PastPaperPreview />
-          </motion.div>
-        </div>
+              {/* Mockup */}
+              <RevealSection
+                direction={textLeft ? "right" : "left"}
+                delay={0.15}
+                className={textLeft ? "" : "lg:order-1"}
+              >
+                <feature.Mockup />
+              </RevealSection>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
