@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -36,10 +37,16 @@ export function Navbar() {
       ].join(" ")}
     >
       <div className="mx-auto max-w-6xl px-6 h-14 grid grid-cols-[auto_1fr_auto] items-center">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-[20px] font-semibold tracking-tight">
-            alevel<span className="text-[#5a35f8]">mentor</span>
-          </span>
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo_large_light.svg"
+            alt="A Level Mentor Logo"
+            width={150}
+            height={22}
+            priority
+            unoptimized
+            className="h-[22px] w-auto"
+          />
         </Link>
 
         <div className="hidden md:flex items-center justify-center gap-8">
