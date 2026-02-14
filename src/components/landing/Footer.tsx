@@ -8,11 +8,11 @@ export function Footer() {
           {/* Logo + copyright */}
           <div>
             <Image
-              src="/logo_large_light.svg"
+              src="/logo_small.svg"
               alt="A Level Mentor"
-              width={130}
-              height={20}
-              className="h-5 w-auto mb-3"
+              width={32}
+              height={32}
+              className="h-8 w-8 mb-3"
               unoptimized
             />
             <p className="text-xs text-[#71717a]">
@@ -66,10 +66,10 @@ export function Footer() {
                 Terms of Service
               </a>
               <a
-                href="mailto:hello@alevelmentor.com"
+                href="mailto:admin@alevelmentor.com"
                 className="block text-sm text-[#71717a] hover:text-[#5a35f8] transition-colors"
               >
-                hello@alevelmentor.com
+                admin@alevelmentor.com
               </a>
             </div>
           </div>

@@ -3,16 +3,17 @@
 import { RevealSection } from "./RevealSection";
 import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import { MacBookFrame, iPhoneFrame } from "@/components/ui/device-frames";
 
 /* ── Roadmap Mockup ── */
 function RoadmapMockup() {
   return (
     <div className="purple-glow">
-      <div className="laptop-frame">
+      <MacBookFrame>
         <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111116] border-b border-[#27272a]">
-          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#3a3a3e]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#3a3a3e]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#3a3a3e]" />
         </div>
         <div className="p-5 bg-[#18181b] min-h-[280px]">
           <div className="flex items-center justify-between mb-4">
@@ -36,15 +37,14 @@ function RoadmapMockup() {
               return (
                 <div
                   key={i}
-                  className={`aspect-square rounded-md flex items-center justify-center text-[9px] ${
-                    s === "done"
-                      ? "bg-[#5a35f8] text-white"
-                      : s === "current"
+                  className={`aspect-square rounded-md flex items-center justify-center text-[9px] ${s === "done"
+                    ? "bg-[#5a35f8] text-white"
+                    : s === "current"
                       ? "bg-[#5a35f8]/20 border border-[#5a35f8] text-[#5a35f8]"
                       : s === "rest"
-                      ? "bg-[#111116] text-[#3f3f46]"
-                      : "bg-[#1f1f26] text-[#71717a]"
-                  }`}
+                        ? "bg-[#111116] text-[#3f3f46]"
+                        : "bg-[#1f1f26] text-[#71717a]"
+                    }`}
                 >
                   {i + 1}
                 </div>
@@ -67,74 +67,88 @@ function RoadmapMockup() {
             ))}
           </div>
         </div>
-      </div>
+      </MacBookFrame>
     </div>
   );
 }
 
-/* ── AI Mentor Mockup ── */
+/* ── AI Mentor Mockup (Phone Frame) ── */
 function AIMentorMockup() {
   return (
-    <div className="purple-glow">
-      <div className="laptop-frame">
-        <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111116] border-b border-[#27272a]">
-          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
-        </div>
-        <div className="p-5 bg-[#18181b] min-h-[280px]">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#5a35f8] to-[#7c5cf9] flex items-center justify-center">
-              <span className="text-[9px] font-bold text-white">AI</span>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-[#fafafa]">AI Mentor</p>
-              <p className="text-[9px] text-emerald-400">Online</p>
-            </div>
+    <div className="purple-glow flex justify-center">
+      <div className="w-[260px] sm:w-[300px]">
+        <iPhoneFrame>
+          {/* Notch / status bar */}
+          <div className="flex items-center justify-center py-2 bg-[#111116] border-b border-[#27272a]">
+            {/* Fake notch just in case the frame doesn't cover it perfectly, but usually frames have notches. 
+                However, for compatibility with the frame bezel, keep it minimal or remove. 
+                The iPhoneFrame handles rounded corners. Let's keep a dark top bar.*/}
+            <div className="h-4 w-20 rounded-full bg-[#1f1f26]" />
           </div>
+          <div className="p-4 bg-[#18181b] min-h-[380px]">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#5a35f8] to-[#7c5cf9] flex items-center justify-center">
+                <span className="text-[9px] font-bold text-white">AI</span>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-[#fafafa]">AI Mentor</p>
+                <p className="text-[9px] text-emerald-400">Online</p>
+              </div>
+            </div>
 
-          <div className="space-y-3">
-            {/* User message */}
-            <div className="flex justify-end">
-              <div className="rounded-xl rounded-br-sm bg-[#5a35f8] px-3 py-2 max-w-[75%]">
-                <p className="text-[11px] text-white leading-relaxed">
-                  Can you explain nucleophilic substitution for AQA?
-                </p>
+            <div className="space-y-3">
+              {/* User message */}
+              <div className="flex justify-end">
+                <div className="rounded-xl rounded-br-sm bg-[#5a35f8] px-3 py-2 max-w-[80%]">
+                  <p className="text-[11px] text-white leading-relaxed">
+                    Can you explain nucleophilic substitution for AQA?
+                  </p>
+                </div>
               </div>
-            </div>
-            {/* AI reply */}
-            <div className="flex justify-start">
-              <div className="rounded-xl rounded-bl-sm bg-[#1f1f26] px-3 py-2 max-w-[85%]">
-                <p className="text-[11px] text-[#a1a1aa] leading-relaxed">
-                  In nucleophilic substitution, a nucleophile attacks a carbon bonded to a halogen. For
-                  AQA, focus on <span className="text-[#5a35f8] font-medium">SN1 vs SN2 mechanisms</span>.
-                  SN2 is a one-step process with backside attack...
-                </p>
+              {/* AI reply */}
+              <div className="flex justify-start">
+                <div className="rounded-xl rounded-bl-sm bg-[#1f1f26] px-3 py-2 max-w-[90%]">
+                  <p className="text-[11px] text-[#a1a1aa] leading-relaxed">
+                    In nucleophilic substitution, a nucleophile attacks a carbon bonded to a halogen. For
+                    AQA, focus on <span className="text-[#5a35f8] font-medium">SN1 vs SN2 mechanisms</span>.
+                    SN2 is a one-step process with backside attack...
+                  </p>
+                </div>
               </div>
-            </div>
-            {/* Follow-up */}
-            <div className="flex justify-end">
-              <div className="rounded-xl rounded-br-sm bg-[#5a35f8] px-3 py-2 max-w-[70%]">
-                <p className="text-[11px] text-white leading-relaxed">
-                  Give me a practice question on this
-                </p>
+              {/* Follow-up */}
+              <div className="flex justify-end">
+                <div className="rounded-xl rounded-br-sm bg-[#5a35f8] px-3 py-2 max-w-[75%]">
+                  <p className="text-[11px] text-white leading-relaxed">
+                    Give me a practice question on this
+                  </p>
+                </div>
               </div>
-            </div>
-            {/* AI response */}
-            <div className="flex justify-start">
-              <div className="rounded-xl rounded-bl-sm bg-[#1f1f26] px-3 py-2.5 max-w-[85%]">
-                <p className="text-[11px] text-[#a1a1aa] leading-relaxed mb-2">
-                  Draw the mechanism for the reaction of 1-bromobutane with NaOH.
-                  Identify the type and explain why.
-                </p>
-                <div className="flex gap-2">
-                  <span className="text-[9px] bg-[#5a35f8]/10 text-[#5a35f8] px-2 py-0.5 rounded-full">AQA 3.3.2</span>
-                  <span className="text-[9px] bg-[#27272a] text-[#71717a] px-2 py-0.5 rounded-full">6 marks</span>
+              {/* AI response */}
+              <div className="flex justify-start">
+                <div className="rounded-xl rounded-bl-sm bg-[#1f1f26] px-3 py-2.5 max-w-[90%]">
+                  <p className="text-[11px] text-[#a1a1aa] leading-relaxed mb-2">
+                    Draw the mechanism for the reaction of 1-bromobutane with NaOH.
+                    Identify the type and explain why.
+                  </p>
+                  <div className="flex gap-2">
+                    <span className="text-[9px] bg-[#5a35f8]/10 text-[#5a35f8] px-2 py-0.5 rounded-full">AQA 3.3.2</span>
+                    <span className="text-[9px] bg-[#27272a] text-[#71717a] px-2 py-0.5 rounded-full">6 marks</span>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Input bar */}
+            <div className="mt-4 flex items-center gap-2 rounded-xl bg-[#1f1f26] border border-[#27272a] px-3 py-2.5">
+              <span className="text-[11px] text-[#52525b]">Ask anything...</span>
+              <div className="ml-auto h-6 w-6 rounded-full bg-[#5a35f8] flex items-center justify-center">
+                <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                </svg>
+              </div>
+            </div>
           </div>
-        </div>
+        </iPhoneFrame>
       </div>
     </div>
   );
@@ -144,11 +158,11 @@ function AIMentorMockup() {
 function GradePredictorMockup() {
   return (
     <div className="purple-glow">
-      <div className="laptop-frame">
+      <MacBookFrame>
         <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111116] border-b border-[#27272a]">
-          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#27272a]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#3a3a3e]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#3a3a3e]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#3a3a3e]" />
         </div>
         <div className="p-5 bg-[#18181b] min-h-[280px]">
           <p className="text-xs font-medium text-[#fafafa] mb-4">Grade Predictions</p>
@@ -205,7 +219,7 @@ function GradePredictorMockup() {
             <span className="text-[10px] text-[#fafafa] font-medium">78%</span>
           </div>
         </div>
-      </div>
+      </MacBookFrame>
     </div>
   );
 }

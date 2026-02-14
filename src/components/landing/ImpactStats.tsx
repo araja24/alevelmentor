@@ -6,20 +6,16 @@ import { RevealSection } from "./RevealSection";
 import { ease, dur, viewport } from "@/lib/motion";
 
 /* ── Inline count-up (IntersectionObserver + rAF) ── */
-function CountUpStat({
+function CountUpValue({
   value,
   suffix = "",
   decimals = 0,
-  label,
-  className = "",
 }: {
   value: number;
   suffix?: string;
   decimals?: number;
-  label: string;
-  className?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
   const [display, setDisplay] = useState(0);
   const [started, setStarted] = useState(false);
   const prefersReduced = useReducedMotion();
@@ -57,78 +53,84 @@ function CountUpStat({
   }, [started, value, decimals, prefersReduced]);
 
   return (
-    <div ref={ref} className={className}>
-      <p className="text-4xl sm:text-5xl font-extrabold tabular-nums text-[#fafafa]">
-        {decimals > 0 ? display.toFixed(decimals) : display.toLocaleString()}
-        {suffix}
-      </p>
-      <p className="text-sm text-[#a1a1aa] mt-2">{label}</p>
-    </div>
+    <span ref={ref} className="tabular-nums">
+      {decimals > 0 ? display.toFixed(decimals) : display}
+      {suffix}
+    </span>
   );
 }
 
 const stats = [
-  { value: 87, suffix: "%", label: "Feel more prepared" },
-  { value: 3, suffix: "hrs", label: "Saved per week" },
+  {
+    value: 3,
+    decimals: 0,
+    suffix: "",
+    label: "Subjects Supported",
+    description: "Chemistry, Maths, and Physics — with more coming soon.",
+  },
+  {
+    value: 100,
+    decimals: 0,
+    suffix: "%",
+    label: "Syllabus Coverage",
+    description: "Every topic mapped to your exam board, nothing missed.",
+  },
+  {
+    value: 24,
+    decimals: 0,
+    suffix: "/7",
+    label: "Always Available",
+    description: "Your AI mentor is ready whenever you are.",
+  },
 ];
 
 export function ImpactStats() {
   return (
     <section className="py-32 px-6 relative">
-      <div className="mx-auto max-w-5xl">
-        {/* Header */}
-        <RevealSection className="text-center mb-16">
-          <span className="pill-badge mb-4 inline-flex">Impact</span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mt-4 text-[#fafafa]">
-            <span className="gradient-text">What A Level Mentor does</span>
-            <br />
-            for students
-          </h2>
-        </RevealSection>
+      {/* Ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#5a35f8]/[0.04] blur-[150px] pointer-events-none" />
 
-        {/* Hero stat */}
-        <RevealSection delay={0.1} className="text-center mb-16">
-          <CountUpStat
-            value={2.4}
-            decimals={1}
-            suffix="x"
-            label="more likely to hit target grades"
-            className="[&_p:first-child]:text-7xl [&_p:first-child]:sm:text-8xl"
-          />
-        </RevealSection>
-
-        {/* Three stat cards */}
-        <div className="grid sm:grid-cols-3 gap-5">
+      <div className="mx-auto max-w-4xl">
+        {/* Vertically stacked stats — OPAL style */}
+        <div className="space-y-24">
           {stats.map((stat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+              initial={{ opacity: 0, y: 40, filter: "blur(6px)" }}
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={viewport}
-              transition={{ duration: dur.base, delay: i * 0.08 + 0.2, ease: ease.out }}
-              className="rounded-2xl border border-[#27272a] bg-[#18181b] p-8 text-center card-hover"
+              transition={{ duration: dur.base, delay: i * 0.1, ease: ease.out }}
+              className="text-center"
             >
-              <CountUpStat value={stat.value} suffix={stat.suffix} label={stat.label} />
+              {/* Big Number — massive gradient text */}
+              <p
+                className="text-[80px] sm:text-[100px] lg:text-[120px] font-extrabold leading-none tracking-tight"
+                style={{
+                  background: "linear-gradient(135deg, #e4e4e7 0%, #fafafa 30%, #a78bfa 60%, #5a35f8 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                <CountUpValue
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  decimals={stat.decimals}
+                />
+              </p>
+
+              {/* Label */}
+              <p className="text-lg sm:text-xl font-medium text-[#fafafa] mt-3">
+                {stat.label}
+              </p>
+
+              {/* Description */}
+              <p className="text-sm text-[#71717a] mt-2 max-w-md mx-auto">
+                {stat.description}
+              </p>
             </motion.div>
           ))}
-
-          {/* Text stat (A*-B) */}
-          <motion.div
-            initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={viewport}
-            transition={{ duration: dur.base, delay: 0.36, ease: ease.out }}
-            className="rounded-2xl border border-[#27272a] bg-[#18181b] p-8 text-center card-hover"
-          >
-            <p className="text-4xl sm:text-5xl font-extrabold text-[#fafafa]">A*-B</p>
-            <p className="text-sm text-[#a1a1aa] mt-2">Predicted grade range</p>
-          </motion.div>
         </div>
-
-        {/* Disclaimer */}
-        <p className="text-[11px] text-[#52525b] text-center mt-6">
-          *Projected metrics based on structured revision and spaced repetition research.
-        </p>
       </div>
     </section>
   );

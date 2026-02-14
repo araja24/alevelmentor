@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import { RevealSection } from "./RevealSection";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { WaitlistForm } from "./WaitlistForm";
 
 export function FinalCTA() {
   return (
     <section id="join" className="py-32 px-6 relative">
+      {/* Ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-[#5a35f8]/[0.06] blur-[150px] pointer-events-none" />
+
       <div className="mx-auto max-w-3xl text-center">
         <RevealSection>
           {/* Logo */}
@@ -27,14 +29,9 @@ export function FinalCTA() {
             <span className="gradient-text">Start revising smarter.</span>
           </h2>
 
-          {/* CTA */}
-          <div className="mt-10">
-            <Button asChild variant="gradient" size="lg" className="text-base px-10 py-6 h-auto">
-              <a href="#join" className="flex items-center gap-2">
-                Get Started — It&apos;s Free
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </Button>
+          {/* Waitlist Form */}
+          <div className="mt-10 max-w-md mx-auto">
+            <WaitlistForm />
           </div>
 
           {/* Exam boards */}

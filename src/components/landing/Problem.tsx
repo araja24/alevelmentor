@@ -1,67 +1,76 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { useRef } from "react";
+import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
 
-/* ── Single phrase that highlights as user scrolls ── */
-function HighlightPhrase({
+const paragraph =
+  "Most students revise blindly. No structure, no targets, no feedback. You deserve a system that actually works — one that adapts to you and keeps you on track.";
+
+/* ── Single word whose opacity is driven by scroll progress ── */
+function Word({
   children,
-  progress,
   range,
-  targetColor,
-  targetWeight = 400,
+  progress,
+  preHighlighted,
 }: {
-  children: React.ReactNode;
-  progress: MotionValue<number>;
+  children: string;
   range: [number, number];
-  targetColor: string;
-  targetWeight?: number;
+  progress: MotionValue<number>;
+  preHighlighted?: boolean;
 }) {
-  const opacity = useTransform(progress, range, [0.2, 1]);
-  const color = useTransform(progress, range, ["#3f3f46", targetColor]);
-
+  const opacity = useTransform(progress, range, [0.15, 1]);
   return (
-    <motion.span style={{ opacity, color, fontWeight: targetWeight }}>
-      {children}
-    </motion.span>
+    <span className="relative inline-block mr-[0.3em]">
+      {/* Ghost layer */}
+      <span className="opacity-[0.15]">{children}</span>
+      {/* Live layer */}
+      {preHighlighted ? (
+        <span className="absolute left-0 top-0">{children}</span>
+      ) : (
+        <motion.span className="absolute left-0 top-0" style={{ opacity }}>
+          {children}
+        </motion.span>
+      )}
+    </span>
   );
 }
 
 export function Problem() {
   const containerRef = useRef<HTMLDivElement>(null);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
+  const words = paragraph.split(" ");
+
   return (
-    <section ref={containerRef} className="relative" style={{ height: "200vh" }}>
+    <section
+      ref={containerRef}
+      className="relative bg-[#09090b]"
+      style={{ minHeight: "400vh" }}
+    >
       <div className="sticky top-0 h-screen flex items-center justify-center px-6">
-        <p className="max-w-3xl text-center text-3xl sm:text-4xl lg:text-[40px] leading-relaxed sm:leading-relaxed font-light">
-          <HighlightPhrase
-            progress={scrollYProgress}
-            range={[0.15, 0.3]}
-            targetColor="#fafafa"
-            targetWeight={700}
-          >
-            68% of A-Level students{" "}
-          </HighlightPhrase>
-          <HighlightPhrase
-            progress={scrollYProgress}
-            range={[0.3, 0.5]}
-            targetColor="#a1a1aa"
-          >
-            don&apos;t follow a revision plan. They cram, burn out, and
-            underperform.{" "}
-          </HighlightPhrase>
-          <HighlightPhrase
-            progress={scrollYProgress}
-            range={[0.5, 0.7]}
-            targetColor="#5a35f8"
-            targetWeight={700}
-          >
-            We built something to change that.
-          </HighlightPhrase>
+        <p className="max-w-3xl mx-auto text-center text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight leading-[1.25] text-[#fafafa]">
+          {words.map((word, i) => {
+            // First word is always fully white (pre-highlighted)
+            if (i === 0) {
+              return (
+                <Word key={i} range={[0, 0]} progress={scrollYProgress} preHighlighted>
+                  {word}
+                </Word>
+              );
+            }
+            // Remaining words fade in from 0.20 → 0.42
+            const start = 0.2 + ((i - 1) / (words.length - 1)) * 0.22;
+            const end = 0.2 + (i / (words.length - 1)) * 0.22;
+            return (
+              <Word key={i} range={[start, end]} progress={scrollYProgress}>
+                {word}
+              </Word>
+            );
+          })}
         </p>
       </div>
     </section>
