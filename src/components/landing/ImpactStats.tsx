@@ -10,7 +10,7 @@ const stats = [
     { value: "1h 23m", label: "saved daily", sublabel: "AVERAGE TIME RECLAIMED" },
     { value: "1 month", label: "saved each year", sublabel: "TOTAL STUDY EFFICIENCY" },
     {
-        value: "First 100",
+        value: "First 50",
         label: <>Get Pro for Free. <span className="text-white font-bold">Forever.</span></>,
         sublabel: "JOIN THE WAITLIST"
     },

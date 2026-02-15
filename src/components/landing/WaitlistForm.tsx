@@ -117,7 +117,7 @@ function WaitlistFormContent() {
 
                     <div className="px-8 pb-8">
                         <p className="text-sm text-[#a1a1aa] mb-4 leading-relaxed">
-                            Invite friends to jump the queue. <span className="text-white font-semibold">First 100 Get Pro Free. <span className="text-[#5a35f8]">Forever.</span></span>
+                            Invite friends to jump the queue. <span className="text-white font-semibold">First 50 Get Pro Free. <span className="text-[#5a35f8]">Forever.</span></span>
                         </p>
 
                         <div className="flex gap-3">
@@ -196,7 +196,7 @@ function WaitlistFormContent() {
                 </div>
                 <div className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20">
                     <Sparkles className="w-4 h-4 text-amber-400" />
-                    <span className="text-[12px] font-semibold text-amber-100">First 100 Get Pro Free. <span className="font-bold underline">Forever.</span></span>
+                    <span className="text-[12px] font-semibold text-amber-100">First 50 Get Pro Free. <span className="font-bold underline">Forever.</span></span>
                 </div>
             </div>
         </form>
