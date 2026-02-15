@@ -26,6 +26,7 @@ function WaitlistFormContent() {
     const [totalUsers, setTotalUsers] = useState<number | null>(null);
     const [copied, setCopied] = useState(false);
     const [error, setError] = useState("");
+    const [alreadyRegistered, setAlreadyRegistered] = useState(false);
 
     const referralCode = searchParams.get("ref");
 
@@ -43,12 +44,13 @@ function WaitlistFormContent() {
 
             const data = await res.json();
 
-            if (!res.ok) throw new Error(data.message || "Something went wrong");
+            if (!res.ok) throw new Error(data.error || "Something went wrong");
 
             setSuccess(true);
-            setReferralLink(data.referralLink);
-            setPosition(data.position);
-            setTotalUsers(data.totalUsers);
+            setAlreadyRegistered(data.already_registered ?? false);
+            setReferralLink(`${window.location.origin}/?ref=${data.referral_code}`);
+            setPosition(data.rank);
+            setTotalUsers(data.total_count);
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -75,8 +77,14 @@ function WaitlistFormContent() {
                             <Trophy className="w-6 h-6" />
                         </div>
                         <div>
-                            <h3 className="text-xl font-bold text-white">You're on the list!</h3>
-                            <p className="text-sm text-[#5a35f8] font-medium mt-1">Welcome to the inner circle.</p>
+                            <h3 className="text-xl font-bold text-white">
+                                {alreadyRegistered ? "Welcome back!" : "You're on the list!"}
+                            </h3>
+                            <p className="text-sm text-[#5a35f8] font-medium mt-1">
+                                {alreadyRegistered
+                                    ? "You're already registered. Here's your current status."
+                                    : "Welcome to the inner circle."}
+                            </p>
                         </div>
                     </div>
 
@@ -126,19 +134,19 @@ function WaitlistFormContent() {
 
     return (
         <form onSubmit={handleSubmit} className="w-full max-w-[480px] mx-auto relative group">
-            <div className="relative flex items-center p-1.5 rounded-[20px] bg-[#18181b] border border-white/10 shadow-2xl transition-all duration-300 focus-within:border-[#5a35f8]/50 focus-within:shadow-[0_0_40px_rgba(90,53,248,0.15)]">
+            <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-0 p-1.5 rounded-[20px] bg-[#18181b] border border-white/10 shadow-2xl transition-all duration-300 focus-within:border-[#5a35f8]/50 focus-within:shadow-[0_0_40px_rgba(90,53,248,0.15)]">
                 <input
                     type="email"
                     required
                     placeholder="Enter your email address..."
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full h-12 bg-transparent border-0 px-4 text-white text-[15px] placeholder:text-white/20 focus:outline-none focus:ring-0"
+                    className="flex-1 w-full h-12 bg-transparent border-0 px-4 text-white text-[15px] placeholder:text-white/20 focus:outline-none focus:ring-0 text-center sm:text-left"
                 />
                 <ShimmerButton
                     type="submit"
                     disabled={loading}
-                    className="h-12 w-full px-6 font-medium shadow-lg shadow-[#5a35f8]/20 hover:shadow-[#5a35f8]/40 shrink-0"
+                    className="h-12 w-full sm:w-auto px-6 font-medium shadow-lg shadow-[#5a35f8]/20 hover:shadow-[#5a35f8]/40 shrink-0"
                 >
                     {loading ? (
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -162,10 +170,6 @@ function WaitlistFormContent() {
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
                     <span className="text-[11px] font-semibold text-emerald-100">Free beta access</span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#5a35f8]/10 border border-[#5a35f8]/20">
-                    <Users className="w-3.5 h-3.5 text-[#5a35f8]" />
-                    <span className="text-[11px] font-semibold text-[#a594fd]">10,000+ joined</span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
                     <Sparkles className="w-3.5 h-3.5 text-amber-400" />

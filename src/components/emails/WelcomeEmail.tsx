@@ -31,7 +31,10 @@ export function WelcomeEmail({
 
   return (
     <Html lang="en">
-      <Head />
+      <Head>
+        <meta name="color-scheme" content="dark" />
+        <meta name="supported-color-schemes" content="dark" />
+      </Head>
       <Preview>
         You&apos;re #{rank.toString()} on the alevelmentor waitlist — share your link to
         move up
@@ -182,9 +185,9 @@ export default WelcomeEmail;
 // ─── Styles ─────────────────────────────────────────────────────────────────
 
 const main: React.CSSProperties = {
-  backgroundColor: "#f1f0f4",
+  backgroundColor: "#09090b",
   fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   margin: 0,
   padding: "40px 0",
 };
@@ -192,10 +195,11 @@ const main: React.CSSProperties = {
 const wrapper: React.CSSProperties = {
   maxWidth: "560px",
   margin: "0 auto",
-  backgroundColor: "#ffffff",
+  backgroundColor: "#121214",
   borderRadius: "18px",
   overflow: "hidden",
-  boxShadow: "0 4px 32px rgba(0,0,0,0.08)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  boxShadow: "0 4px 32px rgba(90,53,248,0.12)",
 };
 
 const header: React.CSSProperties = {
@@ -205,7 +209,7 @@ const header: React.CSSProperties = {
 
 const hero: React.CSSProperties = {
   padding: "36px 32px 28px",
-  backgroundColor: "#ffffff",
+  backgroundColor: "#121214",
 };
 
 const eyebrow: React.CSSProperties = {
@@ -213,14 +217,14 @@ const eyebrow: React.CSSProperties = {
   fontWeight: "600",
   textTransform: "uppercase",
   letterSpacing: "0.1em",
-  color: "#a78bfa",
+  color: "#3ed6ff",
   margin: "0 0 10px",
 };
 
 const h1: React.CSSProperties = {
   fontSize: "30px",
   fontWeight: "800",
-  color: "#09090b",
+  color: "#fafafa",
   letterSpacing: "-0.03em",
   lineHeight: "1.15",
   margin: "0 0 14px",
@@ -228,13 +232,13 @@ const h1: React.CSSProperties = {
 
 const heroBody: React.CSSProperties = {
   fontSize: "15px",
-  color: "#52525b",
+  color: "#a1a1aa",
   lineHeight: "1.65",
   margin: 0,
 };
 
 const accentText: React.CSSProperties = {
-  color: "#5a35f8",
+  color: "#8b6cf9",
   fontWeight: "700",
 };
 
@@ -248,6 +252,7 @@ const rankCell: React.CSSProperties = {
   borderRadius: "14px",
   padding: "22px 24px",
   textAlign: "center",
+  border: "1px solid rgba(255,255,255,0.15)",
 };
 
 const rankLabel: React.CSSProperties = {
@@ -282,28 +287,28 @@ const referralSection: React.CSSProperties = {
 const sectionHeading: React.CSSProperties = {
   fontSize: "16px",
   fontWeight: "700",
-  color: "#09090b",
+  color: "#fafafa",
   margin: "0 0 6px",
   letterSpacing: "-0.01em",
 };
 
 const sectionBody: React.CSSProperties = {
   fontSize: "14px",
-  color: "#71717a",
+  color: "#a1a1aa",
   lineHeight: "1.6",
   margin: "0 0 16px",
 };
 
 const linkBox: React.CSSProperties = {
-  backgroundColor: "#f4f0ff",
-  border: "1px solid #ddd6fe",
+  backgroundColor: "#18181b",
+  border: "1px solid rgba(255,255,255,0.08)",
   borderRadius: "10px",
   padding: "11px 16px",
 };
 
 const linkText: React.CSSProperties = {
   fontSize: "12px",
-  color: "#5a35f8",
+  color: "#8b6cf9",
   fontFamily: '"Courier New", Courier, monospace',
   wordBreak: "break-all",
   margin: 0,
@@ -341,37 +346,37 @@ const featureCopy: React.CSSProperties = {
 const featureTitle: React.CSSProperties = {
   fontSize: "14px",
   fontWeight: "700",
-  color: "#18181b",
+  color: "#fafafa",
   margin: "0 0 2px",
 };
 
 const featureDesc: React.CSSProperties = {
   fontSize: "13px",
-  color: "#71717a",
+  color: "#a1a1aa",
   lineHeight: "1.55",
   margin: 0,
 };
 
 // Divider
 const divider: React.CSSProperties = {
-  borderColor: "#f1f0f4",
+  borderColor: "rgba(255,255,255,0.06)",
   margin: "0 32px",
 };
 
 // Footer
 const footer: React.CSSProperties = {
   padding: "18px 32px 24px",
-  backgroundColor: "#fafaf9",
+  backgroundColor: "#0c0c0e",
 };
 
 const footerText: React.CSSProperties = {
   fontSize: "12px",
-  color: "#a1a1aa",
+  color: "#71717a",
   lineHeight: "1.5",
   margin: 0,
 };
 
 const footerLink: React.CSSProperties = {
-  color: "#7c5cf9",
+  color: "#8b6cf9",
   textDecoration: "none",
 };

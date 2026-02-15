@@ -31,9 +31,12 @@ export function AdminNotificationEmail({
 
   return (
     <Html lang="en">
-      <Head />
+      <Head>
+        <meta name="color-scheme" content="dark" />
+        <meta name="supported-color-schemes" content="dark" />
+      </Head>
       <Preview>
-        🔔 New signup: {newUserEmail} — #{rank.toString()} of {totalCount.toString()}
+        New signup: {newUserEmail} — #{rank.toString()} of {totalCount.toString()}
       </Preview>
       <Body style={main}>
         <Container style={wrapper}>
@@ -125,7 +128,7 @@ function DataRow({
           <Text
             style={{
               ...rowValue,
-              color: highlight ? "#5a35f8" : muted ? "#a1a1aa" : "#09090b",
+              color: highlight ? "#8b6cf9" : muted ? "#52525b" : "#fafafa",
             }}
           >
             {value}
@@ -141,9 +144,9 @@ export default AdminNotificationEmail;
 // ─── Styles ─────────────────────────────────────────────────────────────────
 
 const main: React.CSSProperties = {
-  backgroundColor: "#f4f4f5",
+  backgroundColor: "#09090b",
   fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   margin: 0,
   padding: "40px 0",
 };
@@ -151,15 +154,17 @@ const main: React.CSSProperties = {
 const wrapper: React.CSSProperties = {
   maxWidth: "480px",
   margin: "0 auto",
-  backgroundColor: "#ffffff",
+  backgroundColor: "#121214",
   borderRadius: "14px",
   overflow: "hidden",
-  boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  boxShadow: "0 2px 16px rgba(90,53,248,0.1)",
 };
 
 const header: React.CSSProperties = {
   backgroundColor: "#09090b",
   padding: "18px 24px",
+  borderBottom: "1px solid rgba(255,255,255,0.06)",
 };
 
 const brandName: React.CSSProperties = {
@@ -195,7 +200,7 @@ const body: React.CSSProperties = {
 const h2: React.CSSProperties = {
   fontSize: "20px",
   fontWeight: "800",
-  color: "#09090b",
+  color: "#fafafa",
   letterSpacing: "-0.03em",
   margin: "0 0 4px",
 };
@@ -208,7 +213,7 @@ const subtitle: React.CSSProperties = {
 
 // Data card
 const dataCard: React.CSSProperties = {
-  border: "1px solid #e4e4e7",
+  border: "1px solid rgba(255,255,255,0.08)",
   borderRadius: "10px",
   overflow: "hidden",
 };
@@ -228,7 +233,7 @@ const rowRight: React.CSSProperties = {
 const rowLabel: React.CSSProperties = {
   fontSize: "12px",
   fontWeight: "500",
-  color: "#71717a",
+  color: "#a1a1aa",
   margin: 0,
 };
 
@@ -239,15 +244,15 @@ const rowValue: React.CSSProperties = {
 };
 
 const rowDivider: React.CSSProperties = {
-  borderColor: "#f4f4f5",
+  borderColor: "rgba(255,255,255,0.06)",
   margin: 0,
 };
 
 // Milestone banner
 const milestone: React.CSSProperties = {
   marginTop: "16px",
-  backgroundColor: "#f4f0ff",
-  border: "1px solid #ddd6fe",
+  backgroundColor: "rgba(90,53,248,0.1)",
+  border: "1px solid rgba(90,53,248,0.25)",
   borderRadius: "10px",
   padding: "12px 16px",
 };
@@ -255,23 +260,23 @@ const milestone: React.CSSProperties = {
 const milestoneText: React.CSSProperties = {
   fontSize: "13px",
   fontWeight: "600",
-  color: "#5a35f8",
+  color: "#8b6cf9",
   margin: 0,
 };
 
 // Footer
 const footerDivider: React.CSSProperties = {
-  borderColor: "#f4f4f5",
+  borderColor: "rgba(255,255,255,0.06)",
   margin: 0,
 };
 
 const footer: React.CSSProperties = {
   padding: "12px 24px 16px",
-  backgroundColor: "#fafaf9",
+  backgroundColor: "#0c0c0e",
 };
 
 const footerText: React.CSSProperties = {
   fontSize: "11px",
-  color: "#a1a1aa",
+  color: "#71717a",
   margin: 0,
 };

@@ -107,7 +107,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const email = (body.email ?? "").toLowerCase().trim();
-    const ref = body.ref ?? null;
+    const ref = body.referralCode ?? null;
 
     // Validate email
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
