@@ -4,11 +4,11 @@
 -- WARNING: Drops ALL tables and starts fresh
 -- ============================================
 
--- 1. Drop all existing functions
+-- 1. Drop all existing functions to avoid conflicts
 DROP FUNCTION IF EXISTS get_waitlist_rank(INTEGER, TIMESTAMPTZ);
 DROP FUNCTION IF EXISTS increment_referral_count(TEXT);
 
--- 2. Drop ALL existing tables
+-- 2. Drop ALL existing tables (Cascade to remove dependents)
 DROP TABLE IF EXISTS ai_chat_logs CASCADE;
 DROP TABLE IF EXISTS calendar_events CASCADE;
 DROP TABLE IF EXISTS chat_messages CASCADE;
@@ -43,11 +43,18 @@ CREATE TABLE waitlist_users (
 -- 4. Indexes for fast rank calculation
 CREATE INDEX idx_waitlist_referral_count ON waitlist_users (referral_count DESC);
 CREATE INDEX idx_waitlist_created_at ON waitlist_users (created_at ASC);
+CREATE INDEX idx_waitlist_referral_code ON waitlist_users (referral_code);
+CREATE INDEX idx_waitlist_email ON waitlist_users (email);
 
 -- 5. Enable Row Level Security (service role key bypasses this)
 ALTER TABLE waitlist_users ENABLE ROW LEVEL SECURITY;
 
--- 6. Function: calculate a user's rank
+-- 6. Policy: Allow public read access (optional, mainly for checking rank if needed from client, but usually done via API)
+-- For now, we'll keep it restricted and only allow service_role (API) to write.
+-- If you want public read (e.g. for a ticker), uncomment:
+-- CREATE POLICY "Public read access" ON waitlist_users FOR SELECT USING (true);
+
+-- 7. Function: calculate a user's rank
 CREATE OR REPLACE FUNCTION get_waitlist_rank(p_referral_count INTEGER, p_created_at TIMESTAMPTZ)
 RETURNS INTEGER
 LANGUAGE sql
@@ -59,7 +66,7 @@ AS $$
      OR (referral_count = p_referral_count AND created_at < p_created_at);
 $$;
 
--- 7. Function: atomically increment a referrer's count
+-- 8. Function: atomically increment a referrer's count
 CREATE OR REPLACE FUNCTION increment_referral_count(p_referral_code TEXT)
 RETURNS VOID
 LANGUAGE sql

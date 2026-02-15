@@ -6,6 +6,8 @@ import Link from "next/link";
 import { AnimatedBackground } from "@/components/landing/AnimatedBackground";
 import { ThemeToggle } from "@/components/landing/ThemeToggle";
 import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
+import { ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -48,34 +50,44 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center">
+    <div className="relative flex min-h-screen items-center justify-center p-4">
       <AnimatedBackground />
 
-      {/* Theme toggle */}
-      <div className="fixed top-4 right-4 z-50">
+      <div className="fixed top-6 left-6 z-50">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-sm font-medium text-white/50 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to home
+        </Link>
+      </div>
+
+      <div className="fixed top-6 right-6 z-50">
         <ThemeToggle />
       </div>
 
-      <div className="relative z-10 w-full max-w-md mx-4">
-        {/* Back to home */}
+      <div className="relative z-10 w-full max-w-[420px]">
         <div className="text-center mb-8">
-          <Link href="/" className="text-lg font-semibold">
-            alevel<span className="text-[#5a35f8]">mentor</span>
+          <Link href="/" className="inline-block">
+            <h1 className="text-2xl font-bold tracking-tight text-white">
+              alevel<span className="text-[#5a35f8]">mentor</span>
+            </h1>
           </Link>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-8 shadow-xl">
-          <h1 className="text-2xl font-semibold text-center mb-2">
-            Welcome back
-          </h1>
-          <p className="text-muted-foreground text-center mb-8">
-            Sign in to your Alevelmentor account
-          </p>
+        <GlassCard className="p-8">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-semibold text-white mb-2">Welcome back</h2>
+            <p className="text-sm text-white/50">
+              Sign in to continue your progress
+            </p>
+          </div>
 
           <Button
             type="button"
             variant="outline"
-            className="mb-6 flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-card text-sm font-medium hover:bg-muted"
+            className="w-full h-11 bg-white/[0.03] border-white/10 hover:bg-white/[0.08] hover:text-white text-white/80 gap-3 rounded-xl transition-all"
             onClick={handleGoogleLogin}
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -99,19 +111,24 @@ export default function LoginPage() {
             Continue with Google
           </Button>
 
-          <div className="relative mb-6">
+          <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border" />
+              <div className="w-full border-t border-white/10" />
             </div>
-            <div className="relative flex justify-center text-xs">
-              <span className="bg-card/80 px-4 text-muted-foreground">or</span>
+            <div className="relative flex justify-center">
+              <span className="bg-[#121214] px-4 text-[10px] uppercase tracking-widest text-white/30">
+                Or continue with email
+              </span>
             </div>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1.5">
-                Email
+            <div className="space-y-1.5">
+              <label
+                htmlFor="email"
+                className="text-xs font-medium text-white/70 ml-1"
+              >
+                Email address
               </label>
               <input
                 id="email"
@@ -120,11 +137,14 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full rounded-xl border border-border bg-transparent px-4 py-3 text-sm placeholder:text-muted-foreground focus:border-[#5a35f8]/40 focus:outline-none focus:ring-2 focus:ring-[#5a35f8]/20"
+                className="w-full h-11 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white placeholder:text-white/20 focus:border-[#5a35f8]/50 focus:bg-[#5a35f8]/5 focus:outline-none focus:ring-1 focus:ring-[#5a35f8]/50 transition-all"
               />
             </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-1.5">
+            <div className="space-y-1.5">
+              <label
+                htmlFor="password"
+                className="text-xs font-medium text-white/70 ml-1"
+              >
                 Password
               </label>
               <input
@@ -134,31 +154,39 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full rounded-xl border border-border bg-transparent px-4 py-3 text-sm placeholder:text-muted-foreground focus:border-[#5a35f8]/40 focus:outline-none focus:ring-2 focus:ring-[#5a35f8]/20"
+                className="w-full h-11 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white placeholder:text-white/20 focus:border-[#5a35f8]/50 focus:bg-[#5a35f8]/5 focus:outline-none focus:ring-1 focus:ring-[#5a35f8]/50 transition-all"
               />
             </div>
 
             {error && (
-              <p className="text-sm text-destructive">{error}</p>
+              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                <p className="text-xs text-red-400 text-center">{error}</p>
+              </div>
             )}
 
             <Button
               type="submit"
               disabled={loading}
-              variant="gradient"
-              className="w-full rounded-xl text-sm font-medium"
+              className="w-full h-11 bg-[#5a35f8] hover:bg-[#4a25e8] text-white rounded-xl text-sm font-semibold shadow-lg shadow-[#5a35f8]/20 transition-all mt-2"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                "Sign in"
+              )}
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
+          <p className="mt-8 text-center text-sm text-white/40">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="font-medium text-[#5a35f8] hover:text-[#4f2dd6]">
+            <Link
+              href="/signup"
+              className="font-medium text-[#5a35f8] hover:text-[#7f63f9] transition-colors"
+            >
               Sign up
             </Link>
           </p>
-        </div>
+        </GlassCard>
       </div>
     </div>
   );

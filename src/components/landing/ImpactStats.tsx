@@ -9,7 +9,11 @@ import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
 const stats = [
     { value: "1h 23m", label: "saved daily", sublabel: "AVERAGE TIME RECLAIMED" },
     { value: "1 month", label: "saved each year", sublabel: "TOTAL STUDY EFFICIENCY" },
-    { value: "10,000+", label: "students joined", sublabel: "WAITING FOR ACCESS" },
+    {
+        value: "First 100",
+        label: <>Get Pro for Free. <span className="text-white font-bold">Forever.</span></>,
+        sublabel: "JOIN THE WAITLIST"
+    },
 ];
 
 /* ═══════════════════════════════════════════
@@ -24,7 +28,7 @@ function Stat({
     rangeOut,
 }: {
     value: string;
-    label: string;
+    label: React.ReactNode;
     sublabel: string;
     progress: MotionValue<number>;
     rangeIn: [number, number];
@@ -66,15 +70,16 @@ function Stat({
             >
                 {value}
             </h3>
-            <p className="text-lg sm:text-2xl mt-4 font-medium text-[#a1a1aa] text-center relative z-10">
+            <div className="text-lg sm:text-2xl mt-4 font-medium text-[#a1a1aa] text-center relative z-10">
                 {label}
-            </p>
+            </div>
             <p className="text-[11px] mt-2 text-[#52525b] uppercase tracking-[0.15em] font-semibold relative z-10">
                 {sublabel}
             </p>
         </motion.div>
     );
 }
+
 
 /* ═══════════════════════════════════════════
    ImpactStats — Sticky scroll, one stat at a time

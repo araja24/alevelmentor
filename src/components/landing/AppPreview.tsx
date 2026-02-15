@@ -25,22 +25,20 @@ function CardShell({
   title,
   description,
   className = "",
+  delay = 0,
 }: {
   children: React.ReactNode;
   title: string;
   description: string;
   className?: string;
+  delay?: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.4, 0.7, 1], [0, 0.6, 1, 1, 0.3]);
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.4], [0.97, 0.99, 1]);
-  const y = useTransform(scrollYProgress, [0, 0.3, 0.5], [20, 8, 0]);
-
   return (
     <motion.div
-      ref={ref}
-      style={{ opacity, scale, y }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       className={`group relative rounded-[20px] overflow-hidden ${className}`}
     >
       {/* Hover gradient border */}
@@ -383,6 +381,7 @@ export function AppPreview() {
             className="sm:col-span-6"
             title="Subject Picker"
             description="Pick your A-Level subjects. We tailor your roadmap, papers, and mentor to match."
+            delay={0.1}
           >
             <SubjectPickerPreview />
           </CardShell>
@@ -391,6 +390,7 @@ export function AppPreview() {
             className="sm:col-span-6"
             title="Smart Roadmap"
             description="Auto-generated week-by-week plan. Never wonder what to revise next."
+            delay={0.2}
           >
             <RoadmapPreview />
           </CardShell>
@@ -402,6 +402,7 @@ export function AppPreview() {
             className="sm:col-span-8"
             title="Progress Tracker"
             description="See how your scores evolve across subjects with personalized insights."
+            delay={0.3}
           >
             <ProgressPreview />
           </CardShell>
@@ -410,6 +411,7 @@ export function AppPreview() {
             className="sm:col-span-4"
             title="Grade Predictor"
             description="Your grades, predicted in real time."
+            delay={0.4}
           >
             <GradePreview />
           </CardShell>
@@ -421,6 +423,7 @@ export function AppPreview() {
             className="sm:col-span-3"
             title="Study Mentor"
             description="Get instant, syllabus-aligned answers."
+            delay={0.5}
           >
             <MentorPreview />
           </CardShell>
@@ -429,6 +432,7 @@ export function AppPreview() {
             className="sm:col-span-9"
             title="Past Papers"
             description="Every paper matched to your weak spots. Download mark schemes in one click."
+            delay={0.6}
           >
             <PastPaperPreview />
           </CardShell>

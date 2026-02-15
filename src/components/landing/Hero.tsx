@@ -68,7 +68,8 @@ function FloatingPreview() {
                 {/* ── Card 1: Roadmap Progress ── */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                     className="rounded-[20px] overflow-hidden border border-white/[0.08] p-5"
                     style={{
@@ -144,7 +145,8 @@ function FloatingPreview() {
                 {/* ── Card 2: Stats row ── */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.35 }}
                     className="grid grid-cols-3 gap-3"
                 >
@@ -170,7 +172,8 @@ function FloatingPreview() {
                 {/* ── Card 3: AI Mentor bubble ── */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.5 }}
                     className="rounded-[16px] p-4 border border-[#5a35f8]/20"
                     style={{
@@ -197,49 +200,50 @@ function FloatingPreview() {
    Hero Section — Split Layout (Opal Style)
    Left: Floating Cards | Right: Text + CTA
    ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   Hero Section — Split Layout (Opal Style)
+   Left: Floating Cards | Right: Text + CTA
+   ═══════════════════════════════════════════ */
 export function Hero() {
     return (
         <section
-            className="relative min-h-screen flex items-center overflow-hidden"
+            className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-12 lg:py-0"
             style={{ background: "var(--bg-primary)" }}
         >
             {/* Background ambient glow */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-[20%] left-[15%] w-[500px] h-[500px] rounded-full bg-[#5a35f8]/8 blur-[150px]" />
-                <div className="absolute bottom-[10%] right-[20%] w-[400px] h-[400px] rounded-full bg-[#3ed6ff]/5 blur-[120px]" />
+                <div className="absolute top-[20%] left-[15%] w-[300px] lg:w-[500px] h-[300px] lg:h-[500px] rounded-full bg-[#5a35f8]/8 blur-[100px] lg:blur-[150px]" />
+                <div className="absolute bottom-[10%] right-[20%] w-[300px] lg:w-[400px] h-[300px] lg:h-[400px] rounded-full bg-[#3ed6ff]/5 blur-[80px] lg:blur-[120px]" />
             </div>
 
-            <div className="mx-auto max-w-[1300px] w-full px-6 py-32 lg:py-20 relative z-10">
-                <div className="grid lg:grid-cols-[42%_58%] gap-12 lg:gap-16 items-center">
-                    {/* ─── LEFT: Floating Dashboard Cards ─── */}
-                    <RevealSection direction="left" delay={0.1} className="order-2 lg:order-1 -ml-4 lg:-ml-8">
-                        <FloatingPreview />
-                    </RevealSection>
+            <div className="mx-auto max-w-[1300px] w-full px-6 relative z-10">
+                <div className="flex flex-col lg:grid lg:grid-cols-[42%_58%] lg:gap-x-16 lg:gap-y-4 items-center">
 
-                    {/* ─── RIGHT: Text + CTA ─── */}
-                    <RevealSection direction="right" className="order-1 lg:order-2">
+                    {/* ─── RIGHT CONTENT (Headline) ─── */}
+                    <RevealSection
+                        direction="right"
+                        className="order-1 lg:col-start-2 lg:row-start-1 text-center lg:text-left"
+                    >
                         {/* Coming Soon badge */}
-                        <div className="flex items-center gap-2 mb-6">
-                            <div className="flex items-center gap-2 rounded-full border border-[#5a35f8]/30 bg-[#5a35f8]/10 px-4 py-1.5">
+                        <div className="flex items-center justify-center lg:justify-start gap-2 mb-6">
+                            <div className="flex items-center gap-2 rounded-full border border-[#5a35f8]/30 bg-[#5a35f8]/10 px-4 py-1.5 backdrop-blur-sm">
                                 <div className="h-1.5 w-1.5 rounded-full bg-[#5a35f8] animate-pulse" />
-                                <span className="text-[12px] font-medium text-[#5a35f8]">Coming Soon — Join the waitlist for early access</span>
+                                <span className="text-[11px] sm:text-[12px] font-medium text-[#5a35f8]">Coming Soon — Join the waitlist</span>
                             </div>
                         </div>
 
-
-
                         {/* Heading */}
                         <h1
-                            className="text-[clamp(36px,5vw,72px)] font-bold tracking-[-0.03em] leading-[1.1] mb-8 max-w-[900px]"
+                            className="text-[32px] sm:text-[48px] lg:text-[72px] font-bold tracking-[-0.03em] leading-[1.1] mb-6 lg:mb-8 max-w-[900px] mx-auto lg:mx-0"
                             style={{ color: "var(--text-primary)" }}
                         >
                             You've done <span className="relative inline-block">
                                 dozens
                                 {/* Brush Stroke Swoosh SVG */}
-                                <svg className="absolute -bottom-2 -left-1 w-[115%] h-[16px] text-[#5a35f8] -rotate-1" viewBox="0 0 200 9" preserveAspectRatio="none">
+                                <svg className="absolute -bottom-1 lg:-bottom-2 -left-1 w-[115%] h-[12px] lg:h-[16px] text-[#5a35f8] -rotate-1" viewBox="0 0 200 9" preserveAspectRatio="none">
                                     <path d="M2.00025 6.99998C28.5368 7.37346 116.326 2.01633 197.999 3.00004C108.665 4.50854 36.9142 -0.871185 2.00025 6.99998Z" fill="currentColor" stroke="none" />
                                 </svg>
-                            </span> of past papers. <br />
+                            </span> of past papers. <br className="hidden lg:block" />
                             <span
                                 style={{
                                     background:
@@ -252,35 +256,57 @@ export function Hero() {
                                 Your grade hasn't moved.
                             </span>
                         </h1>
+                    </RevealSection>
 
+                    {/* ─── LEFT CONTENT (Floating Cards Visual) ─── */}
+                    {/* On Desktop: Spans 2 rows to sit next to both Headline and Subtext */}
+                    <RevealSection
+                        direction="left"
+                        delay={0.1}
+                        className="order-2 lg:col-start-1 lg:row-start-1 lg:row-span-2 -ml-4 lg:-ml-8 mb-8 lg:mb-0"
+                    >
+                        {/* Scale down on mobile to prevent overflow/crowding */}
+                        <div className="scale-[0.85] sm:scale-100 origin-center lg:origin-left">
+                            <FloatingPreview />
+                        </div>
+                    </RevealSection>
+
+                    {/* ─── RIGHT CONTENT CONTINUED (Subtext + CTA) ─── */}
+                    <RevealSection
+                        direction="right"
+                        delay={0.2}
+                        className="order-3 lg:col-start-2 lg:row-start-2 text-center lg:text-left"
+                    >
                         {/* Subtext */}
-                        <p className="text-[17px] sm:text-[19px] leading-relaxed text-white/50 max-w-[800px] mb-12">
-                            Most students waste hundreds of hours on low-yield topics. We analyzed every specification and past paper to build what should've existed: a system that tells you exactly what moves your grade, in the right order, with zero fluff.
+                        <p className="text-[16px] sm:text-[19px] leading-relaxed text-white/50 max-w-[600px] lg:max-w-[800px] mx-auto lg:mx-0 mb-10 lg:mb-14">
+                            Most students waste hundreds of hours on low-yield topics. We analyzed every specification to build custom roadmaps that tell you exactly what moves your grade, in the right order.
                         </p>
 
                         {/* CTAs */}
-                        <div className="flex items-center gap-4 flex-wrap">
-                            <ShimmerButton href="#join">
-                                Join Waitlist
-                                <ArrowRight className="h-4 w-4" />
-                            </ShimmerButton>
+                        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                            <div className="w-full sm:w-auto">
+                                <ShimmerButton href="#join" className="w-full sm:w-auto justify-center h-14 px-8 text-[15px]">
+                                    Join Waitlist
+                                    <ArrowRight className="h-4 w-4 ml-2" />
+                                </ShimmerButton>
+                            </div>
                             <Link
                                 href="#features"
-                                className="text-[14px] font-medium text-white/50 hover:text-white border border-white/[0.1] hover:border-white/[0.2] hover:bg-white/[0.04] rounded-full px-6 py-3 transition-all duration-300"
+                                className="w-full sm:w-auto text-center text-[15px] font-medium text-white/50 hover:text-white border border-white/[0.1] hover:border-white/[0.2] hover:bg-white/[0.04] rounded-full px-8 py-4 transition-all duration-300"
                             >
                                 See how it works
                             </Link>
                         </div>
 
                         {/* Exam boards */}
-                        <div className="flex items-center gap-3 mt-10">
-                            <span className="text-[11px] text-white/25 uppercase tracking-wider font-medium">
+                        <div className="flex items-center justify-center lg:justify-start gap-4 mt-16 flex-wrap opacity-60 hover:opacity-100 transition-opacity duration-300">
+                            <span className="text-[12px] text-white/40 uppercase tracking-widest font-medium">
                                 Supports
                             </span>
                             {["AQA", "OCR", "Edexcel", "WJEC"].map((board) => (
                                 <span
                                     key={board}
-                                    className="text-[11px] font-medium text-white/30 bg-white/[0.03] border border-white/[0.06] rounded-full px-3 py-1"
+                                    className="text-[12px] font-medium text-white/40 bg-white/[0.03] border border-white/[0.06] rounded-full px-4 py-1.5"
                                 >
                                     {board}
                                 </span>
