@@ -5,9 +5,17 @@ import { render } from "@react-email/render";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { WelcomeEmail } from "@/components/emails/WelcomeEmail";
 import { AdminNotificationEmail } from "@/components/emails/AdminNotificationEmail";
+import rateLimit from "@/lib/rate-limit";
+import { waitlistSchema } from "@/lib/validations";
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
 const ADMIN_EMAIL = process.env.RESEND_ADMIN_EMAIL ?? "alevelmentor.business@gmail.com";
+
+// 1. Rate Limiting: 5 requests per minute per IP
+const limiter = rateLimit({
+  interval: 60 * 1000, // 60 seconds
+  uniqueTokenPerInterval: 500, // Max 500 users per second
+});
 
 // Helper: Generate a short random referral code
 function generateReferralCode(): string {
@@ -49,19 +57,32 @@ async function getTotalCount(): Promise<number> {
 export async function POST(request: Request) {
   try {
     const start = Date.now();
-    const body = await request.json();
-    const email = (body.email ?? "").toLowerCase().trim();
-    const referralParam = body.referralCode ?? null;
 
-    // 1. Validate Input
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    // 2. Apply Rate Limiting
+    const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    try {
+      await limiter.check(5, ip); // 5 requests per minute
+    } catch {
       return NextResponse.json(
-        { error: "Please enter a valid email address." },
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
+    const body = await request.json();
+
+    // 3. Strict Zod Validation & Sanitization
+    const result = waitlistSchema.safeParse(body);
+    if (!result.success) {
+      return NextResponse.json(
+        { error: result.error.issues[0].message },
         { status: 400 }
       );
     }
 
-    // 2. Check if user already exists
+    const { email, referralCode: referralParam } = result.data;
+
+    // 4. Check if user already exists
     const { data: existingUser } = await supabaseAdmin
       .from("waitlist_users")
       .select("*")
@@ -85,7 +106,7 @@ export async function POST(request: Request) {
       });
     }
 
-    // 3. New User - Generate unique referral code
+    // 5. New User - Generate unique referral code
     let referralCode = generateReferralCode();
     let isUnique = false;
     let attempts = 0;
@@ -105,7 +126,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // 4. Handle Referral (if applicable)
+    // 6. Handle Referral (if applicable)
     let referredBy: string | null = null;
     if (referralParam) {
       // Check if referrer code is valid
@@ -124,7 +145,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // 5. Insert New User
+    // 7. Insert New User
     const { data: newUser, error: insertError } = await supabaseAdmin
       .from("waitlist_users")
       .insert({
@@ -143,13 +164,13 @@ export async function POST(request: Request) {
       );
     }
 
-    // 6. Get Stats (Rank & Total)
+    // 8. Get Stats (Rank & Total)
     const [rank, totalCount] = await Promise.all([
       calculateRank(newUser.referral_count, newUser.created_at),
       getTotalCount(),
     ]);
 
-    // 7. Send Emails (Welcome & Admin Notification)
+    // 9. Send Emails (Welcome & Admin Notification)
     // We await this to ensure delivery before responding, given serverless environment
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY);
@@ -194,7 +215,7 @@ export async function POST(request: Request) {
       console.warn("RESEND_API_KEY is missing. Skipping emails.");
     }
 
-    // 8. Return Success
+    // 10. Return Success
     return NextResponse.json({
       success: true,
       already_registered: false,
@@ -206,8 +227,9 @@ export async function POST(request: Request) {
 
   } catch (err: any) {
     console.error("Waitlist API Error:", err);
+    // 11. Generic Error Message
     return NextResponse.json(
-      { error: err.message || "Internal Server Error" },
+      { error: "Internal Server Error" }, // Don't leak err.message
       { status: 500 }
     );
   }

@@ -15,6 +15,7 @@ import {
     Sparkles
 } from "lucide-react";
 import { ShimmerButton } from "./ShimmerButton";
+import { waitlistSchema } from "@/lib/validations";
 
 function WaitlistFormContent() {
     const searchParams = useSearchParams();
@@ -34,6 +35,14 @@ function WaitlistFormContent() {
         e.preventDefault();
         setLoading(true);
         setError("");
+
+        // Client-side Zod Validation
+        const result = waitlistSchema.safeParse({ email, referralCode });
+        if (!result.success) {
+            setError(result.error.issues[0].message);
+            setLoading(false);
+            return;
+        }
 
         try {
             const res = await fetch("/api/waitlist", {

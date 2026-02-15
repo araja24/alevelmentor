@@ -235,26 +235,14 @@ export function Hero() {
                         {/* Heading */}
                         <h1
                             className="text-[32px] sm:text-[48px] lg:text-[72px] font-bold tracking-[-0.03em] leading-[1.1] mb-6 lg:mb-8 max-w-[900px] mx-auto lg:mx-0"
-                            style={{ color: "var(--text-primary)" }}
+                            style={{
+                                background: "linear-gradient(135deg, #FFFFFF 10%, #E9D5FF 50%, #C084FC 100%)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                                backgroundClip: "text",
+                            }}
                         >
-                            You've done <span className="relative inline-block">
-                                dozens
-                                {/* Brush Stroke Swoosh SVG */}
-                                <svg className="absolute -bottom-1 lg:-bottom-2 -left-1 w-[115%] h-[12px] lg:h-[16px] text-[#5a35f8] -rotate-1" viewBox="0 0 200 9" preserveAspectRatio="none">
-                                    <path d="M2.00025 6.99998C28.5368 7.37346 116.326 2.01633 197.999 3.00004C108.665 4.50854 36.9142 -0.871185 2.00025 6.99998Z" fill="currentColor" stroke="none" />
-                                </svg>
-                            </span> of past papers. <br className="hidden lg:block" />
-                            <span
-                                style={{
-                                    background:
-                                        "linear-gradient(135deg, #fff 0%, #5a35f8 50%, #8b6cf9 100%)",
-                                    WebkitBackgroundClip: "text",
-                                    WebkitTextFillColor: "transparent",
-                                    backgroundClip: "text",
-                                }}
-                            >
-                                Your grade hasn't moved.
-                            </span>
+                            Your Unfair A Level Advantage.
                         </h1>
                     </RevealSection>
 
@@ -279,7 +267,23 @@ export function Hero() {
                     >
                         {/* Subtext */}
                         <p className="text-[16px] sm:text-[19px] leading-relaxed text-white/50 max-w-[600px] lg:max-w-[800px] mx-auto lg:mx-0 mb-10 lg:mb-14">
-                            Most students waste hundreds of hours on low-yield topics. We analyzed every specification to build custom roadmaps that tell you exactly what moves your grade, in the right order.
+                            Stop wasting hours on color-coded timetables. We generate a{" "}
+                            <span className="relative inline-block text-white font-medium">
+                                personalized plan
+                                {/* Brush Stroke Swoosh SVG */}
+                                <svg
+                                    className="absolute -bottom-1 lg:-bottom-1.5 -left-1 w-[105%] h-[8px] lg:h-[12px] text-[#5a35f8] -rotate-1 opacity-80"
+                                    viewBox="0 0 200 9"
+                                    preserveAspectRatio="none"
+                                >
+                                    <path
+                                        d="M2.00025 6.99998C28.5368 7.37346 116.326 2.01633 197.999 3.00004C108.665 4.50854 36.9142 -0.871185 2.00025 6.99998Z"
+                                        fill="currentColor"
+                                        stroke="none"
+                                    />
+                                </svg>
+                            </span>{" "}
+                            that tells you exactly what to do next. Spend 0% of your time planning and 100% of your time improving your grade.
                         </p>
 
                         {/* CTAs */}
