@@ -142,9 +142,10 @@ function WaitlistFormContent() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="w-full max-w-[640px] mx-auto relative group">
+        <form onSubmit={handleSubmit} className="w-full max-w-[540px] mx-auto relative group">
             <div className={cn(
-                "relative flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-0",
+                "relative flex flex-col md:flex-row items-center gap-3 md:gap-0",
+                // Desktop Styles
                 "md:p-2 md:rounded-full md:bg-[#18181b] md:border md:border-white/10 md:shadow-2xl md:transition-all md:duration-300",
                 "md:focus-within:border-[#5a35f8]/50 md:focus-within:shadow-[0_0_40px_rgba(90,53,248,0.15)]"
             )}>
@@ -155,14 +156,20 @@ function WaitlistFormContent() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className={cn(
-                        "flex-1 w-full h-14 bg-[#18181b] md:bg-transparent border border-white/10 md:border-0 rounded-full md:rounded-none px-6 md:pl-8 text-white text-[16px] placeholder:text-white/20 focus:outline-none focus:ring-0 text-center md:text-left transition-all",
-                        "focus:border-[#5a35f8]/50 focus:bg-[#18181b] md:focus:bg-transparent"
+                        "w-full h-14 text-white text-[16px] placeholder:text-white/20 focus:outline-none focus:ring-0 transition-all",
+                        // Mobile: Separated transparent box
+                        "bg-white/5 border border-white/10 rounded-2xl px-6 text-center focus:border-[#5a35f8]/50 focus:bg-[#5a35f8]/5",
+                        // Desktop: Integrated transparent field
+                        "md:bg-transparent md:border-0 md:rounded-full md:px-6 md:text-left md:focus:bg-transparent"
                     )}
                 />
                 <ShimmerButton
                     type="submit"
                     disabled={loading}
-                    className="h-14 w-full md:w-auto px-8 font-medium shadow-[0_0_12px_rgba(90,53,248,0.4)] hover:shadow-[0_0_20px_rgba(90,53,248,0.6)] shrink-0 text-[15px] md:mr-1.5"
+                    className={cn(
+                        "h-14 w-full md:w-auto px-8 font-medium shadow-[0_0_12px_rgba(90,53,248,0.4)] hover:shadow-[0_0_20px_rgba(90,53,248,0.6)] shrink-0 text-[15px]",
+                        "rounded-2xl md:rounded-full"
+                    )}
                 >
                     {loading ? (
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

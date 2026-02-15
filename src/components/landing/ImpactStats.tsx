@@ -60,7 +60,7 @@ function Stat({
             />
 
             <h3
-                className="text-[clamp(80px,18vw,200px)] font-bold tracking-tight leading-none text-center relative z-10"
+                className="text-[clamp(60px,15vw,200px)] font-bold tracking-tight leading-none text-center relative z-10"
                 style={{
                     backgroundImage: "linear-gradient(180deg, #ffffff 20%, #4ade80 100%)",
                     WebkitBackgroundClip: "text",

@@ -38,12 +38,12 @@ export function Navbar() {
                         <div className="mx-auto max-w-[1200px] flex items-center justify-between">
                             {/* Logo */}
                             <Link href="/" className="flex items-center gap-2.5 shrink-0">
-                                <img src="/logo_large_light.svg" alt="A Level Mentor" className="hidden md:block h-5 w-auto" />
-                                <img src="/logo_small.svg" alt="Logo" className="md:hidden h-[20px] w-auto" />
+                                <img src="/logo_large_light.svg" alt="A Level Mentor" className="hidden xl:block h-5 w-auto" />
+                                <img src="/logo_small.svg" alt="Logo" className="xl:hidden h-[20px] w-auto" />
                             </Link>
 
                             {/* Center links */}
-                            <nav className="hidden md:flex items-center gap-8">
+                            <nav className="hidden xl:flex items-center gap-8">
                                 {navLinks.map((item) => (
                                     <Link
                                         key={item}
@@ -56,7 +56,7 @@ export function Navbar() {
                             </nav>
 
                             {/* Right CTA */}
-                            <div className="hidden md:flex items-center gap-5">
+                            <div className="hidden xl:flex items-center gap-5">
                                 <Link
                                     href="/login"
                                     className="text-[13px] font-medium text-white/60 hover:text-white transition-colors"
@@ -71,13 +71,21 @@ export function Navbar() {
                                 </ShimmerButton>
                             </div>
 
-                            {/* Mobile toggle */}
-                            <button
-                                className="md:hidden text-white/80"
-                                onClick={() => setMobileOpen(!mobileOpen)}
-                            >
-                                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-                            </button>
+                            {/* Mobile Actions */}
+                            <div className="flex xl:hidden items-center gap-4">
+                                <Link
+                                    href="#join"
+                                    className="text-[13px] font-medium text-white/90 bg-white/10 border border-white/5 rounded-full px-4 py-2"
+                                >
+                                    Join
+                                </Link>
+                                <button
+                                    className="text-white/80"
+                                    onClick={() => setMobileOpen(!mobileOpen)}
+                                >
+                                    {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                                </button>
+                            </div>
                         </div>
                     </motion.header>
                 )}
@@ -98,7 +106,7 @@ export function Navbar() {
                         className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-fit px-4 pointer-events-none"
                     >
                         <div
-                            className="flex items-center gap-2 rounded-full p-1.5 sm:px-4 sm:py-2.5 pointer-events-auto mx-auto"
+                            className="flex items-center gap-2 rounded-full p-1.5 sm:px-4 sm:py-2.5 pointer-events-auto mx-auto whitespace-nowrap"
                             style={{
                                 background: "rgba(18, 18, 20, 0.75)",
                                 backdropFilter: "blur(24px) saturate(1.4)",
@@ -113,15 +121,15 @@ export function Navbar() {
                                 href="/"
                                 className="flex items-center pl-2 md:pr-4 py-1"
                             >
-                                <img src="/logo_large_light.svg" alt="A Level Mentor" className="hidden md:block h-[18px] w-auto" />
-                                <img src="/logo_small.svg" alt="Logo" className="md:hidden h-[20px] w-auto" />
+                                <img src="/logo_large_light.svg" alt="A Level Mentor" className="hidden xl:block h-[18px] w-auto" />
+                                <img src="/logo_small.svg" alt="Logo" className="xl:hidden h-[20px] w-auto" />
                             </Link>
 
                             {/* Divider */}
-                            <div className="hidden md:block w-px h-7 bg-white/[0.08]" />
+                            <div className="hidden xl:block w-px h-7 bg-white/[0.08]" />
 
                             {/* Nav links (Desktop) */}
-                            <nav className="hidden md:flex items-center">
+                            <nav className="hidden xl:flex items-center">
                                 {navLinks.map((item) => (
                                     <Link
                                         key={item}
@@ -135,19 +143,19 @@ export function Navbar() {
 
                             {/* Mobile Menu Toggle (in Island) */}
                             <button
-                                className="md:hidden p-2 text-white/70 hover:text-white"
+                                className="xl:hidden p-2 text-white/70 hover:text-white"
                                 onClick={() => setMobileOpen(true)}
                             >
                                 <Menu size={18} />
                             </button>
 
                             {/* Divider */}
-                            <div className="hidden md:block w-px h-7 bg-white/[0.08]" />
+                            <div className="hidden xl:block w-px h-7 bg-white/[0.08]" />
 
                             {/* Sign in */}
                             <Link
                                 href="/login"
-                                className="hidden sm:block text-[13px] font-medium text-white/50 hover:text-white px-3 py-2 transition-colors"
+                                className="hidden xl:block text-[13px] font-medium text-white/50 hover:text-white px-3 py-2 transition-colors"
                             >
                                 Sign in
                             </Link>
@@ -172,7 +180,7 @@ export function Navbar() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[60] bg-[#09090b]/98 backdrop-blur-3xl flex flex-col items-center justify-center gap-8 md:hidden"
+                        className="fixed inset-0 z-[60] bg-[#09090b]/98 backdrop-blur-3xl flex flex-col items-center justify-center gap-8 xl:hidden"
                     >
                         <button
                             className="absolute top-6 right-6 text-white/80 p-2 bg-white/5 rounded-full"

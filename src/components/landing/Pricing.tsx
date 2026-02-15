@@ -61,7 +61,7 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="pricing" className="py-28 px-6 relative">
+    <section id="pricing" className="py-16 md:py-28 px-6 relative">
       <div className="mx-auto max-w-6xl">
         <RevealSection className="text-center mb-16">
           <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
@@ -96,8 +96,8 @@ export function Pricing() {
 
                 <div
                   className={`relative rounded-2xl p-7 h-full flex flex-col ${plan.popular
-                      ? "bg-card"
-                      : "bg-card border border-border"
+                    ? "bg-card"
+                    : "bg-card border border-border"
                     }`}
                 >
                   {/* Popular badge */}

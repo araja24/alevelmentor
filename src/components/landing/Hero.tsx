@@ -234,36 +234,24 @@ export function Hero() {
 
                         {/* Heading */}
                         <h1
-                            className="text-[32px] sm:text-[48px] lg:text-[72px] font-bold tracking-[-0.03em] leading-[1.1] mb-6 lg:mb-8 max-w-[900px] mx-auto lg:mx-0"
+                            className="text-[32px] sm:text-[48px] lg:text-[72px] font-bold tracking-[-0.03em] leading-[1.1] mb-6 lg:mb-8 max-w-[900px] mx-auto lg:mx-0 pb-2"
                             style={{
-                                background: "linear-gradient(135deg, #FFFFFF 10%, #E9D5FF 50%, #C084FC 100%)",
+                                background: "linear-gradient(180deg, #FFFFFF 10%, #A78BFA 50%, #7c3aed 100%)",
                                 WebkitBackgroundClip: "text",
                                 WebkitTextFillColor: "transparent",
                                 backgroundClip: "text",
+                                filter: "drop-shadow(0 0 25px rgba(124, 58, 237, 0.4))",
                             }}
                         >
                             Your Unfair A Level Advantage.
                         </h1>
                     </RevealSection>
 
-                    {/* ─── LEFT CONTENT (Floating Cards Visual) ─── */}
-                    {/* On Desktop: Spans 2 rows to sit next to both Headline and Subtext */}
-                    <RevealSection
-                        direction="left"
-                        delay={0.1}
-                        className="order-2 lg:col-start-1 lg:row-start-1 lg:row-span-2 -ml-4 lg:-ml-8 mb-8 lg:mb-0"
-                    >
-                        {/* Scale down on mobile to prevent overflow/crowding */}
-                        <div className="scale-[0.85] sm:scale-100 origin-center lg:origin-left">
-                            <FloatingPreview />
-                        </div>
-                    </RevealSection>
-
                     {/* ─── RIGHT CONTENT CONTINUED (Subtext + CTA) ─── */}
                     <RevealSection
                         direction="right"
                         delay={0.2}
-                        className="order-3 lg:col-start-2 lg:row-start-2 text-center lg:text-left"
+                        className="order-2 lg:col-start-2 lg:row-start-2 text-center lg:text-left"
                     >
                         {/* Subtext */}
                         <p className="text-[16px] sm:text-[19px] leading-relaxed text-white/50 max-w-[600px] lg:max-w-[800px] mx-auto lg:mx-0 mb-10 lg:mb-14">
@@ -315,6 +303,19 @@ export function Hero() {
                                     {board}
                                 </span>
                             ))}
+                        </div>
+                    </RevealSection>
+
+                    {/* ─── LEFT CONTENT (Floating Cards Visual) ─── */}
+                    {/* On Desktop: Spans 2 rows to sit next to both Headline and Subtext */}
+                    <RevealSection
+                        direction="left"
+                        delay={0.1}
+                        className="order-3 lg:col-start-1 lg:row-start-1 lg:row-span-2 -ml-4 lg:-ml-8 mb-8 lg:mb-0 mt-12 lg:mt-0"
+                    >
+                        {/* Scale down on mobile to prevent overflow/crowding */}
+                        <div className="scale-[0.65] xs:scale-[0.80] sm:scale-100 origin-center lg:origin-left">
+                            <FloatingPreview />
                         </div>
                     </RevealSection>
                 </div>

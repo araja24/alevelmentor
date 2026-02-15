@@ -80,8 +80,8 @@ function RoadmapCard() {
                                     <div
                                         key={ti}
                                         className={`flex items-center gap-2.5 rounded-[10px] px-3 py-2 transition-colors ${task.current
-                                                ? "bg-[#5a35f8]/10 border border-[#5a35f8]/25"
-                                                : "border border-transparent hover:bg-white/[0.02]"
+                                            ? "bg-[#5a35f8]/10 border border-[#5a35f8]/25"
+                                            : "border border-transparent hover:bg-white/[0.02]"
                                             }`}
                                     >
                                         {task.done ? (
@@ -312,7 +312,7 @@ export function FeaturePreviews() {
                 {features.map((feature, i) => {
                     const isEven = i % 2 === 0;
                     return (
-                        <div key={i} className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div key={i} className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                             {/* Text */}
                             <RevealSection
                                 direction={isEven ? "left" : "right"}
