@@ -1,66 +1,62 @@
 /**
- * Motion system — single source of truth.
+ * Motion System — Single Source of Truth
  *
- * Import easing, durations, viewport config, and Framer variants from here.
- * Never hardcode [0.22, 1, 0.36, 1] inline — always reference ease.out.
+ * All easing, durations, viewport config, and Framer variants live here.
+ * Never hardcode cubic-bezier values inline — always reference ease.out.
  *
- * Philosophy: motion communicates. If it doesn't guide attention or reinforce
- * the narrative, don't add it.
+ * Spec:
+ *   Reveal: 700ms cubic-bezier(0.22, 1, 0.36, 1)
+ *   Stagger: 100ms per card
+ *   Lift: -6px on hover
+ *   Press: scale 1.03 + brightness 1.1
  */
 
 import type { Variants, Transition } from "framer-motion";
 
-// ─── Easing curves ────────────────────────────────────────────────────────────
+// ─── Easing curves ─────────────────────────────────────
 
 export const ease = {
-  /** Primary reveal easing — smooth, confident deceleration. */
+  /** Primary reveal — smooth confident deceleration. */
   out: [0.22, 1, 0.36, 1] as const,
-  /** Continuous loop easing — sine in-out for background animations. */
+  /** Loop animations — sine in-out. */
   inOut: [0.45, 0, 0.55, 1] as const,
-  /** Subtle spring feel — slight overshoot for emphasis moments. */
+  /** Emphasis moments — slight overshoot. */
   spring: [0.34, 1.56, 0.64, 1] as const,
 } as const;
 
-// ─── Durations ────────────────────────────────────────────────────────────────
+// ─── Durations ─────────────────────────────────────────
 
 export const dur = {
-  fast: 0.25,    // Microinteractions
-  base: 0.6,     // Reveal animations
+  micro: 0.2,    // Hover, press
+  base: 0.7,     // Section reveals (700ms)
   slow: 0.9,     // Immersive transitions
   count: 1.2,    // Count-up animations
 } as const;
 
-// ─── Viewport config ──────────────────────────────────────────────────────────
+// ─── Viewport config ──────────────────────────────────
 
-/** Standard scroll trigger: fires once at 30% visibility. */
 export const viewport = {
   once: true,
   amount: 0.3,
 } as const;
 
-/** Tight trigger for small elements: 20% visibility. */
 export const viewportLoose = {
   once: true,
-  amount: 0.2,
+  amount: 0.15,
 } as const;
 
-// ─── Reveal variants ──────────────────────────────────────────────────────────
+// ─── Reveal variants ──────────────────────────────────
 
-/**
- * Fade up with blur — the primary reveal pattern.
- * Blur collapses as the element rises: feels like it's coming into focus.
- */
+/** Primary reveal: fade up + blur collapse. */
 export const fadeUp: Variants = {
   hidden: {
     opacity: 0,
     y: 40,
-    scale: 0.98,
     filter: "blur(6px)",
   },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     filter: "blur(0px)",
     transition: {
       duration: dur.base,
@@ -69,10 +65,7 @@ export const fadeUp: Variants = {
   },
 };
 
-/**
- * Reduced-motion variant — opacity only, no transforms.
- * Swap in when useReducedMotion() returns true.
- */
+/** Reduced-motion fallback. */
 export const fadeOnly: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -81,7 +74,7 @@ export const fadeOnly: Variants = {
   },
 };
 
-/** Fade from left — for sidebar or inline items. */
+/** Fade from left. */
 export const fadeLeft: Variants = {
   hidden: { opacity: 0, x: 40, filter: "blur(4px)" },
   visible: {
@@ -103,46 +96,35 @@ export const fadeRight: Variants = {
   },
 };
 
-// ─── Stagger variants ─────────────────────────────────────────────────────────
+// ─── Stagger variants ─────────────────────────────────
 
-/**
- * Parent: orchestrates stagger timing for children.
- * Children must use staggerItem (or any variant with "hidden" / "visible" keys).
- *
- * Usage:
- *   <motion.ul variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewport}>
- *     <motion.li variants={staggerItem}>…</motion.li>
- *   </motion.ul>
- */
+/** Parent: orchestrates 100ms stagger timing. */
 export const staggerContainer: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.08,
+      staggerChildren: 0.1,
       delayChildren: 0,
     },
   },
 };
 
-/** Stagger container with tighter delay — for dense lists. */
+/** Tight stagger — 60ms for dense lists. */
 export const staggerContainerFast: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.05,
+      staggerChildren: 0.06,
       delayChildren: 0,
     },
   },
 };
 
-/**
- * Stagger child item — subtle upward reveal with blur collapse.
- * Matches the system's primary reveal language at a reduced intensity.
- */
+/** Stagger child: subtle lift + blur reveal. */
 export const staggerItem: Variants = {
   hidden: {
     opacity: 0,
-    y: 20,
+    y: 24,
     filter: "blur(4px)",
   },
   visible: {
@@ -156,7 +138,7 @@ export const staggerItem: Variants = {
   },
 };
 
-/** Reduced-motion stagger item — no transform, opacity only. */
+/** Reduced-motion stagger item. */
 export const staggerItemReduced: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -165,32 +147,27 @@ export const staggerItemReduced: Variants = {
   },
 };
 
-// ─── Microinteraction presets ─────────────────────────────────────────────────
+// ─── Microinteraction presets ──────────────────────────
 
-/** Button press — imperceptible scale, feels responsive not bouncy. */
+/** Button press: scale + brightness boost. */
 export const press = {
-  whileHover: { scale: 1.02 },
-  whileTap: { scale: 0.98 },
-  transition: { duration: dur.fast, ease: ease.out } as Transition,
+  whileHover: { scale: 1.03, filter: "brightness(1.1)" },
+  whileTap: { scale: 0.97 },
+  transition: { duration: dur.micro, ease: "easeOut" } as Transition,
 } as const;
 
-/** Card lift — 4px vertical shift + transition. Use with shadow class. */
+/** Card lift: -6px vertical shift. */
 export const lift = {
-  whileHover: { y: -4 },
-  transition: { duration: dur.fast, ease: ease.out } as Transition,
+  whileHover: { y: -6 },
+  transition: { duration: 0.3, ease: ease.out } as Transition,
 } as const;
 
-// ─── Standard transition builders ─────────────────────────────────────────────
+// ─── Transition builders ──────────────────────────────
 
-/** Build a transition with our standard easing. */
 export function buildTransition(
   duration: number,
   delay = 0,
   customEase: [number, number, number, number] = [0.22, 1, 0.36, 1]
 ): Transition {
-  return {
-    duration,
-    delay,
-    ease: customEase,
-  };
+  return { duration, delay, ease: customEase };
 }

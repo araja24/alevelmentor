@@ -1,275 +1,349 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Brain, TrendingUp } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { useScroll, useTransform, useMotionValue } from "framer-motion";
-import { useRef, useEffect } from "react";
-import { ease } from "@/lib/motion";
+import { useRef, MouseEvent } from "react";
+import {
+    motion,
+    useMotionValue,
+    useSpring,
+    useTransform,
+} from "framer-motion";
 import { RevealSection } from "./RevealSection";
-import { MacBookFrame } from "@/components/ui/device-frames";
+import { ArrowRight, Star, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   Floating Card Component
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-function FloatingCard({ children, className, delay = 0, y = -10 }: { children: React.ReactNode; className?: string; delay?: number; y?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: delay + 0.5, ease: ease.out }}
-      className={className}
-    >
-      <motion.div
-        animate={{ y: [0, y, 0] }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: delay,
-        }}
-      >
-        {children}
-      </motion.div>
-    </motion.div>
-  );
+/* ═══════════════════════════════════════════
+   Shimmer CTA Button
+   ═══════════════════════════════════════════ */
+function ShimmerButton({
+    children,
+    href = "#join",
+}: {
+    children: React.ReactNode;
+    href?: string;
+}) {
+    return (
+        <Link
+            href={href}
+            className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#5a35f8] px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_0_24px_rgba(90,53,248,0.4)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(90,53,248,0.55)] hover:scale-[1.03] active:scale-[0.98]"
+        >
+            {/* Shimmer sweep */}
+            <span
+                className="pointer-events-none absolute inset-0 animate-shimmer-sweep"
+                style={{
+                    background:
+                        "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 60%, transparent 80%)",
+                }}
+            />
+            <span className="relative z-10 flex items-center gap-2">
+                {children}
+            </span>
+        </Link>
+    );
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   Hero Component
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-export function Hero() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll();
+/* ═══════════════════════════════════════════
+   Floating Dashboard Cards — No Device Frame
+   Elegant stacked cards showing app features
+   ═══════════════════════════════════════════ */
+function FloatingPreview() {
+    const ref = useRef<HTMLDivElement>(null);
 
-  // Parallax + 3D tilt effects on scroll
-  const rotateX = useTransform(scrollY, [0, 400], [20, 0]);
-  const rotateY = useMotionValue(0);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
 
-  // Simple mouse move tilt effect
-  useEffect(() => {
-    function handleMouseMove(e: MouseEvent) {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const offsetX = (e.clientX - centerX) / (window.innerWidth / 2);
-      rotateY.set(offsetX * 5); // Max 5 deg tilt
+    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), {
+        stiffness: 200,
+        damping: 25,
+    });
+    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), {
+        stiffness: 200,
+        damping: 25,
+    });
+
+    function handleMouse(e: MouseEvent) {
+        const rect = ref.current?.getBoundingClientRect();
+        if (!rect) return;
+        mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+        mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
     }
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [rotateY]);
 
-  return (
-    <section ref={ref} className="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden perspective-1000">
-      {/* Background gradients */}
-      <div className="absolute top-0 inset-x-0 h-[600px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-500/10 via-[#09090b] to-[#09090b] pointer-events-none" />
-      <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#5a35f8]/10 blur-[120px] rounded-full pointer-events-none" />
+    function handleLeave() {
+        mouseX.set(0);
+        mouseY.set(0);
+    }
 
-      <div className="container relative z-10 px-6 mx-auto">
-        <div className="max-w-4xl mx-auto text-center">
-          <RevealSection>
-            <div className="inline-flex items-center rounded-full border border-[#27272a] bg-[#1a1a1e]/50 backdrop-blur-sm px-3 py-1 text-sm text-[#a1a1aa] ring-1 ring-white/10 mb-6">
-              <span className="flex h-2 w-2 rounded-full bg-[#5a35f8] mr-2">
-                <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-[#5a35f8] opacity-75"></span>
-              </span>
-              <span>Waitlist now open for 2024</span>
+    return (
+        <div className="relative" style={{ perspective: "1200px" }}>
+            {/* Ambient glow blobs */}
+            <div className="absolute -inset-16 z-0 pointer-events-none">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-[#5a35f8]/20 blur-[100px] animate-pulse-glow" />
+                <div className="absolute top-[60%] left-[30%] -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full bg-[#3ed6ff]/10 blur-[80px]" />
             </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#fafafa] mb-6 leading-[1.1]">
-              Your personal <span className="gradient-text text-glow">A-Level AI tutor</span>
-              <br /> available 24/7.
-            </h1>
-            <p className="text-lg sm:text-xl text-[#a1a1aa] mb-8 max-w-2xl mx-auto leading-relaxed">
-              Stop guessing what to revise. Get a personalised roadmap, instant AI answers, and grade predictions that adapt as you learn.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="#join"
-                className={buttonVariants({
-                  size: "lg",
-                  className: "w-full sm:w-auto bg-[#5a35f8] hover:bg-[#4c2df0] text-white shadow-lg shadow-[#5a35f8]/25 rounded-full px-8",
-                })}
-              >
-                Join the Waitlist <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-              <a
-                href="#features"
-                className={buttonVariants({
-                  variant: "ghost",
-                  size: "lg",
-                  className: "w-full sm:w-auto text-[#a1a1aa] hover:text-[#fafafa] rounded-full",
-                })}
-              >
-                See how it works
-              </a>
-            </div>
-          </RevealSection>
-        </div>
 
-        {/* 
-          Main Hero Visual
-          Wraps the device in a subtle 3D tilt container 
-        */}
-        <RevealSection delay={0.2}
-          className="relative mt-8 sm:mt-12 lg:mt-16 mx-auto max-w-5xl"
-        >
-          <motion.div
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: ease.out }}
-          >
-            <div className="purple-glow">
-              <div className="relative">
-                <MacBookFrame>
-                  {/* ── Minimal browser bar ── */}
-                  <div className="flex items-center gap-2 px-4 py-2.5 bg-[#111113] border-b border-white/[0.04]">
-                    <div className="flex gap-[5px] shrink-0">
-                      <div className="h-[8px] w-[8px] rounded-full bg-[#3a3a3e]" />
-                      <div className="h-[8px] w-[8px] rounded-full bg-[#3a3a3e]" />
-                      <div className="h-[8px] w-[8px] rounded-full bg-[#3a3a3e]" />
-                    </div>
-                    <div className="flex-1 flex justify-center">
-                      <div className="bg-[#0c0c0e] rounded-md px-3 py-[3px] text-[9px] text-[#555] font-mono border border-white/[0.03] max-w-[200px] w-full text-center">
-                        alevelmentor.com
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* ── Dashboard Content ── */}
-                  <div className="p-5 space-y-4 bg-[#0c0c0e]">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-[11px] text-[#52525b] font-medium uppercase tracking-wider">
-                          Next Exam
-                        </p>
-                        <p className="text-base font-semibold text-[#fafafa] mt-0.5">
-                          Chemistry — Paper 1
-                        </p>
-                      </div>
-                      <div className="inline-flex items-baseline gap-1 rounded-xl bg-[#5a35f8]/10 border border-[#5a35f8]/20 px-3 py-1.5">
-                        <span className="text-xl font-bold text-[#5a35f8]">47</span>
-                        <span className="text-[10px] text-[#5a35f8]/70 font-medium">days</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <p className="text-[10px] font-medium text-[#52525b]">This Week</p>
-                      <div className="space-y-1.5">
-                        {[
-                          { task: "Organic Mechanisms — Revision", done: true },
-                          { task: "Equilibria Past Paper (2023 P2)", done: true },
-                          { task: "Electrochemistry — Weak Areas", done: false },
-                          { task: "Thermodynamics Practice Qs", done: false },
-                        ].map((item, i) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.6 + i * 0.1, ease: ease.out }}
-                            className="flex items-center gap-2.5 rounded-lg border border-[#1a1a1e] px-3 py-2 bg-[#111114]"
-                          >
-                            <div
-                              className={`h-3.5 w-3.5 rounded-full border-[1.5px] flex items-center justify-center ${item.done
-                                ? "border-emerald-500 bg-emerald-500"
-                                : "border-[#3f3f46]"
-                                }`}
-                            >
-                              {item.done && (
-                                <svg className="h-2 w-2 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                </svg>
-                              )}
-                            </div>
-                            <span className={`text-xs ${item.done ? "text-[#52525b] line-through" : "text-[#d4d4d8]"}`}>
-                              {item.task}
+            <motion.div
+                ref={ref}
+                onMouseMove={handleMouse}
+                onMouseLeave={handleLeave}
+                style={{
+                    rotateX,
+                    rotateY,
+                    transformStyle: "preserve-3d",
+                }}
+                className="relative z-10 space-y-4 max-w-[420px]"
+            >
+                {/* ── Card 1: Roadmap Progress ── */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="rounded-[20px] overflow-hidden border border-white/[0.08] p-5"
+                    style={{
+                        background: "linear-gradient(135deg, rgba(12,12,14,0.95) 0%, rgba(18,18,22,0.95) 100%)",
+                        boxShadow: "0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)",
+                    }}
+                >
+                    <div className="flex items-center justify-between mb-4">
+                        <div>
+                            <p className="text-[10px] uppercase tracking-widest text-white/30 font-mono">
+                                Week 12 of 18
+                            </p>
+                            <p className="text-[15px] font-semibold text-white mt-0.5">
+                                Chemistry Roadmap
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-[12px] font-semibold text-emerald-400">
+                                67%
                             </span>
-                          </motion.div>
+                            <div className="w-16 h-1.5 rounded-full bg-white/[0.06]">
+                                <div className="h-1.5 rounded-full bg-gradient-to-r from-[#5a35f8] to-[#8b6cf9] w-[67%]" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Task list */}
+                    <div className="space-y-2">
+                        {[
+                            { task: "Organic Mechanisms", done: true },
+                            { task: "Equilibria Practice", done: true },
+                            { task: "Electrochemistry Notes", done: false, current: true },
+                            { task: "Acids & Bases Paper", done: false },
+                        ].map((item, i) => (
+                            <div
+                                key={i}
+                                className={cn(
+                                    "flex items-center gap-2.5 rounded-[10px] border px-3 py-2 transition-colors",
+                                    item.current
+                                        ? "border-[#5a35f8]/30 bg-[#5a35f8]/5"
+                                        : "border-white/[0.04] bg-white/[0.01]"
+                                )}
+                            >
+                                <div
+                                    className={cn(
+                                        "h-3 w-3 rounded-full border-2 flex items-center justify-center shrink-0",
+                                        item.done
+                                            ? "border-emerald-500 bg-emerald-500"
+                                            : item.current
+                                                ? "border-[#5a35f8]"
+                                                : "border-white/20"
+                                    )}
+                                >
+                                    {item.done && (
+                                        <svg className="h-1.5 w-1.5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                        </svg>
+                                    )}
+                                </div>
+                                <span className={cn("text-[12px] font-medium", item.done ? "text-white/30 line-through" : "text-white/80")}>
+                                    {item.task}
+                                </span>
+                                {item.current && (
+                                    <span className="ml-auto text-[9px] text-[#5a35f8] bg-[#5a35f8]/10 px-2 py-0.5 rounded-full font-medium">
+                                        In Progress
+                                    </span>
+                                )}
+                            </div>
                         ))}
-                      </div>
                     </div>
+                </motion.div>
 
-                    <div className="rounded-lg border border-[#1a1a1e] p-3 bg-[#111114]">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-[10px] font-medium text-[#52525b]">Performance</p>
-                        <span className="text-[9px] text-emerald-400 font-medium bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-full">
-                          +12% this month
-                        </span>
-                      </div>
-                      <svg viewBox="0 0 300 60" className="w-full h-12" fill="none">
-                        <defs>
-                          <linearGradient id="heroGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#5a35f8" stopOpacity="0.2" />
-                            <stop offset="100%" stopColor="#5a35f8" stopOpacity="0" />
-                          </linearGradient>
-                        </defs>
-                        <motion.path
-                          d="M0 50 Q30 48 60 42 Q90 38 120 32 Q150 28 180 22 Q210 18 240 14 Q270 10 300 6"
-                          stroke="#5a35f8"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          initial={{ pathLength: 0 }}
-                          animate={{ pathLength: 1 }}
-                          transition={{ duration: 1.5, delay: 1, ease: "easeOut" }}
-                        />
-                        <path
-                          d="M0 50 Q30 48 60 42 Q90 38 120 32 Q150 28 180 22 Q210 18 240 14 Q270 10 300 6 L300 60 L0 60 Z"
-                          fill="url(#heroGrad)"
-                        />
-                      </svg>
+                {/* ── Card 2: Stats row ── */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 }}
+                    className="grid grid-cols-3 gap-3"
+                >
+                    {[
+                        { label: "Study Hours", value: "12.5h", color: "text-white" },
+                        { label: "Target Grade", value: "A*A*A", color: "text-[#5a35f8]" },
+                        { label: "Papers Done", value: "24", color: "text-emerald-400" },
+                    ].map((stat, i) => (
+                        <div
+                            key={i}
+                            className="rounded-[14px] p-3.5 border border-white/[0.06]"
+                            style={{
+                                background: "rgba(12,12,14,0.9)",
+                                boxShadow: "0 8px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03)",
+                            }}
+                        >
+                            <p className="text-[9px] text-white/35 uppercase tracking-wider">{stat.label}</p>
+                            <p className={`text-[17px] font-bold ${stat.color} mt-1`}>{stat.value}</p>
+                        </div>
+                    ))}
+                </motion.div>
+
+                {/* ── Card 3: AI Mentor bubble ── */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="rounded-[16px] p-4 border border-[#5a35f8]/20"
+                    style={{
+                        background: "linear-gradient(135deg, rgba(90,53,248,0.08) 0%, rgba(12,12,14,0.95) 100%)",
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.3), 0 0 20px rgba(90,53,248,0.08)",
+                    }}
+                >
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="h-5 w-5 rounded-full bg-[#5a35f8] flex items-center justify-center">
+                            <Sparkles className="h-3 w-3 text-white" />
+                        </div>
+                        <span className="text-[11px] font-semibold text-[#5a35f8]">AI Mentor</span>
                     </div>
-                  </div>
-                </MacBookFrame>
-              </div>
+                    <p className="text-[12px] text-white/60 leading-relaxed">
+                        Focus on Electrochemistry today — you're 2 topics behind schedule. I've queued 3 practice questions from recent AQA papers.
+                    </p>
+                </motion.div>
+            </motion.div>
+        </div>
+    );
+}
+
+/* ═══════════════════════════════════════════
+   Hero Section — Split Layout (Opal Style)
+   Left: Floating Cards | Right: Text + CTA
+   ═══════════════════════════════════════════ */
+export function Hero() {
+    return (
+        <section
+            className="relative min-h-screen flex items-center overflow-hidden"
+            style={{ background: "var(--bg-primary)" }}
+        >
+            {/* Background ambient glow */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-[20%] left-[15%] w-[500px] h-[500px] rounded-full bg-[#5a35f8]/8 blur-[150px]" />
+                <div className="absolute bottom-[10%] right-[20%] w-[400px] h-[400px] rounded-full bg-[#3ed6ff]/5 blur-[120px]" />
             </div>
-          </motion.div>
 
-          {/* Floating cards */}
-          <FloatingCard className="absolute -top-4 -left-8 hidden xl:block z-30" delay={0.6} y={-8}>
-            <div className="rounded-2xl border border-[#27272a] bg-[#18181b]/90 backdrop-blur-md shadow-xl p-4 w-48">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                  <Brain className="h-4 w-4 text-white" />
+            <div className="mx-auto max-w-[1200px] w-full px-6 py-32 lg:py-20 relative z-10">
+                <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+                    {/* ─── LEFT: Floating Dashboard Cards ─── */}
+                    <RevealSection direction="left" delay={0.1} className="order-2 lg:order-1">
+                        <FloatingPreview />
+                    </RevealSection>
+
+                    {/* ─── RIGHT: Text + CTA ─── */}
+                    <RevealSection direction="right" className="order-1 lg:order-2">
+                        {/* Coming Soon badge */}
+                        <div className="flex items-center gap-2 mb-6">
+                            <div className="flex items-center gap-2 rounded-full border border-[#5a35f8]/30 bg-[#5a35f8]/10 px-4 py-1.5">
+                                <div className="h-1.5 w-1.5 rounded-full bg-[#5a35f8] animate-pulse" />
+                                <span className="text-[12px] font-medium text-[#5a35f8]">Coming Soon — Join the waitlist for early access</span>
+                            </div>
+                        </div>
+
+                        {/* Social proof */}
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className="flex -space-x-2">
+                                {[
+                                    "bg-gradient-to-br from-purple-500 to-pink-500",
+                                    "bg-gradient-to-br from-blue-500 to-cyan-500",
+                                    "bg-gradient-to-br from-emerald-500 to-teal-500",
+                                    "bg-gradient-to-br from-orange-500 to-red-500",
+                                ].map((bg, i) => (
+                                    <div
+                                        key={i}
+                                        className={`h-7 w-7 rounded-full border-2 border-[#09090b] ${bg} flex items-center justify-center`}
+                                    >
+                                        <span className="text-[8px] font-bold text-white">
+                                            {["AK", "JT", "PS", "DM"][i]}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <div className="flex">
+                                    {Array.from({ length: 5 }).map((_, i) => (
+                                        <Star
+                                            key={i}
+                                            className="h-3.5 w-3.5 text-yellow-400 fill-yellow-400"
+                                        />
+                                    ))}
+                                </div>
+                                <span className="text-[12px] text-white/50 font-medium">
+                                    10,000+ students
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Heading */}
+                        <h1
+                            className="text-[clamp(36px,5.5vw,68px)] font-bold tracking-[-0.03em] leading-[1.05] mb-6"
+                            style={{ color: "var(--text-primary)" }}
+                        >
+                            Your personal AI{" "}
+                            <span
+                                style={{
+                                    background:
+                                        "linear-gradient(135deg, #fff 0%, #5a35f8 50%, #8b6cf9 100%)",
+                                    WebkitBackgroundClip: "text",
+                                    WebkitTextFillColor: "transparent",
+                                    backgroundClip: "text",
+                                }}
+                            >
+                                revision mentor.
+                            </span>
+                        </h1>
+
+                        {/* Subtext */}
+                        <p className="text-[16px] sm:text-[18px] leading-relaxed text-white/45 max-w-[480px] mb-10">
+                            Stop guessing what to revise. Get a tailored roadmap, instant
+                            answers, and predicted grades — all powered by your exact
+                            syllabus.
+                        </p>
+
+                        {/* CTAs */}
+                        <div className="flex items-center gap-4 flex-wrap">
+                            <ShimmerButton>
+                                Join Waitlist
+                                <ArrowRight className="h-4 w-4" />
+                            </ShimmerButton>
+                            <Link
+                                href="#features"
+                                className="text-[14px] font-medium text-white/50 hover:text-white border border-white/[0.1] hover:border-white/[0.2] hover:bg-white/[0.04] rounded-full px-6 py-3 transition-all duration-300"
+                            >
+                                See how it works
+                            </Link>
+                        </div>
+
+                        {/* Exam boards */}
+                        <div className="flex items-center gap-3 mt-10">
+                            <span className="text-[11px] text-white/25 uppercase tracking-wider font-medium">
+                                Supports
+                            </span>
+                            {["AQA", "OCR", "Edexcel", "WJEC"].map((board) => (
+                                <span
+                                    key={board}
+                                    className="text-[11px] font-medium text-white/30 bg-white/[0.03] border border-white/[0.06] rounded-full px-3 py-1"
+                                >
+                                    {board}
+                                </span>
+                            ))}
+                        </div>
+                    </RevealSection>
                 </div>
-                <span className="text-xs font-semibold text-[#fafafa]">AI Mentor</span>
-              </div>
-              <p className="text-[11px] text-[#a1a1aa] leading-relaxed">
-                &quot;Focus on Electrochemistry — it&apos;s your biggest weak spot&quot;
-              </p>
             </div>
-          </FloatingCard>
-
-          <FloatingCard className="absolute -top-2 -right-6 hidden xl:block z-30" delay={0.8} y={-6}>
-            <div className="rounded-2xl border border-[#27272a] bg-[#18181b]/90 backdrop-blur-md shadow-xl p-4 w-44">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#5a35f8] to-[#7c5cf9] flex items-center justify-center">
-                  <TrendingUp className="h-4 w-4 text-white" />
-                </div>
-                <span className="text-xs font-semibold text-[#fafafa]">Analytics</span>
-              </div>
-              <p className="text-[11px] text-[#71717a]">Weak topics</p>
-              <div className="mt-2 space-y-1.5">
-                {[
-                  { w: "85%", color: "bg-red-500" },
-                  { w: "60%", color: "bg-amber-500" },
-                  { w: "30%", color: "bg-emerald-500" },
-                ].map((bar, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <div className="h-1.5 flex-1 rounded-full bg-[#27272a]">
-                      <motion.div
-                        className={`h-1.5 rounded-full ${bar.color}`}
-                        initial={{ width: 0 }}
-                        animate={{ width: bar.w }}
-                        transition={{ duration: 0.8, delay: 1.2 + i * 0.2 }}
-                      />
-                    </div>
-                    <span className="text-[10px] text-[#71717a] w-6 text-right">{bar.w}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </FloatingCard>
-        </RevealSection>
-      </div>
-    </section>
-  );
+        </section>
+    );
 }

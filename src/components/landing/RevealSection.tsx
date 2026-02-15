@@ -26,13 +26,12 @@ export function RevealSection({
   delay = 0,
   direction = "up",
   className = "",
-  staggerChildren = 0.08,
+  staggerChildren = 0.1,
   as = "div",
 }: RevealSectionProps) {
   const prefersReduced = useReducedMotion();
   const Component = as === "section" ? motion.section : motion.div;
 
-  // Reduced motion: opacity fade only, no transform
   if (prefersReduced) {
     return (
       <Component
@@ -53,13 +52,11 @@ export function RevealSection({
     <Component
       initial={{
         opacity: 0,
-        scale: 0.98,
         filter: "blur(6px)",
         ...offset,
       }}
       whileInView={{
         opacity: 1,
-        scale: 1,
         filter: "blur(0px)",
         x: 0,
         y: 0,
@@ -78,7 +75,7 @@ export function RevealSection({
   );
 }
 
-/* Stagger child wrapper — pair with RevealSection for sequential reveals */
+/* Stagger child wrapper */
 export function RevealChild({
   children,
   className = "",
@@ -95,7 +92,7 @@ export function RevealChild({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+        hidden: { opacity: 0, y: 24, filter: "blur(4px)" },
         visible: { opacity: 1, y: 0, filter: "blur(0px)" },
       }}
       initial="hidden"

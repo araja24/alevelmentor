@@ -1,132 +1,205 @@
 "use client";
 
+import { useState } from "react";
+import {
+    motion,
+    useScroll,
+    useMotionValueEvent,
+    AnimatePresence,
+} from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import { Menu, X, ArrowRight } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-const navLinks = [
-  { label: "Features", href: "#features" },
-  { label: "How It Works", href: "#solution" },
-  { label: "Community", href: "#testimonials" },
-  { label: "FAQ", href: "#faq" },
-];
+import { Menu, X } from "lucide-react";
+
+const navLinks = ["Features", "How It Works", "Community", "FAQ"];
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeHref, setActiveHref] = useState<string>(navLinks[0]?.href);
-  const [scrolled, setScrolled] = useState(false);
-  const prefersReduced = useReducedMotion();
+    const [scrolled, setScrolled] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 72);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        setScrolled(latest > 60);
+    });
 
-  return (
-    <nav
-      className={[
-        "fixed z-50 transition-all duration-500",
-        scrolled
-          ? "top-4 left-1/2 -translate-x-1/2 w-[min(calc(100%-32px),920px)] rounded-full border border-border/60 bg-background/60 backdrop-blur-[40px] [backdrop-filter:blur(40px)_saturate(160%)] shadow-lg shadow-black/5 dark:shadow-black/20"
-          : "top-0 left-0 right-0 border-b border-border bg-background/70 backdrop-blur-[20px]",
-      ].join(" ")}
-    >
-      <div className="mx-auto max-w-6xl px-6 h-14 grid grid-cols-[auto_1fr_auto] items-center">
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/logo_large_light.svg"
-            alt="A Level Mentor Logo"
-            width={150}
-            height={22}
-            priority
-            unoptimized
-            className="h-[22px] w-auto"
-          />
-        </Link>
+    return (
+        <>
+            {/* ─── Normal flat navbar (visible when NOT scrolled) ─── */}
+            <AnimatePresence>
+                {!scrolled && (
+                    <motion.header
+                        key="full-nav"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="fixed top-0 left-0 right-0 z-50 px-6 py-5"
+                    >
+                        <div className="mx-auto max-w-[1200px] flex items-center justify-between">
+                            {/* Logo */}
+                            <Link href="/" className="flex items-center gap-2.5 shrink-0">
+                                <img src="/logo_large_light.svg" alt="A Level Mentor" className="h-5 w-auto" />
+                            </Link>
 
-        <div className="hidden md:flex items-center justify-center gap-8">
-          {navLinks.map((link) => (
-            <button
-              key={link.href}
-              type="button"
-              onClick={() => {
-                setActiveHref(link.href);
-                window.location.hash = link.href;
-              }}
-              onMouseEnter={() => setActiveHref(link.href)}
-              className="relative text-[13px] text-muted-foreground hover:text-foreground transition-colors duration-200"
-            >
-              <span>{link.label}</span>
-              {activeHref === link.href &&
-                (!prefersReduced ? (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="absolute left-0 right-0 -bottom-1 h-[2px] rounded-full bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9]"
-                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                ) : (
-                  <span className="absolute left-0 right-0 -bottom-1 h-[2px] rounded-full bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9]" />
-                ))}
-            </button>
-          ))}
-        </div>
+                            {/* Center links */}
+                            <nav className="hidden md:flex items-center gap-8">
+                                {navLinks.map((item) => (
+                                    <Link
+                                        key={item}
+                                        href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                                        className="text-[13px] font-medium text-white/50 hover:text-white transition-colors duration-200"
+                                    >
+                                        {item}
+                                    </Link>
+                                ))}
+                            </nav>
 
-        <div className="hidden md:flex items-center justify-end gap-3">
-          <Link
-            href="/login"
-            className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-2"
-          >
-            Sign in
-          </Link>
-          <Button asChild variant="gradient" className="text-[14px]">
-            <a
-              href="#join"
-              className="flex items-center gap-1.5 whitespace-nowrap"
-            >
-              <span>Join Waitlist</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </a>
-          </Button>
-        </div>
+                            {/* Right CTA */}
+                            <div className="hidden md:flex items-center gap-5">
+                                <Link
+                                    href="/login"
+                                    className="text-[13px] font-medium text-white/60 hover:text-white transition-colors"
+                                >
+                                    Sign in
+                                </Link>
+                                <Link
+                                    href="#join"
+                                    className="relative overflow-hidden text-[13px] font-semibold text-white bg-[#5a35f8] hover:bg-[#4c2de0] rounded-full px-5 py-2 transition-all duration-200 shadow-[0_0_12px_rgba(90,53,248,0.4)]"
+                                >
+                                    Join Waitlist →
+                                    <span className="pointer-events-none absolute inset-0 shimmer-sweep" />
+                                </Link>
+                            </div>
 
-        <div className="flex md:hidden items-center justify-end gap-2 col-span-2">
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </div>
+                            {/* Mobile toggle */}
+                            <button
+                                className="md:hidden text-white/80"
+                                onClick={() => setMobileOpen(!mobileOpen)}
+                            >
+                                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                            </button>
+                        </div>
+                    </motion.header>
+                )}
+            </AnimatePresence>
 
-      {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl px-6 py-4 space-y-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="block text-sm text-muted-foreground hover:text-foreground py-2 transition-colors"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          <div className="pt-3 border-t border-border flex flex-col gap-2">
-            <Link href="/login" className="text-sm text-muted-foreground py-2">Sign in</Link>
-            <a
-              href="#join"
-              className="text-sm font-medium text-white bg-[#5a35f8] rounded-xl py-2.5 text-center"
-              onClick={() => setMobileOpen(false)}
-            >
-              Join Waitlist
-            </a>
-          </div>
-        </div>
-      )}
-    </nav>
-  );
+            {/* ─── Floating Island (visible when scrolled) ─── */}
+            <AnimatePresence>
+                {scrolled && (
+                    <motion.div
+                        key="floating-island"
+                        initial={{ opacity: 0, y: -30, scale: 0.92 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                        transition={{
+                            duration: 0.4,
+                            ease: [0.25, 0.1, 0.25, 1],
+                        }}
+                        className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
+                    >
+                        <div
+                            className="flex items-center gap-2 rounded-full px-4 py-2.5"
+                            style={{
+                                background: "rgba(18, 18, 20, 0.75)",
+                                backdropFilter: "blur(24px) saturate(1.4)",
+                                WebkitBackdropFilter: "blur(24px) saturate(1.4)",
+                                border: "1px solid rgba(255, 255, 255, 0.08)",
+                                boxShadow:
+                                    "0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
+                            }}
+                        >
+                            {/* Logo */}
+                            <Link
+                                href="/"
+                                className="flex items-center pl-2 pr-3 py-1"
+                            >
+                                <img src="/logo_large_light.svg" alt="A Level Mentor" className="h-[18px] w-auto" />
+                            </Link>
+
+                            {/* Divider */}
+                            <div className="w-px h-7 bg-white/[0.08]" />
+
+                            {/* Nav links */}
+                            <nav className="hidden sm:flex items-center">
+                                {navLinks.map((item) => (
+                                    <Link
+                                        key={item}
+                                        href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                                        className="text-[13px] font-medium text-white/50 hover:text-white hover:bg-white/[0.06] rounded-full px-4 py-2 transition-all duration-200"
+                                    >
+                                        {item}
+                                    </Link>
+                                ))}
+                            </nav>
+
+                            {/* Divider */}
+                            <div className="w-px h-7 bg-white/[0.08] hidden sm:block" />
+
+                            {/* Sign in */}
+                            <Link
+                                href="/login"
+                                className="hidden sm:block text-[13px] font-medium text-white/50 hover:text-white px-3 py-2 transition-colors"
+                            >
+                                Sign in
+                            </Link>
+
+                            {/* CTA */}
+                            <Link
+                                href="#join"
+                                className="relative overflow-hidden text-[13px] font-semibold text-white bg-[#5a35f8] hover:bg-[#4c2de0] rounded-full px-5 py-2 transition-all duration-200 shadow-[0_0_12px_rgba(90,53,248,0.4)]"
+                            >
+                                Join Waitlist →
+                                <span className="pointer-events-none absolute inset-0 shimmer-sweep" />
+                            </Link>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* ─── Mobile Menu ─── */}
+            <AnimatePresence>
+                {mobileOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-40 bg-[#09090b]/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 md:hidden"
+                    >
+                        <button
+                            className="absolute top-5 right-6 text-white/80"
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            <X size={24} />
+                        </button>
+                        {navLinks.map((item) => (
+                            <Link
+                                key={item}
+                                href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                                onClick={() => setMobileOpen(false)}
+                                className="text-2xl font-semibold text-white/90 hover:text-white"
+                            >
+                                {item}
+                            </Link>
+                        ))}
+                        <div className="flex flex-col gap-4 mt-4 items-center">
+                            <Link
+                                href="/login"
+                                onClick={() => setMobileOpen(false)}
+                                className="text-lg text-white/60"
+                            >
+                                Sign in
+                            </Link>
+                            <Link
+                                href="#join"
+                                onClick={() => setMobileOpen(false)}
+                                className="relative overflow-hidden text-lg font-semibold text-white bg-[#5a35f8] rounded-full px-8 py-3"
+                            >
+                                Join Waitlist →
+                                <span className="pointer-events-none absolute inset-0 shimmer-sweep" />
+                            </Link>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
+    );
 }
