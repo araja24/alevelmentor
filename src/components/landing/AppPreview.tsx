@@ -1,38 +1,127 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { RevealSection } from "./RevealSection";
 import {
   Download,
-  ShieldCheck,
   BarChart3,
   MessageCircle,
+  Sparkles,
+  Calendar,
+  BookOpen,
+  CheckCircle2,
+  Circle,
+  Clock,
+  TrendingUp,
 } from "lucide-react";
 
-/* ── Subject Picker ── */
+/* ═══════════════════════════════════════════
+   Card Shell — Opal style with inner shadows,
+   drop shadows, glow, and bottom fade
+   ═══════════════════════════════════════════ */
+function CardShell({
+  children,
+  title,
+  description,
+  className = "",
+}: {
+  children: React.ReactNode;
+  title: string;
+  description: string;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.4, 0.7, 1], [0, 0.6, 1, 1, 0.3]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.4], [0.97, 0.99, 1]);
+  const y = useTransform(scrollYProgress, [0, 0.3, 0.5], [20, 8, 0]);
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ opacity, scale, y }}
+      className={`group relative rounded-[20px] overflow-hidden ${className}`}
+    >
+      {/* Hover gradient border */}
+      <div
+        className="absolute -inset-[1px] rounded-[21px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{ background: "linear-gradient(135deg, rgba(90,53,248,0.2) 0%, transparent 50%, rgba(90,53,248,0.1) 100%)" }}
+      />
+
+      <div
+        className="relative rounded-[20px] overflow-hidden h-full flex flex-col"
+        style={{
+          background: "linear-gradient(160deg, rgba(18,18,22,0.98) 0%, rgba(12,12,14,0.98) 100%)",
+          border: "1px solid rgba(255,255,255,0.06)",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.4), 0 16px 48px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.3)",
+        }}
+      >
+        {/* Spotlight glow */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[200px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+          style={{ background: "radial-gradient(circle, rgba(90,53,248,0.12) 0%, transparent 70%)", filter: "blur(40px)" }}
+        />
+
+        {/* Preview Area */}
+        <div className="relative p-5 pb-0 flex-1">
+          <div
+            className="relative rounded-[14px] p-4 overflow-hidden h-full"
+            style={{
+              background: "linear-gradient(180deg, rgba(8,8,10,0.8) 0%, rgba(12,12,14,0.95) 100%)",
+              border: "1px solid rgba(255,255,255,0.04)",
+              boxShadow: "inset 0 2px 6px rgba(0,0,0,0.4), inset 0 -1px 2px rgba(255,255,255,0.02)",
+            }}
+          >
+            {children}
+            {/* Bottom fade */}
+            <div className="absolute bottom-0 left-0 right-0 h-14 pointer-events-none"
+              style={{ background: "linear-gradient(to top, rgba(12,12,14,0.95) 0%, transparent 100%)" }}
+            />
+          </div>
+        </div>
+
+        {/* Title + Description */}
+        <div className="p-5 pt-4">
+          <h3 className="text-[15px] font-semibold text-white">{title}</h3>
+          <p className="text-[13px] mt-1.5 leading-relaxed text-white/35">{description}</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   1. Subject Picker — Checkbox style
+   ═══════════════════════════════════════════ */
 function SubjectPickerPreview() {
   const subjects = [
-    { name: "Mathematics", icon: "📐", active: true },
-    { name: "Chemistry", icon: "⚗️", active: true },
-    { name: "Biology", icon: "🧬", active: false },
-    { name: "Physics", icon: "⚛️", active: true },
-    { name: "Economics", icon: "📊", active: false },
+    { name: "Mathematics", icon: "📐", selected: true },
+    { name: "Chemistry", icon: "⚗️", selected: true },
+    { name: "Physics", icon: "⚛️", selected: true },
+    { name: "Biology", icon: "🧬", selected: false },
+    { name: "Economics", icon: "📊", selected: false },
   ];
   return (
     <div className="space-y-1.5">
       <div className="flex items-center gap-2 mb-3">
-        <ShieldCheck className="h-4 w-4 text-[#5a35f8]" />
-        <span className="text-[11px] font-medium text-[#a1a1aa]">Select your subjects</span>
+        <Sparkles className="h-3.5 w-3.5 text-[#5a35f8]" />
+        <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">Pick your subjects</span>
       </div>
       {subjects.map((s) => (
-        <div key={s.name} className="flex items-center justify-between rounded-[8px] px-3 py-2.5 transition-colors bg-[#0c0c0e] hover:bg-white/[0.04]">
-          <div className="flex items-center gap-2.5">
-            <span className="text-sm">{s.icon}</span>
-            <span className="text-xs font-medium text-[#fafafa]">{s.name}</span>
-          </div>
-          <div className={`relative h-5 w-9 rounded-full transition-colors`} style={{ background: s.active ? "#5a35f8" : "#27272a" }}>
-            <div className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${s.active ? "translate-x-4" : "translate-x-0.5"}`} />
+        <div
+          key={s.name}
+          className="flex items-center gap-3 rounded-[10px] px-3 py-2.5 transition-colors"
+          style={{ background: s.selected ? "rgba(90,53,248,0.06)" : "transparent", border: s.selected ? "1px solid rgba(90,53,248,0.15)" : "1px solid transparent" }}
+        >
+          <span className="text-sm">{s.icon}</span>
+          <span className={`text-[13px] font-medium flex-1 ${s.selected ? "text-white/80" : "text-white/30"}`}>{s.name}</span>
+          <div className={`h-[18px] w-[18px] rounded-[5px] flex items-center justify-center transition-colors ${s.selected ? "bg-[#5a35f8]" : "border border-white/15"}`}>
+            {s.selected && (
+              <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            )}
           </div>
         </div>
       ))}
@@ -40,29 +129,77 @@ function SubjectPickerPreview() {
   );
 }
 
-/* ── Past Paper Finder ── */
-function PastPaperPreview() {
-  const papers = [
-    { name: "June 2023 — Paper 1", board: "AQA", type: "QP" },
-    { name: "June 2023 — Paper 2", board: "AQA", type: "MS" },
-    { name: "Nov 2022 — Paper 1", board: "OCR", type: "QP" },
-    { name: "June 2022 — Paper 3", board: "Edexcel", type: "QP" },
+/* ═══════════════════════════════════════════
+   2. Smart Roadmap — Timeline
+   ═══════════════════════════════════════════ */
+function RoadmapPreview() {
+  const tasks = [
+    { name: "Organic Mechanisms", status: "done", time: "Mon" },
+    { name: "Equilibria Practice Qs", status: "done", time: "Tue" },
+    { name: "Electrochemistry Notes", status: "current", time: "Today" },
+    { name: "Acids & Bases Past Paper", status: "todo", time: "Thu" },
+    { name: "Thermodynamics Review", status: "todo", time: "Fri" },
   ];
   return (
-    <div className="space-y-1.5">
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Calendar className="h-3.5 w-3.5 text-[#5a35f8]" />
+          <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">This Week</span>
+        </div>
+        <span className="text-[10px] text-emerald-400 font-semibold">3/5 done</span>
+      </div>
+      <div className="space-y-0.5">
+        {tasks.map((t, i) => (
+          <div
+            key={i}
+            className={`flex items-center gap-2.5 rounded-[8px] px-3 py-2 ${t.status === "current" ? "bg-[#5a35f8]/8 border border-[#5a35f8]/20" : ""}`}
+          >
+            {t.status === "done" ? (
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+            ) : t.status === "current" ? (
+              <div className="h-3.5 w-3.5 rounded-full border-2 border-[#5a35f8] flex items-center justify-center shrink-0">
+                <div className="h-1.5 w-1.5 rounded-full bg-[#5a35f8] animate-pulse" />
+              </div>
+            ) : (
+              <Circle className="h-3.5 w-3.5 text-white/12 shrink-0" />
+            )}
+            <span className={`text-[12px] flex-1 ${t.status === "done" ? "text-white/25 line-through" : t.status === "current" ? "text-white font-medium" : "text-white/35"}`}>
+              {t.name}
+            </span>
+            <span className={`text-[9px] font-medium ${t.status === "current" ? "text-[#5a35f8]" : "text-white/15"}`}>{t.time}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   3. Past Papers — Paper list
+   ═══════════════════════════════════════════ */
+function PastPaperPreview() {
+  const papers = [
+    { name: "June 2023 — Paper 1", board: "AQA", type: "QP", score: "78%" },
+    { name: "June 2023 — Paper 2", board: "AQA", type: "MS", score: "—" },
+    { name: "Nov 2022 — Paper 1", board: "OCR", type: "QP", score: "82%" },
+    { name: "June 2022 — Paper 3", board: "Edexcel", type: "QP", score: "71%" },
+  ];
+  return (
+    <div className="space-y-1">
       <div className="flex items-center gap-2 mb-3">
-        <Download className="h-4 w-4 text-[#5a35f8]" />
-        <span className="text-[11px] font-medium text-[#a1a1aa]">Targeted past papers</span>
+        <BookOpen className="h-3.5 w-3.5 text-[#5a35f8]" />
+        <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">Past Papers</span>
       </div>
       {papers.map((p, i) => (
-        <div key={i} className="flex items-center justify-between rounded-[8px] px-3 py-2.5 transition-colors bg-[#0c0c0e] hover:bg-white/[0.04]">
+        <div key={i} className="flex items-center justify-between rounded-[8px] px-3 py-2.5 hover:bg-white/[0.02] transition-colors">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-[#fafafa]">{p.name}</span>
-            <span className="text-[9px] font-mono rounded px-1.5 py-0.5 text-[#a1a1aa] bg-white/[0.05]">{p.board}</span>
+            <span className="text-[12px] font-medium text-white/70">{p.name}</span>
+            <span className="text-[8px] font-bold rounded px-1.5 py-0.5 text-[#5a35f8] bg-[#5a35f8]/10 border border-[#5a35f8]/15 uppercase">{p.board}</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-[9px] text-[#a1a1aa]">{p.type}</span>
-            <Download className="h-3.5 w-3.5 text-[#5a35f8]" />
+          <div className="flex items-center gap-3">
+            {p.score !== "—" && <span className="text-[10px] text-emerald-400 font-semibold">{p.score}</span>}
+            <Download className="h-3.5 w-3.5 text-white/20 hover:text-[#5a35f8] transition-colors cursor-pointer" />
           </div>
         </div>
       ))}
@@ -70,57 +207,77 @@ function PastPaperPreview() {
   );
 }
 
-/* ── Progress Chart ── */
-function ProgressChartPreview() {
+/* ═══════════════════════════════════════════
+   4. Progress Tracker — Multi-subject bars
+   ═══════════════════════════════════════════ */
+function ProgressPreview() {
+  const subjects = [
+    { name: "Chemistry", score: 84, prev: 72, color: "#5a35f8" },
+    { name: "Maths", score: 78, prev: 74, color: "#3ed6ff" },
+    { name: "Physics", score: 65, prev: 58, color: "#f59e0b" },
+  ];
   return (
     <div>
-      <div className="flex items-center gap-2 mb-3">
-        <BarChart3 className="h-4 w-4 text-[#5a35f8]" />
-        <span className="text-[11px] font-medium text-[#a1a1aa]">Your progress</span>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <BarChart3 className="h-3.5 w-3.5 text-[#5a35f8]" />
+          <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">Performance</span>
+        </div>
+        <div className="flex gap-1">
+          {["Week", "Month", "All Time"].map((t, i) => (
+            <span key={t} className="text-[9px] px-2 py-0.5 rounded-full font-semibold"
+              style={{
+                background: i === 0 ? "#5a35f8" : "transparent",
+                color: i === 0 ? "#fff" : "rgba(255,255,255,0.25)",
+              }}>{t}</span>
+          ))}
+        </div>
       </div>
-      <div className="flex gap-1.5 mb-3">
-        {["Week", "Month", "All Time"].map((t, i) => (
-          <span key={t} className="text-[10px] px-2.5 py-1 rounded-full font-medium"
-            style={{
-              background: i === 0 ? "#5a35f8" : "rgba(255,255,255,0.05)",
-              color: i === 0 ? "#fff" : "#a1a1aa",
-            }}>
-            {t}
-          </span>
+
+      <div className="space-y-4">
+        {subjects.map((s, i) => (
+          <div key={i} className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full" style={{ backgroundColor: s.color }} />
+                <span className="text-[11px] font-medium text-white/50">{s.name}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] text-white/20 line-through">{s.prev}%</span>
+                <span className="text-[13px] font-bold text-white">{s.score}%</span>
+                <span className="text-[9px] text-emerald-400 font-semibold">+{s.score - s.prev}%</span>
+              </div>
+            </div>
+            <div className="h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
+              <div className="h-full rounded-full" style={{ width: `${s.score}%`, backgroundColor: s.color, opacity: 0.8 }} />
+            </div>
+          </div>
         ))}
       </div>
-      <div className="flex items-end justify-between mb-2">
-        <div>
-          <p className="text-2xl font-bold text-[#fafafa]">84%</p>
-          <p className="text-[10px] text-[#a1a1aa]">Avg Score</p>
-        </div>
-        <div className="text-right">
-          <p className="text-sm font-semibold text-emerald-400">+12%</p>
-          <p className="text-[10px] text-[#a1a1aa]">vs last week</p>
+
+      <div className="mt-4 pt-3 border-t border-white/[0.04] flex items-center justify-between">
+        <span className="text-[10px] text-white/20">Overall Average</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[16px] font-bold text-white">76%</span>
+          <TrendingUp className="h-3 w-3 text-emerald-400" />
         </div>
       </div>
-      <svg viewBox="0 0 200 50" className="w-full h-10" fill="none">
-        <defs>
-          <linearGradient id="bentoGrd" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#5a35f8" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#5a35f8" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <path d="M0 40 Q20 38 40 32 Q60 28 80 22 Q100 20 120 16 Q140 14 160 10 Q180 8 200 5" stroke="#5a35f8" strokeWidth="2" strokeLinecap="round" />
-        <path d="M0 40 Q20 38 40 32 Q60 28 80 22 Q100 20 120 16 Q140 14 160 10 Q180 8 200 5 L200 50 L0 50 Z" fill="url(#bentoGrd)" />
-      </svg>
     </div>
   );
 }
 
-/* ── Chat Preview ── */
-function AIChatPreview() {
+/* ═══════════════════════════════════════════
+   5. Study Mentor — AI Chat
+   ═══════════════════════════════════════════ */
+function MentorPreview() {
   return (
     <div>
-      <div className="flex items-center gap-2 mb-3">
-        <MessageCircle className="h-4 w-4 text-[#5a35f8]" />
-        <span className="text-[11px] font-medium text-[#a1a1aa]">Study Mentor</span>
-        <span className="text-[9px] text-emerald-400 ml-auto">● Online</span>
+      <div className="flex items-center gap-2 mb-4">
+        <MessageCircle className="h-3.5 w-3.5 text-[#5a35f8]" />
+        <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">Study Mentor</span>
+        <span className="text-[9px] text-emerald-400 font-semibold ml-auto flex items-center gap-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 inline-block" /> Online
+        </span>
       </div>
       <div className="space-y-2">
         <div className="flex justify-end">
@@ -129,18 +286,18 @@ function AIChatPreview() {
           </div>
         </div>
         <div className="flex justify-start">
-          <div className="rounded-2xl rounded-bl-sm px-3 py-2 max-w-[85%] bg-[#0c0c0e]">
-            <p className="text-[11px] leading-relaxed text-[#a1a1aa]">
+          <div className="rounded-2xl rounded-bl-sm px-3 py-2.5 max-w-[90%] border border-white/[0.05]" style={{ background: "rgba(255,255,255,0.02)" }}>
+            <p className="text-[11px] leading-relaxed text-white/45">
               When a system at equilibrium is disturbed, it shifts to counteract the change and restore balance...
             </p>
           </div>
         </div>
         <div className="flex justify-start">
-          <div className="rounded-2xl rounded-bl-sm px-3 py-2.5 bg-[#0c0c0e]">
+          <div className="rounded-2xl rounded-bl-sm px-3 py-2.5 border border-white/[0.05]" style={{ background: "rgba(255,255,255,0.02)" }}>
             <div className="flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[#5a35f8] delay-0" />
-              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[#5a35f8] delay-150" />
-              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[#5a35f8] delay-300" />
+              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[#5a35f8]" style={{ animationDelay: "0ms" }} />
+              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[#5a35f8]" style={{ animationDelay: "150ms" }} />
+              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[#5a35f8]" style={{ animationDelay: "300ms" }} />
             </div>
           </div>
         </div>
@@ -149,55 +306,70 @@ function AIChatPreview() {
   );
 }
 
-const cards = [
-  { title: "Subject Picker", description: "Pick your A-Level subjects. We tailor everything — roadmap, papers, and mentor — just for you.", Preview: SubjectPickerPreview },
-  { title: "Past Papers", description: "Every paper matched to your weak spots. Download mark schemes in one click.", Preview: PastPaperPreview },
-  { title: "Progress Tracker", description: "See how your study hours and scores evolve with personalized insights.", Preview: ProgressChartPreview },
-  { title: "Study Mentor", description: "Type any question and get a clear, syllabus-aligned answer instantly.", Preview: AIChatPreview },
-];
-
-/* ── Scroll-linked card ── */
-function WaterfallCard({ card }: { card: (typeof cards)[number] }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.5, 0.7, 1], [0.15, 0.6, 1, 0.6, 0.15]);
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5, 0.7, 1], [0.97, 0.99, 1, 0.99, 0.97]);
-  const glowOpacity = useTransform(scrollYProgress, [0, 0.35, 0.5, 0.65, 1], [0, 0.4, 1, 0.4, 0]);
-
+/* ═══════════════════════════════════════════
+   6. Grade Predictor — Target vs Predicted
+   ═══════════════════════════════════════════ */
+function GradePreview() {
+  const grades = [
+    { subject: "Chemistry", predicted: "A*", target: "A*", match: true },
+    { subject: "Mathematics", predicted: "A", target: "A*", match: false },
+    { subject: "Physics", predicted: "A", target: "A", match: true },
+  ];
   return (
-    <motion.div
-      ref={ref}
-      style={{ opacity, scale }}
-      className="group relative overflow-hidden glass-card-lift bg-[#121214]"
-    >
-      {/* Spotlight glow */}
-      <motion.div
-        className="absolute -top-24 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, rgba(90, 53, 248, 0.15) 0%, transparent 70%)",
-          filter: "blur(30px)",
-          opacity: glowOpacity,
-        }}
-      />
-
-      <div className="relative z-10 p-6">
-        {/* Preview content */}
-        <div className="rounded-[16px] p-4 mb-4 min-h-[160px] bg-[#0c0c0e] border border-white/[0.04]">
-          <card.Preview />
-        </div>
-
-        <h3 className="h3" style={{ fontSize: 16, color: "#fafafa" }}>{card.title}</h3>
-        <p className="text-sm mt-1.5 leading-relaxed text-[#a1a1aa]">{card.description}</p>
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-2 mb-4">
+        <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
+        <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">Predicted Grades</span>
       </div>
-    </motion.div>
+
+      <div className="flex items-center justify-between px-3 pb-2 text-[9px] font-bold text-white/20 uppercase tracking-wider">
+        <span>Subject</span>
+        <div className="flex gap-4 pr-1">
+          <span>Target</span>
+          <span>Predicted</span>
+        </div>
+      </div>
+
+      <div className="space-y-2 flex-1">
+        {grades.map((g, i) => (
+          <div key={i} className="flex items-center justify-between rounded-[10px] px-3 py-2.5 relative group overflow-hidden"
+            style={{
+              background: g.match ? "rgba(16,185,129,0.03)" : "rgba(245,158,11,0.03)",
+              border: g.match ? "1px solid rgba(16,185,129,0.1)" : "1px solid rgba(245,158,11,0.1)"
+            }}
+          >
+            <span className="text-[13px] font-medium text-white/80 relative z-10">{g.subject}</span>
+            <div className="flex items-center gap-3 relative z-10">
+              <span className="w-8 text-center text-[14px] font-bold text-white/30">{g.target}</span>
+              <span className="text-white/10 text-[10px]">→</span>
+              <span className={`w-8 text-center text-[14px] font-bold ${g.match ? "text-emerald-400" : "text-amber-400"}`}>{g.predicted}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-auto pt-3">
+        <div className="rounded-[10px] p-2.5 border border-[#5a35f8]/10 flex items-center gap-2.5" style={{ background: "rgba(90,53,248,0.03)" }}>
+          <Sparkles className="h-3.5 w-3.5 text-[#5a35f8] shrink-0" />
+          <p className="text-[11px] text-white/40 leading-snug">Complete 2 papers to hit <span className="text-white/80 font-medium">A* in Maths</span></p>
+        </div>
+      </div>
+    </div>
   );
 }
 
+/* ═══════════════════════════════════════════
+   Bento Grid — 4‑column mixed layout
+   ═══════════════════════════════════════════ */
 export function AppPreview() {
   return (
     <section className="section-pad relative" style={{ background: "var(--bg-primary)" }}>
-      <div className="mx-auto max-w-[1100px]">
+      {/* Ambient background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-[#5a35f8]/[0.03] blur-[120px]" />
+      </div>
+
+      <div className="mx-auto max-w-[1100px] px-6 relative z-10">
         <RevealSection className="text-center mb-16">
           <span className="pill-badge mb-6 inline-flex">Platform</span>
           <h2 className="h2 mt-4">
@@ -205,10 +377,61 @@ export function AppPreview() {
           </h2>
         </RevealSection>
 
-        <div className="grid sm:grid-cols-2 gap-6">
-          {cards.map((card, i) => (
-            <WaterfallCard key={i} card={card} />
-          ))}
+        {/* Row 1: 50% + 50% */}
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 mb-5">
+          <CardShell
+            className="sm:col-span-6"
+            title="Subject Picker"
+            description="Pick your A-Level subjects. We tailor your roadmap, papers, and mentor to match."
+          >
+            <SubjectPickerPreview />
+          </CardShell>
+
+          <CardShell
+            className="sm:col-span-6"
+            title="Smart Roadmap"
+            description="Auto-generated week-by-week plan. Never wonder what to revise next."
+          >
+            <RoadmapPreview />
+          </CardShell>
+        </div>
+
+        {/* Row 2: 66% + 33% */}
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 mb-5">
+          <CardShell
+            className="sm:col-span-8"
+            title="Progress Tracker"
+            description="See how your scores evolve across subjects with personalized insights."
+          >
+            <ProgressPreview />
+          </CardShell>
+
+          <CardShell
+            className="sm:col-span-4"
+            title="Grade Predictor"
+            description="Your grades, predicted in real time."
+          >
+            <GradePreview />
+          </CardShell>
+        </div>
+
+        {/* Row 3: 25% + 75% */}
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-5">
+          <CardShell
+            className="sm:col-span-3"
+            title="Study Mentor"
+            description="Get instant, syllabus-aligned answers."
+          >
+            <MentorPreview />
+          </CardShell>
+
+          <CardShell
+            className="sm:col-span-9"
+            title="Past Papers"
+            description="Every paper matched to your weak spots. Download mark schemes in one click."
+          >
+            <PastPaperPreview />
+          </CardShell>
         </div>
       </div>
     </section>

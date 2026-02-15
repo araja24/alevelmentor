@@ -11,36 +11,9 @@ import { RevealSection } from "./RevealSection";
 import { ArrowRight, Star, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { ShimmerButton } from "./ShimmerButton";
 
-/* ═══════════════════════════════════════════
-   Shimmer CTA Button
-   ═══════════════════════════════════════════ */
-function ShimmerButton({
-    children,
-    href = "#join",
-}: {
-    children: React.ReactNode;
-    href?: string;
-}) {
-    return (
-        <Link
-            href={href}
-            className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#5a35f8] px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_0_24px_rgba(90,53,248,0.4)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(90,53,248,0.55)] hover:scale-[1.03] active:scale-[0.98]"
-        >
-            {/* Shimmer sweep */}
-            <span
-                className="pointer-events-none absolute inset-0 animate-shimmer-sweep"
-                style={{
-                    background:
-                        "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 60%, transparent 80%)",
-                }}
-            />
-            <span className="relative z-10 flex items-center gap-2">
-                {children}
-            </span>
-        </Link>
-    );
-}
+
 
 /* ═══════════════════════════════════════════
    Floating Dashboard Cards — No Device Frame
@@ -209,14 +182,14 @@ function FloatingPreview() {
                         <div className="h-5 w-5 rounded-full bg-[#5a35f8] flex items-center justify-center">
                             <Sparkles className="h-3 w-3 text-white" />
                         </div>
-                        <span className="text-[11px] font-semibold text-[#5a35f8]">AI Mentor</span>
+                        <span className="text-[11px] font-semibold text-[#5a35f8]">Mentor Tip</span>
                     </div>
                     <p className="text-[12px] text-white/60 leading-relaxed">
                         Focus on Electrochemistry today — you're 2 topics behind schedule. I've queued 3 practice questions from recent AQA papers.
                     </p>
                 </motion.div>
             </motion.div>
-        </div>
+        </div >
     );
 }
 
@@ -236,10 +209,10 @@ export function Hero() {
                 <div className="absolute bottom-[10%] right-[20%] w-[400px] h-[400px] rounded-full bg-[#3ed6ff]/5 blur-[120px]" />
             </div>
 
-            <div className="mx-auto max-w-[1200px] w-full px-6 py-32 lg:py-20 relative z-10">
-                <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+            <div className="mx-auto max-w-[1300px] w-full px-6 py-32 lg:py-20 relative z-10">
+                <div className="grid lg:grid-cols-[42%_58%] gap-12 lg:gap-16 items-center">
                     {/* ─── LEFT: Floating Dashboard Cards ─── */}
-                    <RevealSection direction="left" delay={0.1} className="order-2 lg:order-1">
+                    <RevealSection direction="left" delay={0.1} className="order-2 lg:order-1 -ml-4 lg:-ml-8">
                         <FloatingPreview />
                     </RevealSection>
 
@@ -289,10 +262,16 @@ export function Hero() {
 
                         {/* Heading */}
                         <h1
-                            className="text-[clamp(36px,5.5vw,68px)] font-bold tracking-[-0.03em] leading-[1.05] mb-6"
+                            className="text-[clamp(40px,5vw,72px)] font-bold tracking-[-0.03em] leading-[1.1] mb-8 max-w-[900px]"
                             style={{ color: "var(--text-primary)" }}
                         >
-                            Your personal AI{" "}
+                            You've done <span className="relative inline-block">
+                                dozens
+                                {/* Brush Stroke Swoosh SVG */}
+                                <svg className="absolute -bottom-2 -left-1 w-[115%] h-[16px] text-[#5a35f8] -rotate-1" viewBox="0 0 200 9" preserveAspectRatio="none">
+                                    <path d="M2.00025 6.99998C28.5368 7.37346 116.326 2.01633 197.999 3.00004C108.665 4.50854 36.9142 -0.871185 2.00025 6.99998Z" fill="currentColor" stroke="none" />
+                                </svg>
+                            </span> of past papers. <br />
                             <span
                                 style={{
                                     background:
@@ -302,20 +281,18 @@ export function Hero() {
                                     backgroundClip: "text",
                                 }}
                             >
-                                revision mentor.
+                                Your grade hasn't moved.
                             </span>
                         </h1>
 
                         {/* Subtext */}
-                        <p className="text-[16px] sm:text-[18px] leading-relaxed text-white/45 max-w-[480px] mb-10">
-                            Stop guessing what to revise. Get a tailored roadmap, instant
-                            answers, and predicted grades — all powered by your exact
-                            syllabus.
+                        <p className="text-[17px] sm:text-[19px] leading-relaxed text-white/50 max-w-[800px] mb-12">
+                            Most students waste hundreds of hours on low-yield topics. We analyzed every specification and past paper to build what should've existed: a system that tells you exactly what moves your grade, in the right order, with zero fluff.
                         </p>
 
                         {/* CTAs */}
                         <div className="flex items-center gap-4 flex-wrap">
-                            <ShimmerButton>
+                            <ShimmerButton href="#join">
                                 Join Waitlist
                                 <ArrowRight className="h-4 w-4" />
                             </ShimmerButton>

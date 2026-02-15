@@ -1,8 +1,8 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, Suspense } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, Suspense } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -12,8 +12,9 @@ import {
     Check,
     ArrowRight,
     TrendingUp,
-    Share2
+    Sparkles
 } from "lucide-react";
+import { ShimmerButton } from "./ShimmerButton";
 
 function WaitlistFormContent() {
     const searchParams = useSearchParams();
@@ -68,94 +69,83 @@ function WaitlistFormContent() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="w-full max-w-md mx-auto text-left"
             >
-                <div className="glass-card mb-6 overflow-hidden rounded-[20px] bg-[#121214] border-white/10">
-                    <div className="bg-[#5a35f8]/10 p-6 border-b border-[#5a35f8]/20 flex items-center gap-4">
-                        <div className="bg-[#5a35f8] rounded-full p-2 text-white shadow-lg shadow-[#5a35f8]/30">
-                            <Trophy className="w-5 h-5" />
+                <div className="glass-card mb-6 overflow-hidden rounded-[24px] bg-[#121214] border-white/10 shadow-2xl">
+                    <div className="bg-gradient-to-r from-[#5a35f8]/20 to-[#3ed6ff]/10 p-8 border-b border-white/5 flex items-center gap-5">
+                        <div className="bg-[#5a35f8] rounded-full p-3 text-white shadow-lg shadow-[#5a35f8]/40 ring-4 ring-[#5a35f8]/20">
+                            <Trophy className="w-6 h-6" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-bold text-white">You're on the list!</h3>
-                            <p className="text-sm text-[#5a35f8]">Welcome to the inner circle.</p>
+                            <h3 className="text-xl font-bold text-white">You're on the list!</h3>
+                            <p className="text-sm text-[#5a35f8] font-medium mt-1">Welcome to the inner circle.</p>
                         </div>
                     </div>
 
-                    <div className="p-6 grid grid-cols-2 gap-4">
-                        <div className="bg-[#18181b] p-4 rounded-[12px] border border-white/5">
-                            <p className="text-[#a1a1aa] text-xs font-medium uppercase tracking-wider mb-1">Your Rank</p>
-                            <div className="flex items-baseline gap-1">
-                                <span className="text-xl font-bold text-white">#{position?.toLocaleString()}</span>
-                            </div>
+                    <div className="p-8 grid grid-cols-2 gap-4">
+                        <div className="bg-[#18181b] p-5 rounded-[16px] border border-white/5 relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <p className="text-[#a1a1aa] text-[10px] font-bold uppercase tracking-widest mb-2">Your Rank</p>
+                            <span className="text-3xl font-bold text-white tracking-tight">#{position?.toLocaleString()}</span>
                         </div>
-                        <div className="bg-[#18181b] p-4 rounded-[12px] border border-white/5">
-                            <p className="text-[#a1a1aa] text-xs font-medium uppercase tracking-wider mb-1">Total Users</p>
-                            <div className="flex items-baseline gap-1">
-                                <span className="text-xl font-bold text-white">{totalUsers?.toLocaleString()}</span>
-                                <span className="text-xs text-emerald-400 font-medium">+120 today</span>
+                        <div className="bg-[#18181b] p-5 rounded-[16px] border border-white/5 relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <p className="text-[#a1a1aa] text-[10px] font-bold uppercase tracking-widest mb-2">Total Users</p>
+                            <div className="flex flex-col">
+                                <span className="text-3xl font-bold text-white tracking-tight">{totalUsers?.toLocaleString()}</span>
+                                <span className="text-[10px] text-emerald-400 font-bold mt-1 flex items-center gap-1">
+                                    <TrendingUp className="w-3 h-3" /> +120 today
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="px-6 pb-6">
-                        <p className="text-sm text-[#a1a1aa] mb-3">
-                            Invite friends to jump the queue. <span className="text-white font-medium">Top 500 get lifetime free access.</span>
+                    <div className="px-8 pb-8">
+                        <p className="text-sm text-[#a1a1aa] mb-4 leading-relaxed">
+                            Invite friends to jump the queue. <span className="text-white font-semibold">Top 500 get lifetime free access.</span>
                         </p>
 
-                        <div className="flex gap-2">
-                            <div className="flex-1 bg-[#09090b] h-10 px-3 rounded-[8px] border border-white/10 flex items-center text-sm text-[#d4d4d8] font-mono truncate select-all">
+                        <div className="flex gap-3">
+                            <div className="flex-1 bg-[#09090b] h-12 px-4 rounded-[12px] border border-white/10 flex items-center text-sm text-[#d4d4d8] font-mono truncate select-all shadow-inner">
                                 {referralLink}
                             </div>
                             <Button
                                 onClick={copyToClipboard}
                                 size="icon"
                                 className={cn(
-                                    "shrink-0 h-10 w-10 transition-all duration-200 border-0",
+                                    "shrink-0 h-12 w-12 rounded-[12px] transition-all duration-200 border-0 shadow-lg",
                                     copied ? "bg-emerald-500 hover:bg-emerald-600 text-white" : "bg-white text-black hover:bg-white/90"
                                 )}
                             >
-                                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                                {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                             </Button>
                         </div>
                     </div>
                 </div>
-
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="bg-emerald-500/10 border border-emerald-500/20 rounded-[12px] p-4 flex items-start gap-3"
-                >
-                    <TrendingUp className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <p className="text-sm text-emerald-100/90 leading-relaxed">
-                        <span className="font-semibold text-emerald-400">Bonus:</span> You've unlocked our exclusive A-Level Cheatsheets. Check your email to download them now.
-                    </p>
-                </motion.div>
             </motion.div>
         );
     }
 
     return (
-        <form onSubmit={handleSubmit} className="w-full max-w-[400px] mx-auto relative group">
-            <div className="relative flex items-center">
+        <form onSubmit={handleSubmit} className="w-full max-w-[480px] mx-auto relative group">
+            <div className="relative flex items-center p-1.5 rounded-[20px] bg-[#18181b] border border-white/10 shadow-2xl transition-all duration-300 focus-within:border-[#5a35f8]/50 focus-within:shadow-[0_0_40px_rgba(90,53,248,0.15)]">
                 <input
                     type="email"
                     required
-                    placeholder="Enter your email"
+                    placeholder="Enter your email address..."
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full h-12 bg-[#121214] border border-white/10 rounded-[14px] px-4 text-white placeholder:text-[#52525b] focus:outline-none focus:ring-2 focus:ring-[#5a35f8]/50 focus:border-[#5a35f8] transition-all"
+                    className="w-full h-12 bg-transparent border-0 px-4 text-white text-[15px] placeholder:text-white/20 focus:outline-none focus:ring-0"
                 />
-                <Button
+                <ShimmerButton
                     type="submit"
                     disabled={loading}
-                    className="absolute right-1 top-1 bottom-1 h-auto rounded-[10px] bg-[#5a35f8] hover:bg-[#4c2de0] text-white px-4 font-medium transition-all shadow-[0_0_15px_rgba(90,53,248,0.4)] hover:shadow-[0_0_25px_rgba(90,53,248,0.6)] border-0 overflow-hidden"
+                    className="h-12 w-full px-6 font-medium shadow-lg shadow-[#5a35f8]/20 hover:shadow-[#5a35f8]/40 shrink-0"
                 >
                     {loading ? (
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
-                        <span className="flex items-center gap-2">Join <ArrowRight className="w-4 h-4" /></span>
+                        <>Join Waitlist <ArrowRight className="w-4 h-4" /></>
                     )}
-                    <span className="pointer-events-none absolute inset-0 shimmer-sweep" />
-                </Button>
+                </ShimmerButton>
             </div>
 
             {error && (
@@ -168,14 +158,18 @@ function WaitlistFormContent() {
                 </motion.p>
             )}
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-[#71717a]">
-                <div className="flex items-center gap-1.5">
-                    <Check className="w-3.5 h-3.5 text-emerald-500" />
-                    <span className="text-xs">Free beta access</span>
+            <div className="mt-8 flex items-center justify-center gap-4 sm:gap-8 flex-wrap">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="text-[11px] font-semibold text-emerald-100">Free beta access</span>
                 </div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#5a35f8]/10 border border-[#5a35f8]/20">
                     <Users className="w-3.5 h-3.5 text-[#5a35f8]" />
-                    <span className="text-xs">10,000+ joined</span>
+                    <span className="text-[11px] font-semibold text-[#a594fd]">10,000+ joined</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="text-[11px] font-semibold text-amber-100">Top 500 get Pro free</span>
                 </div>
             </div>
         </form>
@@ -184,7 +178,7 @@ function WaitlistFormContent() {
 
 export function WaitlistForm() {
     return (
-        <Suspense fallback={<div className="h-12 w-full max-w-[400px] bg-white/5 rounded-xl animate-pulse" />}>
+        <Suspense fallback={<div className="h-14 w-full max-w-[480px] bg-white/5 rounded-2xl animate-pulse" />}>
             <WaitlistFormContent />
         </Suspense>
     );

@@ -5,7 +5,7 @@ import { Solution } from "@/components/landing/Solution";
 import { ImpactStats } from "@/components/landing/ImpactStats";
 import { FeaturePreviews } from "@/components/landing/FeaturePreviews";
 import { AppPreview } from "@/components/landing/AppPreview";
-import { Testimonials } from "@/components/landing/Testimonials";
+
 import { FAQ } from "@/components/landing/FAQ";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
@@ -20,7 +20,7 @@ export default function Home() {
             <ImpactStats />
             <FeaturePreviews />
             <AppPreview />
-            <Testimonials />
+
             <FAQ />
             <FinalCTA />
             <Footer />

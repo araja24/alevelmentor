@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { ShimmerButton } from "./ShimmerButton";
 
 const navLinks = ["Features", "How It Works", "Community", "FAQ"];
 
@@ -61,13 +62,12 @@ export function Navbar() {
                                 >
                                     Sign in
                                 </Link>
-                                <Link
+                                <ShimmerButton
                                     href="#join"
-                                    className="relative overflow-hidden text-[13px] font-semibold text-white bg-[#5a35f8] hover:bg-[#4c2de0] rounded-full px-5 py-2 transition-all duration-200 shadow-[0_0_12px_rgba(90,53,248,0.4)]"
+                                    className="px-5 py-2 text-[13px] shadow-[0_0_12px_rgba(90,53,248,0.4)] hover:shadow-[0_0_20px_rgba(90,53,248,0.6)]"
                                 >
                                     Join Waitlist →
-                                    <span className="pointer-events-none absolute inset-0 shimmer-sweep" />
-                                </Link>
+                                </ShimmerButton>
                             </div>
 
                             {/* Mobile toggle */}
@@ -143,13 +143,12 @@ export function Navbar() {
                             </Link>
 
                             {/* CTA */}
-                            <Link
+                            <ShimmerButton
                                 href="#join"
-                                className="relative overflow-hidden text-[13px] font-semibold text-white bg-[#5a35f8] hover:bg-[#4c2de0] rounded-full px-5 py-2 transition-all duration-200 shadow-[0_0_12px_rgba(90,53,248,0.4)]"
+                                className="px-5 py-2 text-[13px] shadow-[0_0_12px_rgba(90,53,248,0.4)] hover:shadow-[0_0_20px_rgba(90,53,248,0.6)]"
                             >
                                 Join Waitlist →
-                                <span className="pointer-events-none absolute inset-0 shimmer-sweep" />
-                            </Link>
+                            </ShimmerButton>
                         </div>
                     </motion.div>
                 )}
@@ -188,14 +187,14 @@ export function Navbar() {
                             >
                                 Sign in
                             </Link>
-                            <Link
-                                href="#join"
-                                onClick={() => setMobileOpen(false)}
-                                className="relative overflow-hidden text-lg font-semibold text-white bg-[#5a35f8] rounded-full px-8 py-3"
-                            >
-                                Join Waitlist →
-                                <span className="pointer-events-none absolute inset-0 shimmer-sweep" />
-                            </Link>
+                            <div onClick={() => setMobileOpen(false)}>
+                                <ShimmerButton
+                                    href="#join"
+                                    className="px-8 py-3 text-lg"
+                                >
+                                    Join Waitlist →
+                                </ShimmerButton>
+                            </div>
                         </div>
                     </motion.div>
                 )}

@@ -11,6 +11,8 @@
   --animate-scroll-left: scroll-left 40s linear infinite;
   --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
   --animate-shimmer-sweep: shimmer-sweep 3s ease-in-out infinite;
+  --animate-border-rotate: border-rotate 4s linear infinite;
+  --animate-spin-slow: spin 8s linear infinite;
 
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
@@ -20,6 +22,28 @@
   --color-ring: var(--ring);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+}
+
+/* 
+ * --------------------------------------------------------------------------
+ *  CUSTOM PROPERTIES FOR ANIMATIONS
+ * --------------------------------------------------------------------------
+ *  Required for the "conic border" effect requested by the user.
+ */
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-rotate {
+  0% {
+    --gradient-angle: 0deg;
+  }
+
+  100% {
+    --gradient-angle: 360deg;
+  }
 }
 
 :root {
@@ -231,11 +255,11 @@
     transform: translateX(-100%);
   }
 
-  30% {
-    transform: translateX(100%);
+  50% {
+    transform: translateX(250%);
   }
 
   100% {
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
 }
