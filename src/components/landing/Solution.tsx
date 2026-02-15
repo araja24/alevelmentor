@@ -93,7 +93,7 @@ function DashboardPreview() {
                 <div className="absolute top-[70%] left-[20%] w-[200px] h-[200px] rounded-full bg-[#3ed6ff]/8 blur-[80px]" />
             </div>
 
-            <div className="relative z-10 space-y-3 max-w-[520px]">
+            <div className="relative z-10 space-y-3 w-full max-w-[520px]">
                 {/* ── Header Bar ── */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
@@ -122,7 +122,7 @@ function DashboardPreview() {
                     </div>
 
                     {/* Stats row */}
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {[
                             { label: "Study Hours", value: "127", icon: Clock, color: "#5a35f8" },
                             { label: "Papers Done", value: "43", icon: BookOpen, color: "#3ed6ff" },
@@ -151,13 +151,13 @@ function DashboardPreview() {
                 </motion.div>
 
                 {/* ── Middle Row: Progress Rings + Upcoming ── */}
-                <div className="grid grid-cols-5 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
                     {/* Progress rings */}
                     <motion.div
                         initial={{ opacity: 0, y: 16 }}
                         animate={inView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 0.3 }}
-                        className="col-span-3 rounded-[16px] p-4 border border-white/[0.06]"
+                        className="sm:col-span-3 rounded-[16px] p-4 border border-white/[0.06]"
                         style={{
                             background: "linear-gradient(135deg, rgba(12,12,14,0.95) 0%, rgba(18,18,22,0.95) 100%)",
                             boxShadow: "0 12px 36px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03)",
@@ -184,7 +184,7 @@ function DashboardPreview() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={inView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 0.4 }}
-                        className="col-span-2 rounded-[16px] p-4 border border-white/[0.06]"
+                        className="sm:col-span-2 rounded-[16px] p-4 border border-white/[0.06]"
                         style={{
                             background: "linear-gradient(135deg, rgba(12,12,14,0.95) 0%, rgba(18,18,22,0.95) 100%)",
                             boxShadow: "0 12px 36px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03)",

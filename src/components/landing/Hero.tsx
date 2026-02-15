@@ -63,7 +63,7 @@ function FloatingPreview() {
                     rotateY,
                     transformStyle: "preserve-3d",
                 }}
-                className="relative z-10 space-y-4 max-w-[420px]"
+                className="relative z-10 space-y-4 w-full max-w-[420px]"
             >
                 {/* ── Card 1: Roadmap Progress ── */}
                 <motion.div
@@ -226,43 +226,11 @@ export function Hero() {
                             </div>
                         </div>
 
-                        {/* Social proof */}
-                        <div className="flex items-center gap-3 mb-8">
-                            <div className="flex -space-x-2">
-                                {[
-                                    "bg-gradient-to-br from-purple-500 to-pink-500",
-                                    "bg-gradient-to-br from-blue-500 to-cyan-500",
-                                    "bg-gradient-to-br from-emerald-500 to-teal-500",
-                                    "bg-gradient-to-br from-orange-500 to-red-500",
-                                ].map((bg, i) => (
-                                    <div
-                                        key={i}
-                                        className={`h-7 w-7 rounded-full border-2 border-[#09090b] ${bg} flex items-center justify-center`}
-                                    >
-                                        <span className="text-[8px] font-bold text-white">
-                                            {["AK", "JT", "PS", "DM"][i]}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                                <div className="flex">
-                                    {Array.from({ length: 5 }).map((_, i) => (
-                                        <Star
-                                            key={i}
-                                            className="h-3.5 w-3.5 text-yellow-400 fill-yellow-400"
-                                        />
-                                    ))}
-                                </div>
-                                <span className="text-[12px] text-white/50 font-medium">
-                                    10,000+ students
-                                </span>
-                            </div>
-                        </div>
+
 
                         {/* Heading */}
                         <h1
-                            className="text-[clamp(40px,5vw,72px)] font-bold tracking-[-0.03em] leading-[1.1] mb-8 max-w-[900px]"
+                            className="text-[clamp(36px,5vw,72px)] font-bold tracking-[-0.03em] leading-[1.1] mb-8 max-w-[900px]"
                             style={{ color: "var(--text-primary)" }}
                         >
                             You've done <span className="relative inline-block">

@@ -75,7 +75,7 @@ export function Pricing() {
           </p>
         </RevealSection>
 
-        <div className="grid md:grid-cols-3 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
@@ -95,11 +95,10 @@ export function Pricing() {
                 )}
 
                 <div
-                  className={`relative rounded-2xl p-7 h-full flex flex-col ${
-                    plan.popular
+                  className={`relative rounded-2xl p-7 h-full flex flex-col ${plan.popular
                       ? "bg-card"
                       : "bg-card border border-border"
-                  }`}
+                    }`}
                 >
                   {/* Popular badge */}
                   {plan.popular && (

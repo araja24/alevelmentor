@@ -161,10 +161,10 @@ export function Navbar() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-40 bg-[#09090b]/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 md:hidden"
+                        className="fixed inset-0 z-[60] bg-[#09090b]/98 backdrop-blur-2xl flex flex-col items-center justify-center gap-8 md:hidden"
                     >
                         <button
-                            className="absolute top-5 right-6 text-white/80"
+                            className="absolute top-6 right-6 text-white/80 p-2"
                             onClick={() => setMobileOpen(false)}
                         >
                             <X size={24} />

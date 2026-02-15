@@ -82,22 +82,20 @@ function RoadmapPanel() {
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.07, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs ${
-              t.current
+            className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs ${t.current
                 ? "bg-[#5a35f8]/10 border border-[#5a35f8]/20"
                 : t.done
-                ? "bg-muted/20"
-                : "bg-muted/30"
-            }`}
+                  ? "bg-muted/20"
+                  : "bg-muted/30"
+              }`}
           >
             <div
-              className={`h-4 w-4 rounded-full flex items-center justify-center shrink-0 ${
-                t.done
+              className={`h-4 w-4 rounded-full flex items-center justify-center shrink-0 ${t.done
                   ? "bg-emerald-500"
                   : t.current
-                  ? "border-2 border-[#5a35f8]"
-                  : "border-2 border-muted-foreground/30"
-              }`}
+                    ? "border-2 border-[#5a35f8]"
+                    : "border-2 border-muted-foreground/30"
+                }`}
             >
               {t.done && (
                 <svg
@@ -120,8 +118,8 @@ function RoadmapPanel() {
                 t.done
                   ? "line-through text-muted-foreground"
                   : t.current
-                  ? "font-semibold text-[#5a35f8]"
-                  : ""
+                    ? "font-semibold text-[#5a35f8]"
+                    : ""
               }
             >
               {t.label}
@@ -166,13 +164,12 @@ function AnalyticsPanel() {
                 {t.label}
               </span>
               <span
-                className={`font-semibold ${
-                  t.score < 65
+                className={`font-semibold ${t.score < 65
                     ? "text-red-500"
                     : t.score < 80
-                    ? "text-amber-500"
-                    : "text-emerald-600"
-                }`}
+                      ? "text-amber-500"
+                      : "text-emerald-600"
+                  }`}
               >
                 {t.score}%
               </span>
@@ -340,7 +337,7 @@ export function ScrollWalkthrough() {
                 alevelmentor · My Dashboard
               </p>
             </div>
-            <div className="p-5">
+            <div className="p-5 overflow-x-auto">
               <RoadmapPanel />
             </div>
           </div>
@@ -446,11 +443,10 @@ export function ScrollWalkthrough() {
                       scale: isActive ? 1 : 0.975,
                     }}
                     transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                    className={`w-full rounded-2xl border p-7 transition-colors duration-300 ${
-                      isActive
+                    className={`w-full rounded-2xl border p-7 transition-colors duration-300 ${isActive
                         ? "border-[#5a35f8]/30 bg-card shadow-lg shadow-[#5a35f8]/6"
                         : "border-border bg-card/50"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2.5 mb-5">
                       <motion.div
@@ -461,9 +457,8 @@ export function ScrollWalkthrough() {
                         <f.Icon className={`h-4 w-4 ${isActive ? "text-white" : "text-muted-foreground"}`} />
                       </motion.div>
                       <span
-                        className={`text-xs font-semibold uppercase tracking-wider transition-colors duration-300 ${
-                          isActive ? "text-[#5a35f8]" : "text-muted-foreground"
-                        }`}
+                        className={`text-xs font-semibold uppercase tracking-wider transition-colors duration-300 ${isActive ? "text-[#5a35f8]" : "text-muted-foreground"
+                          }`}
                       >
                         {f.label}
                       </span>
