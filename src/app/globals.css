@@ -140,21 +140,21 @@
   --color-background-primary: #ffffff;
   --color-background-secondary: #f9fafb;
   --color-card-background: linear-gradient(180deg, #ffffff 0%, #fffdf7 100%);
-  --color-pill-light-orange-bg: #fff5e6;
+  --color-pill-light-orange-bg: #ede9fe;
   --color-pill-light-green-bg: #d1fae5;
   --color-text-heading: #1a1a1a;
   --color-text-body: #4a4a4a;
   --color-text-muted: #888888;
-  --color-text-orange-accent: #fe7f00;
+  --color-text-orange-accent: #533FEC;
   --color-text-green-accent: #065f46;
-  --color-accent-orange-primary: #fe7f00;
-  --color-accent-orange-dark: #d36a00;
+  --color-accent-orange-primary: #533FEC;
+  --color-accent-orange-dark: #4338ca;
   --color-button-primary-bg: #1a1a1a;
   --color-button-primary-text: #ffffff;
   --color-button-secondary-bg: #f2f2f2;
   --color-button-secondary-text: #333333;
   --color-border-subtle: #e0e0e0;
-  --color-icon-background: #fe7f00;
+  --color-icon-background: #533FEC;
 
   /* No page-level glows in light mode — zero out so components render nothing */
   --glow-warm-primary: transparent;
@@ -167,7 +167,7 @@
   /* Cards: crisp white with subtle shadow (Ametrix depth) */
   --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 
-  /* Light mode accent: solid orange (no vertical gradient on headlines) */
+  /* Light mode accent: solid purple (no vertical gradient on headlines) */
   --accent-2: var(--color-accent-orange-primary);
   --accent-2-dark: var(--color-accent-orange-dark);
   --gradient-text-heading: linear-gradient(180deg, #1a1a1a 20%, #52525b 100%);
@@ -178,18 +178,18 @@
   --input: 240 5% 84%;
   --ring: 240 5% 34%;
 
-  /* Impact stat headline: darker green for contrast on white */
-  --impact-stat-gradient: linear-gradient(180deg, #1a1a1a 20%, #166534 100%);
+  /* Impact stat: solid neon blue, no gradient; glow set below in .impact-stats-section */
+  --impact-stat-gradient: linear-gradient(180deg, #0ea5e9 0%, #0ea5e9 100%);
 
-  /* ShimmerButton and focus rings — orange in light */
+  /* ShimmerButton and focus rings — purple in light */
   --shimmer-btn-bg: var(--color-accent-orange-primary);
-  --shimmer-btn-shadow: 0 0 24px rgba(254, 127, 0, 0.35);
-  --shimmer-btn-shadow-hover: 0 0 40px rgba(254, 127, 0, 0.5);
-  --accent-glow: 0 0 24px rgba(254, 127, 0, 0.15);
+  --shimmer-btn-shadow: 0 0 24px rgba(83, 63, 236, 0.35);
+  --shimmer-btn-shadow-hover: 0 0 40px rgba(83, 63, 236, 0.5);
+  --accent-glow: 0 0 24px rgba(83, 63, 236, 0.15);
 }
 
 .light ::selection {
-  background: rgba(254, 127, 0, 0.35);
+  background: rgba(83, 63, 236, 0.35);
   color: #1a1a1a;
 }
 
@@ -278,7 +278,7 @@
 .light .pill-badge {
   background: var(--color-pill-light-orange-bg);
   color: var(--color-text-orange-accent);
-  border-color: rgba(254, 127, 0, 0.25);
+  border-color: rgba(83, 63, 236, 0.25);
 }
 
 .purple-glow {
@@ -308,6 +308,13 @@
 .light .solution-glows,
 .light .analytics-card-glow {
   display: none !important;
+}
+
+/* Impact stats in light: show neon blue glow (exception to .stat-glows hidden above) */
+.light .impact-stats-section .impact-stat-glow {
+  display: block !important;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.45) 0%, rgba(14, 165, 233, 0.2) 35%, rgba(14, 165, 233, 0.06) 55%, transparent 70%) !important;
+  box-shadow: 0 0 80px rgba(14, 165, 233, 0.25), 0 0 120px rgba(14, 165, 233, 0.12);
 }
 
 /* ShimmerButton hover shadow — theme-aware */
@@ -520,5 +527,58 @@ input[type="range"].accent-slider::-moz-range-thumb {
 @media (max-width: 768px) {
   .animated-bg .animated-bg-reduce {
     display: none;
+  }
+}
+
+/* Impact stats: glow and headline — full size on desktop, reduced on mobile for performance */
+.impact-stat-glow {
+  width: 700px;
+  height: 500px;
+  filter: blur(120px);
+}
+
+.impact-stat-value {
+  font-size: clamp(60px, 15vw, 200px);
+}
+
+@media (max-width: 768px) {
+  .impact-stat-glow {
+    width: 280px;
+    height: 160px;
+    filter: blur(32px);
+  }
+
+  .impact-stat-value {
+    font-size: clamp(32px, 9vw, 60px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .impact-stat-glow {
+    width: 280px;
+    height: 160px;
+    filter: blur(32px);
+  }
+}
+
+/* Impact stats section: tall for scroll (one stat at a time on mobile and desktop) */
+.impact-stats-section {
+  height: 400vh;
+}
+
+@media (max-width: 768px) {
+  .impact-stats-section {
+    height: 400vh;
+  }
+}
+
+/* Dashboard preview: glow blur reduced on mobile for performance */
+.dashboard-preview-blur {
+  filter: blur(50px);
+}
+
+@media (max-width: 768px) {
+  .dashboard-preview-blur {
+    filter: blur(24px);
   }
 }

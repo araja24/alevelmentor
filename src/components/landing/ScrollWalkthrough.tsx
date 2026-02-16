@@ -139,8 +139,8 @@ function RoadmapPanel() {
 function AnalyticsPanel() {
   const topics = [
     { label: "Organic Chemistry", score: 42, color: "bg-red-500" },
-    { label: "Electrochemistry", score: 58, color: "bg-amber-500" },
-    { label: "Equilibria", score: 67, color: "bg-amber-400" },
+    { label: "Electrochemistry", score: 58, color: "bg-[var(--accent-2)]" },
+    { label: "Equilibria", score: 67, color: "bg-[var(--accent-2)]" },
     { label: "Energetics", score: 79, color: "bg-[var(--accent-2)]" },
     { label: "Atomic Structure", score: 91, color: "bg-emerald-500" },
   ];
@@ -167,7 +167,7 @@ function AnalyticsPanel() {
                 className={`font-semibold ${t.score < 65
                     ? "text-red-500"
                     : t.score < 80
-                      ? "text-amber-500"
+                      ? "text-[var(--accent-2)]"
                       : "text-emerald-600"
                   }`}
               >

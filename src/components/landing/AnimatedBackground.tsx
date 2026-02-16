@@ -9,12 +9,12 @@ export function AnimatedBackground() {
   const isLight = resolvedTheme === "light";
 
   const meshGradient = isLight
-    ? "linear-gradient(135deg, rgba(254,127,0,0.04) 0%, transparent 30%, transparent 50%, transparent 70%, rgba(254,127,0,0.02) 100%)"
+    ? "linear-gradient(135deg, rgba(83,63,236,0.04) 0%, transparent 30%, transparent 50%, transparent 70%, rgba(83,63,236,0.02) 100%)"
     : "linear-gradient(135deg, rgba(90,53,248,0.35) 0%, transparent 30%, rgba(139,108,249,0.25) 50%, transparent 70%, rgba(99,102,241,0.18) 100%)";
 
-  const orb1 = isLight ? "radial-gradient(circle, rgba(254,127,0,0.06) 0%, transparent 70%)" : "radial-gradient(circle, rgba(90,53,248,0.4) 0%, transparent 70%)";
-  const orb2 = isLight ? "radial-gradient(circle, rgba(254,127,0,0.04) 0%, transparent 70%)" : "radial-gradient(circle, rgba(139,108,249,0.35) 0%, transparent 70%)";
-  const orb3 = isLight ? "radial-gradient(circle, rgba(254,127,0,0.03) 0%, transparent 70%)" : "radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%)";
+  const orb1 = isLight ? "radial-gradient(circle, rgba(83,63,236,0.06) 0%, transparent 70%)" : "radial-gradient(circle, rgba(90,53,248,0.4) 0%, transparent 70%)";
+  const orb2 = isLight ? "radial-gradient(circle, rgba(83,63,236,0.04) 0%, transparent 70%)" : "radial-gradient(circle, rgba(139,108,249,0.35) 0%, transparent 70%)";
+  const orb3 = isLight ? "radial-gradient(circle, rgba(83,63,236,0.03) 0%, transparent 70%)" : "radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%)";
 
   return (
     <div className="animated-bg fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
@@ -24,7 +24,7 @@ export function AnimatedBackground() {
       {/* Animated layers are disabled for users who prefer reduced motion. On small screens, fewer layers (see .animated-bg-reduce) for performance. */}
       {!prefersReduced && (
         <>
-          {/* Slow drifting gradient mesh — orange in light, purple in dark */}
+          {/* Slow drifting gradient mesh — purple in light and dark */}
           <div
             className="absolute inset-0 opacity-[0.02] dark:opacity-[0.06] animate-gradient-drift"
             style={{
@@ -33,7 +33,7 @@ export function AnimatedBackground() {
             }}
           />
 
-          {/* Aurora orbs — orange in light, purple in dark. orb-2 and orb-3 hidden on small screens via CSS. */}
+          {/* Aurora orbs — purple in light and dark. orb-2 and orb-3 hidden on small screens via CSS. */}
           <div
             className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full opacity-[0.05] dark:opacity-15 animate-aurora"
             style={{ background: orb1 }}

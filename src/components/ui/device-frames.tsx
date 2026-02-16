@@ -38,8 +38,8 @@ export function MacBookFrame({ children, className, glow = false, glowColor = "v
                 src="/devices/macbookframe.avif"
                 alt=""
                 fill
+                sizes="(max-width: 768px) 90vw, 1280px"
                 className="absolute inset-0 w-full h-full object-contain z-20 pointer-events-none"
-                unoptimized
             />
             {/* Screen content */}
             <div className="absolute inset-0 z-10 pt-[3.2%] pb-[5.8%] px-[11.2%]">
@@ -78,8 +78,8 @@ export function IPhoneFrame({ children, className, glow = false, glowColor = "va
                 src="/devices/iphoneframe.avif"
                 alt=""
                 fill
+                sizes="(max-width: 768px) 50vw, 400px"
                 className="absolute inset-0 w-full h-full object-contain z-20 pointer-events-none"
-                unoptimized
             />
             <div className="absolute inset-0 z-10 pt-[5%] pb-[5%] px-[6.5%]">
                 <div className="w-full h-full overflow-hidden rounded-[10%] flex flex-col" style={{ background: "var(--bg-primary)" }}>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Instagram } from "lucide-react";
 
 export function Footer() {
   return (
@@ -18,6 +19,16 @@ export function Footer() {
           <p className="body mt-2 max-w-[260px] text-muted opacity-80">
             Personalised revision for A-Level students. Built by students, powered by technology.
           </p>
+          <a
+            href="https://www.instagram.com/alevelmentorapp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mt-4 text-muted hover:gradient-text-heading transition-colors duration-200"
+            aria-label="Follow us on Instagram"
+          >
+            <Instagram className="h-5 w-5" />
+            <span className="text-sm">@alevelmentorapp</span>
+          </a>
         </div>
 
         {/* Product */}

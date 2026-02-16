@@ -8,6 +8,7 @@ import {
     AnimatePresence,
 } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { ShimmerButton } from "./ShimmerButton";
@@ -38,6 +39,7 @@ export function Navbar() {
     });
 
     const logoSrc = !mounted ? "/logo_large_light.svg" : (isLight ? "/logo_large.svg" : "/logo_large_light.svg");
+    const smallLogoSrc = !mounted ? "/logo_small_light.svg" : (isLight ? "/logo_small.svg" : "/logo_small_light.svg");
 
     return (
         <>
@@ -55,8 +57,8 @@ export function Navbar() {
                         <div className="mx-auto max-w-[1200px] flex items-center justify-between">
                             {/* Logo */}
                             <Link href="/" className="flex items-center gap-2.5 shrink-0">
-                                <img src={logoSrc} alt="A Level Mentor" className="hidden xl:block h-5 w-auto" />
-                                <img src="/logo_small.svg" alt="Logo" className="xl:hidden h-[20px] w-auto" />
+                                <Image src={logoSrc} alt="A Level Mentor" width={120} height={20} className="hidden xl:block h-5 w-auto" priority />
+                                <Image src={smallLogoSrc} alt="Logo" width={20} height={20} className="xl:hidden h-[20px] w-auto" priority />
                             </Link>
 
                             {/* Center links */}
@@ -133,8 +135,8 @@ export function Navbar() {
                                 href="/"
                                 className="flex items-center pl-2 md:pr-4 py-1"
                             >
-                                <img src={logoSrc} alt="A Level Mentor" className="hidden xl:block h-[18px] w-auto" />
-                                <img src="/logo_small.svg" alt="Logo" className="xl:hidden h-[20px] w-auto" />
+                                <Image src={logoSrc} alt="A Level Mentor" width={108} height={18} className="hidden xl:block h-[18px] w-auto" />
+                                <Image src={smallLogoSrc} alt="Logo" width={20} height={20} className="xl:hidden h-[20px] w-auto" />
                             </Link>
 
                             {/* Divider */}

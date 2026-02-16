@@ -153,7 +153,7 @@ function RoadmapCard() {
     return (
         <div className="relative">
             <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors"
+                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
             >
                 {/* Header */}
                 <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)]">
@@ -230,7 +230,7 @@ function MentorCard() {
     return (
         <div className="relative">
             <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors"
+                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
             >
                 {/* Header */}
                 <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)] flex items-center gap-2.5">
@@ -312,7 +312,7 @@ function GradeCard() {
     return (
         <div className="relative">
             <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors"
+                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
             >
                 {/* Header */}
                 <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)]">

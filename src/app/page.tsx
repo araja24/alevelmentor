@@ -1,6 +1,38 @@
+import { Suspense } from "react";
 import dynamic from "next/dynamic";
-import { Navbar } from "@/components/landing/Navbar";
-import { Hero } from "@/components/landing/Hero";
+
+const Navbar = dynamic(
+  () => import("@/components/landing/Navbar").then((m) => ({ default: m.Navbar })),
+  {
+    ssr: true,
+    loading: () => (
+      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-5">
+        <div className="mx-auto max-w-[1200px] flex items-center justify-between">
+          <div className="h-5 w-[120px]" />
+          <div className="hidden xl:flex items-center gap-8">
+            <div className="h-4 w-16" />
+            <div className="h-4 w-20" />
+            <div className="h-4 w-14" />
+            <div className="h-4 w-10" />
+          </div>
+          <div className="hidden xl:flex items-center gap-4">
+            <div className="h-9 w-[120px] rounded-full" />
+          </div>
+        </div>
+      </header>
+    ),
+  }
+);
+
+const Hero = dynamic(
+  () => import("@/components/landing/Hero").then((m) => ({ default: m.Hero })),
+  {
+    ssr: true,
+    loading: () => (
+      <section className="relative flex flex-col items-center justify-center pt-24 pb-16 lg:pt-28 lg:pb-20 min-h-[520px]" />
+    ),
+  }
+);
 
 const DashboardPreviewSection = dynamic(
   () => import("@/components/landing/DashboardPreviewSection").then((m) => ({ default: m.DashboardPreviewSection })),
@@ -52,21 +84,45 @@ const Footer = dynamic(
   { ssr: true, loading: () => <footer className="min-h-[200px]" aria-hidden /> }
 );
 
+const SplashCursor = dynamic(
+  () => import("@/components/landing/SplashCursor"),
+  { ssr: true }
+);
+
+const MouseGlow = dynamic(
+  () => import("@/components/landing/MouseGlow").then((m) => ({ default: m.MouseGlow })),
+  { ssr: true }
+);
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] overflow-x-clip selection:bg-indigo-500/30 selection:text-white">
+      <SplashCursor />
+      <MouseGlow />
       <Navbar />
       <Hero />
       <DashboardPreviewSection />
-      <Problem />
-      <SystemBridge />
-      <FeaturePreviews />
-      <MoreFeatures />
-      <ComparisonTable />
-      <ImpactStats />
-      <FAQ />
-      <FinalCTA />
-      <Footer />
+
+      <Suspense fallback={<section className="min-h-[600px]" aria-hidden />}>
+        <Problem />
+        <SystemBridge />
+      </Suspense>
+
+      <Suspense fallback={<section className="min-h-[720px]" aria-hidden />}>
+        <FeaturePreviews />
+        <MoreFeatures />
+      </Suspense>
+
+      <Suspense fallback={<section className="min-h-[560px]" aria-hidden />}>
+        <ComparisonTable />
+        <ImpactStats />
+      </Suspense>
+
+      <Suspense fallback={<section className="min-h-[980px]" aria-hidden />}>
+        <FAQ />
+        <FinalCTA />
+        <Footer />
+      </Suspense>
     </main>
   );
 }

@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
 
 const paragraph =
-    "1 to 2 hours. Every single day, wasted — planning what to revise instead of actually doing it. Your grades can't afford that.";
+    "2 to 3 hours. Wasted. Every single day. You plan what you do, but never do it. Your grades can't afford that. It's time we changed that.";
 
 function Word({
     children,

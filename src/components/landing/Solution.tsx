@@ -112,7 +112,7 @@ export function DashboardPreview() {
                             </div>
                         </div>
                         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                            <Flame className="h-3 w-3 text-orange-400" />
+                            <Flame className="h-3 w-3 text-[var(--accent-2)]" />
                             <span className="text-[10px] font-semibold text-emerald-400">12 day streak</span>
                         </div>
                     </div>

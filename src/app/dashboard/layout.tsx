@@ -1,24 +1,15 @@
-import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getSession, getProfile } from "@/lib/supabase/get-session-profile";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
+  const session = await getSession();
   if (!session) redirect("/login");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("onboarding_completed")
-    .eq("id", session.user.id)
-    .maybeSingle();
-
+  const profile = await getProfile(session.user.id);
   if (!profile?.onboarding_completed) redirect("/onboarding");
 
   return (

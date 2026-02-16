@@ -1,6 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { useTheme } from "next-themes";
 import {
   Area,
   AreaChart,
@@ -27,6 +29,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const STUDY_HOURS_DATA = [
   { day: "Mon", hours: 4 },
@@ -101,8 +104,9 @@ function Sparkline({ trend }: { trend: string }) {
   );
 }
 
-/** Study hours this week — Recharts AreaChart, formatted with axes */
+/** Study hours this week — Recharts AreaChart; animation disabled on reduced motion for mobile performance */
 function StudyHoursLineChart() {
+  const prefersReducedMotion = useReducedMotion();
   return (
     <div className="w-full h-[88px]">
       <ResponsiveContainer width="100%" height="100%">
@@ -129,7 +133,7 @@ function StudyHoursLineChart() {
             stroke="var(--accent-2)"
             strokeWidth={2}
             fill="url(#studyAreaGrad)"
-            isAnimationActive
+            isAnimationActive={!prefersReducedMotion}
             animationDuration={800}
             animationEasing="ease-out"
           />
@@ -140,8 +144,14 @@ function StudyHoursLineChart() {
 }
 
 export function LaptopDashboardPreview() {
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  useEffect(() => setMounted(true), []);
+  const sidebarLogoSrc = !mounted ? "/logo_small_light.svg" : (isLight ? "/logo_small.svg" : "/logo_small_light.svg");
+
   return (
-    <div className="w-full max-w-[1200px] mx-auto min-w-0">
+    <div className="w-full h-full min-h-0 max-w-[1200px] mx-auto flex flex-col">
       {/* Browser chrome — match reference: nav, URL pill (lock, domain, star), tabs */}
       <div className="rounded-t-2xl px-4 py-2.5 flex items-center gap-3 bg-[var(--bg-card)]">
         <div className="flex gap-1.5 shrink-0">
@@ -178,7 +188,7 @@ export function LaptopDashboardPreview() {
       </div>
 
       {/* Window content — subtle purple tint to match UI theme */}
-      <div className="rounded-b-2xl overflow-hidden flex min-h-[480px] relative bg-[var(--bg-secondary)]">
+      <div className="flex-1 rounded-b-2xl overflow-hidden flex min-h-[480px] relative bg-[var(--bg-secondary)]">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -188,9 +198,11 @@ export function LaptopDashboardPreview() {
         {/* Sidebar — logo + tagline at top (match reference Crypton + Top Crypto Assets) */}
         <aside className="relative z-10 w-[180px] shrink-0 border-r border-[var(--border-muted)] py-4 px-2 flex flex-col">
           <div className="mb-4 px-3">
-            <img
-              src="/logo_small.svg"
+            <Image
+              src={sidebarLogoSrc}
               alt="A Level Mentor"
+              width={100}
+              height={28}
               className="h-7 w-auto shrink-0"
             />
             <p className="text-[10px] text-muted mt-1">Your revision system</p>
@@ -211,7 +223,7 @@ export function LaptopDashboardPreview() {
           ))}
           <div className="mt-auto pt-4">
             <div className="bento-card rounded-xl p-3 flex items-center gap-2">
-              <Zap className="h-4 w-4 text-amber-400" />
+              <Zap className="h-4 w-4 text-[var(--accent-2)]" />
               <span className="text-[11px] font-semibold text-[var(--text-primary)]">Activate Super</span>
             </div>
             <p className="text-[9px] text-muted mt-1 px-1">Unlock all features</p>

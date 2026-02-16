@@ -310,7 +310,7 @@ function GradePreview() {
             <div className="flex items-center gap-3 relative z-10">
               <span className="w-8 text-center text-[14px] font-bold text-white/30">{g.target}</span>
               <span className="text-white/10 text-[10px]">→</span>
-              <span className={`w-8 text-center text-[14px] font-bold ${g.match ? "text-emerald-400" : "text-amber-400"}`}>{g.predicted}</span>
+              <span className={`w-8 text-center text-[14px] font-bold ${g.match ? "text-emerald-400" : "text-[var(--accent-2)]"}`}>{g.predicted}</span>
             </div>
           </div>
         ))}
