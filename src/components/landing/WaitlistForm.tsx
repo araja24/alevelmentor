@@ -6,11 +6,9 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
-    Users,
     Trophy,
     Copy,
     Check,
-    ArrowRight,
     TrendingUp,
     Sparkles
 } from "lucide-react";
@@ -45,7 +43,8 @@ function WaitlistFormContent() {
         }
 
         try {
-            const res = await fetch("/api/waitlist", {
+            const apiBase = typeof window !== "undefined" ? window.location.origin : "";
+            const res = await fetch(`${apiBase}/api/waitlist`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, referralCode }),

@@ -64,16 +64,16 @@ export default function SignupPage() {
         <AnimatedBackground />
 
         <GlassCard className="w-full max-w-md p-8 text-center" gradient>
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
-            <Check className="h-8 w-8 text-emerald-500" />
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-pill-light-green-bg)] border border-[var(--color-text-green-accent)]/20 shadow-[0_0_30px_rgba(6,95,70,0.15)]">
+            <Check className="h-8 w-8 text-[var(--color-text-green-accent)]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-3">Check your email</h2>
-          <p className="text-white/60 text-sm leading-relaxed mb-8">
+          <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-3">Check your email</h2>
+          <p className="text-muted text-sm leading-relaxed mb-8">
             We&apos;ve sent a confirmation link to <br />
-            <strong className="text-white font-medium">{email}</strong>.
+            <strong className="text-[var(--text-primary)] font-medium">{email}</strong>.
             <br />Click it to activate your account.
           </p>
-          <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-xs text-white/40">
+          <div className="bg-[var(--glass-bg)] rounded-xl p-4 border border-[var(--glass-border)] text-xs text-[var(--text-dimmed)]">
             Check your spam folder if you don't see it within a minute.
           </div>
         </GlassCard>
@@ -88,7 +88,7 @@ export default function SignupPage() {
       <div className="fixed top-6 left-6 z-50">
         <Link
           href="/"
-          className="flex items-center gap-2 text-sm font-medium text-white/50 hover:text-white transition-colors"
+          className="flex items-center gap-2 text-sm font-medium text-[var(--text-dimmed)] hover:text-[var(--text-primary)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to home
@@ -102,20 +102,20 @@ export default function SignupPage() {
       <div className="relative z-10 w-full max-w-[440px]">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
-            <h1 className="text-2xl font-bold tracking-tight text-white">
-              alevel<span className="text-[#5a35f8]">mentor</span>
+            <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+              alevel<span className="text-[var(--accent-2)]">mentor</span>
             </h1>
           </Link>
         </div>
 
         <GlassCard className="p-8">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#5a35f8]/10 border border-[#5a35f8]/20 mb-4">
-              <Sparkles className="w-3 h-3 text-[#5a35f8]" />
-              <span className="text-[10px] font-semibold text-[#a594fd] uppercase tracking-wide">Start for free</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-pill-light-orange-bg)] border border-[var(--accent-2)]/20 mb-4">
+              <Sparkles className="w-3 h-3 text-[var(--accent-2)]" />
+              <span className="text-[10px] font-semibold text-[var(--accent-2)] uppercase tracking-wide">Start for free</span>
             </div>
-            <h2 className="text-xl font-semibold text-white mb-2">Create your account</h2>
-            <p className="text-sm text-white/50">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Create your account</h2>
+            <p className="text-sm text-muted">
               Join thousands of students getting A*s
             </p>
           </div>
@@ -123,7 +123,7 @@ export default function SignupPage() {
           <Button
             type="button"
             variant="outline"
-            className="w-full h-11 bg-white/[0.03] border-white/10 hover:bg-white/[0.08] hover:text-white text-white/80 gap-3 rounded-xl transition-all"
+            className="w-full h-11 bg-[var(--glass-bg)] border-[var(--glass-border)] hover:bg-[var(--surface-subtle)] hover:text-[var(--text-primary)] text-[var(--text-secondary)] gap-3 rounded-xl transition-all"
             onClick={handleGoogleSignup}
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -149,10 +149,10 @@ export default function SignupPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10" />
+              <div className="w-full border-t border-[var(--glass-border)]" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-[#121214] px-4 text-[10px] uppercase tracking-widest text-white/30">
+              <span className="bg-[var(--bg-card)] px-4 text-[10px] uppercase tracking-widest text-[var(--text-dimmed)]">
                 Or sign up with email
               </span>
             </div>
@@ -162,7 +162,7 @@ export default function SignupPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="fullName"
-                className="text-xs font-medium text-white/70 ml-1"
+                className="text-xs font-medium text-[var(--text-secondary)] ml-1"
               >
                 Full name
               </label>
@@ -173,14 +173,14 @@ export default function SignupPage() {
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="John Smith"
                 required
-                className="w-full h-11 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white placeholder:text-white/20 focus:border-[#5a35f8]/50 focus:bg-[#5a35f8]/5 focus:outline-none focus:ring-1 focus:ring-[#5a35f8]/50 transition-all"
+                className="w-full h-11 rounded-xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-4 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-dimmed)] focus:border-[var(--accent-2)]/50 focus:bg-[var(--accent-2)]/5 focus:outline-none focus:ring-1 focus:ring-[var(--accent-2)]/50 transition-all"
               />
             </div>
 
             <div className="space-y-1.5">
               <label
                 htmlFor="email"
-                className="text-xs font-medium text-white/70 ml-1"
+                className="text-xs font-medium text-[var(--text-secondary)] ml-1"
               >
                 Email address
               </label>
@@ -191,14 +191,14 @@ export default function SignupPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full h-11 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white placeholder:text-white/20 focus:border-[#5a35f8]/50 focus:bg-[#5a35f8]/5 focus:outline-none focus:ring-1 focus:ring-[#5a35f8]/50 transition-all"
+                className="w-full h-11 rounded-xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-4 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-dimmed)] focus:border-[var(--accent-2)]/50 focus:bg-[var(--accent-2)]/5 focus:outline-none focus:ring-1 focus:ring-[var(--accent-2)]/50 transition-all"
               />
             </div>
 
             <div className="space-y-1.5">
               <label
                 htmlFor="password"
-                className="text-xs font-medium text-white/70 ml-1"
+                className="text-xs font-medium text-[var(--text-secondary)] ml-1"
               >
                 Password
               </label>
@@ -210,7 +210,7 @@ export default function SignupPage() {
                 placeholder="Create a password"
                 required
                 minLength={8}
-                className="w-full h-11 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white placeholder:text-white/20 focus:border-[#5a35f8]/50 focus:bg-[#5a35f8]/5 focus:outline-none focus:ring-1 focus:ring-[#5a35f8]/50 transition-all"
+                className="w-full h-11 rounded-xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-4 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-dimmed)] focus:border-[var(--accent-2)]/50 focus:bg-[var(--accent-2)]/5 focus:outline-none focus:ring-1 focus:ring-[var(--accent-2)]/50 transition-all"
               />
             </div>
 
@@ -223,7 +223,7 @@ export default function SignupPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-11 bg-[#5a35f8] hover:bg-[#4a25e8] text-white rounded-xl text-sm font-semibold shadow-lg shadow-[#5a35f8]/20 transition-all mt-2"
+              className="w-full h-11 bg-[var(--shimmer-btn-bg)] hover:opacity-90 text-white rounded-xl text-sm font-semibold shadow-[var(--shimmer-btn-shadow)] hover:shadow-[var(--shimmer-btn-shadow-hover)] transition-all mt-2"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -233,11 +233,11 @@ export default function SignupPage() {
             </Button>
           </form>
 
-          <p className="mt-8 text-center text-sm text-white/40">
+          <p className="mt-8 text-center text-sm text-[var(--text-dimmed)]">
             Already have an account?{" "}
             <Link
               href="/login"
-              className="font-medium text-[#5a35f8] hover:text-[#7f63f9] transition-colors"
+              className="font-medium text-[var(--accent-2)] hover:opacity-80 transition-colors"
             >
               Sign in
             </Link>

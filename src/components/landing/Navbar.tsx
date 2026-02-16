@@ -31,7 +31,10 @@ export function Navbar() {
     useEffect(() => setMounted(true), []);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
-        setScrolled(latest > 60);
+        setScrolled((prev) => {
+            const next = latest > 60;
+            return next === prev ? prev : next;
+        });
     });
 
     const logoSrc = !mounted ? "/logo_large_light.svg" : (isLight ? "/logo_large.svg" : "/logo_large_light.svg");

@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { RevealSection } from "./RevealSection";
 import {
   Download,
@@ -12,7 +11,6 @@ import {
   BookOpen,
   CheckCircle2,
   Circle,
-  Clock,
   TrendingUp,
 } from "lucide-react";
 

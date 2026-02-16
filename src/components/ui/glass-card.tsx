@@ -1,16 +1,16 @@
 import { cn } from "@/lib/utils";
 
 interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
-    children: React.ReactNode;
-    className?: string;
-    gradient?: boolean;
+  children: React.ReactNode;
+  className?: string;
+  gradient?: boolean;
 }
 
 export function GlassCard({
-    children,
-    className,
-    gradient = false,
-    ...props
+  children,
+  className,
+  gradient = false,
+  ...props
 }: GlassCardProps) {
   return (
     <div

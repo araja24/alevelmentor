@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, useScroll, useMotionValueEvent, useInView } from "framer-motion";
-import { useRef } from "react";
 import { ease } from "@/lib/motion";
 import { LaptopDashboardPreview } from "./LaptopDashboardPreview";
 
@@ -16,12 +15,16 @@ const TILT_ANIMATE = { opacity: 1, y: 0, rotateX: 0 };
  */
 export function DashboardPreviewSection() {
     const sectionRef = useRef<HTMLDivElement>(null);
+    const hasSetScrolled = useRef(false);
     const [hasScrolled, setHasScrolled] = useState(false);
     const { scrollY } = useScroll();
     const inView = useInView(sectionRef, { amount: 0.2, margin: "-50px" });
 
     useMotionValueEvent(scrollY, "change", (v) => {
-        if (v > 80) setHasScrolled(true);
+        if (v > 80 && !hasSetScrolled.current) {
+            hasSetScrolled.current = true;
+            setHasScrolled(true);
+        }
     });
 
     const shouldAnimate = inView && hasScrolled;

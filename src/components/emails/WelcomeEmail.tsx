@@ -21,7 +21,7 @@ interface WelcomeEmailProps {
 }
 
 export function WelcomeEmail({
-  email,
+  email: _email,
   referralCode,
   rank,
   totalCount,
