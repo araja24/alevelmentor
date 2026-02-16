@@ -24,8 +24,8 @@ export function StepSubjects({ value, onChange }: Props) {
 
   return (
     <div className="text-center">
-      <h2 className="text-xl font-semibold text-white mb-2">What are your A-Level subjects?</h2>
-      <p className="text-sm text-white/50 mb-6">Select your subjects. More coming soon.</p>
+      <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>What are your A-Level subjects?</h2>
+      <p className="text-sm text-muted mb-6">Select your subjects. More coming soon.</p>
       <div className="grid grid-cols-2 gap-3">
         {SUBJECTS.map((s) => (
           <OptionCard
@@ -34,9 +34,9 @@ export function StepSubjects({ value, onChange }: Props) {
             onClick={() => s.enabled && toggle(s.name)}
             disabled={!s.enabled}
           >
-            <p className="text-sm font-medium text-white text-center">{s.name}</p>
+            <p className="text-sm font-medium text-center" style={{ color: 'var(--text-primary)' }}>{s.name}</p>
             {!s.enabled && (
-              <p className="text-[10px] text-white/30 text-center mt-1 uppercase tracking-wider">Coming soon</p>
+              <p className="text-[10px] text-[var(--text-dimmed)] text-center mt-1 uppercase tracking-wider">Coming soon</p>
             )}
           </OptionCard>
         ))}

@@ -1,36 +1,72 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
-import Lenis from "lenis";
+import { useEffect, useRef, type ReactNode } from "react";
 
-const LENIS_OPTIONS = {
-  lerp: 0.1,
-  duration: 1.2,
-  smoothWheel: true,
-  autoRaf: true,
-  touchMultiplier: 2,
-} as const;
+function isTouchDevice(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(pointer: coarse)").matches;
+}
+
+function setupNativeAnchorScroll(): () => void {
+  const handleAnchorClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const anchor = target.closest('a[href^="#"]') as HTMLAnchorElement | null;
+    if (!anchor || !anchor.hash) return;
+    const id = anchor.hash.slice(1);
+    const el = document.getElementById(id);
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+  document.addEventListener("click", handleAnchorClick, true);
+  return () => document.removeEventListener("click", handleAnchorClick, true);
+}
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
+  const teardownRef = useRef<(() => void) | null>(null);
+
   useEffect(() => {
-    const lenis = new Lenis(LENIS_OPTIONS);
+    if (isTouchDevice()) {
+      return setupNativeAnchorScroll();
+    }
 
-    const handleAnchorClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const anchor = target.closest('a[href^="#"]') as HTMLAnchorElement | null;
-      if (!anchor || !anchor.hash) return;
-      const id = anchor.hash.slice(1);
-      const el = document.getElementById(id);
-      if (el) {
-        e.preventDefault();
-        lenis.scrollTo(el, { offset: 0, duration: 1.2 });
-      }
-    };
+    let cancelled = false;
 
-    document.addEventListener("click", handleAnchorClick, true);
+    import("lenis").then((LenisModule) => {
+      if (cancelled) return;
+      const Lenis = LenisModule.default;
+      const lenis = new Lenis({
+        lerp: 0.1,
+        duration: 1.2,
+        smoothWheel: true,
+        autoRaf: true,
+        touchMultiplier: 2,
+      });
+
+      const handleAnchorClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        const anchor = target.closest('a[href^="#"]') as HTMLAnchorElement | null;
+        if (!anchor || !anchor.hash) return;
+        const id = anchor.hash.slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          lenis.scrollTo(el, { offset: 0, duration: 1.2 });
+        }
+      };
+
+      document.addEventListener("click", handleAnchorClick, true);
+      teardownRef.current = () => {
+        document.removeEventListener("click", handleAnchorClick, true);
+        lenis.destroy();
+        teardownRef.current = null;
+      };
+    });
+
     return () => {
-      document.removeEventListener("click", handleAnchorClick, true);
-      lenis.destroy();
+      cancelled = true;
+      teardownRef.current?.();
     };
   }, []);
 

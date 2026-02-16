@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import {
   AreaChart,
   Area,
@@ -71,12 +72,14 @@ interface Props {
 }
 
 export function GradeProjectionChart({ weeksUntilExam, targetGrade, yearGroup, weeklyHours }: Props) {
+  const prefersReducedMotion = useReducedMotion();
   const chartData = useMemo(
     () => generateProjection(weeksUntilExam, targetGrade, yearGroup, weeklyHours),
     [weeksUntilExam, targetGrade, yearGroup, weeklyHours]
   );
 
   const targetLine = targetGrade ? GRADE_TO_PCT[targetGrade] ?? 70 : null;
+  const noAnimation = !!prefersReducedMotion;
 
   return (
     <div className="h-[220px] w-full">
@@ -127,6 +130,7 @@ export function GradeProjectionChart({ weeksUntilExam, targetGrade, yearGroup, w
             strokeWidth={1.5}
             strokeDasharray="4 4"
             fill="none"
+            isAnimationActive={!noAnimation}
             animationDuration={CHART_ANIMATION.areaDuration}
             animationBegin={CHART_ANIMATION.areaBegin}
             animationEasing={CHART_ANIMATION.easing as any}
@@ -139,6 +143,7 @@ export function GradeProjectionChart({ weeksUntilExam, targetGrade, yearGroup, w
             stroke={CHART_COLORS.primary}
             strokeWidth={2.5}
             fill={`url(#${GRADIENT_DEFS.primaryAreaId})`}
+            isAnimationActive={!noAnimation}
             animationDuration={CHART_ANIMATION.areaDuration}
             animationBegin={0}
             animationEasing={CHART_ANIMATION.easing as any}

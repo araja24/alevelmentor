@@ -18,7 +18,6 @@ interface Props {
 export function AnalyticsPanel({ step, data, mobile }: Props) {
   const showInfographic = step === 4;
   const showReadiness = step === 5;
-  const showProjection = step <= 3 || step === 5;
 
   const weeksUntilExam = useMemo(() => {
     const firstDate = Object.values(data.exam_dates)[0];
@@ -55,7 +54,7 @@ export function AnalyticsPanel({ step, data, mobile }: Props) {
             {/* Grade projection chart */}
             <AnalyticsCard glow>
               <div className="flex items-center justify-between mb-4">
-                <h4 className="text-[13px] font-semibold text-white/80">Grade projection</h4>
+                <h4 className="text-[13px] font-semibold" style={{ color: 'var(--text-secondary)' }}>Grade projection</h4>
                 {targetGrade && <StatBadge variant="primary">{targetGrade} target</StatBadge>}
               </div>
               <GradeProjectionChart
@@ -69,18 +68,18 @@ export function AnalyticsPanel({ step, data, mobile }: Props) {
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-3">
               <AnalyticsCard>
-                <p className="text-[10px] uppercase tracking-wider text-white/40 mb-1">Weeks left</p>
-                <p className="text-2xl font-bold text-white">{weeksUntilExam}</p>
+                <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: 'var(--text-dimmed)' }}>Weeks left</p>
+                <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{weeksUntilExam}</p>
               </AnalyticsCard>
               <AnalyticsCard>
-                <p className="text-[10px] uppercase tracking-wider text-white/40 mb-1">Target</p>
-                <p className="text-2xl font-bold bg-gradient-to-r from-[#5a35f8] to-[#8b6cf9] bg-clip-text text-transparent">
+                <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: 'var(--text-dimmed)' }}>Target</p>
+                <p className="text-2xl font-bold bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-2), var(--accent-2-dark))' }}>
                   {targetGrade ?? '—'}
                 </p>
               </AnalyticsCard>
               <AnalyticsCard>
-                <p className="text-[10px] uppercase tracking-wider text-white/40 mb-1">Hrs/week</p>
-                <p className="text-2xl font-bold text-white">{data.weekly_revision_hours}</p>
+                <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: 'var(--text-dimmed)' }}>Hrs/week</p>
+                <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{data.weekly_revision_hours}</p>
               </AnalyticsCard>
             </div>
 

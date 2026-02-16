@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { AnimatedBackground } from '@/components/landing/AnimatedBackground';
+import { ThemeToggle } from '@/components/landing/ThemeToggle';
 import { useOnboardingAnalytics } from '@/hooks/useOnboardingAnalytics';
 import { StepYearGroup } from './steps/StepYearGroup';
 import { StepSubjects } from './steps/StepSubjects';
@@ -60,7 +61,7 @@ interface Props {
   existingProfile: Profile | null;
 }
 
-export function OnboardingShell({ userId, userEmail, existingProfile }: Props) {
+export function OnboardingShell({ userId, userEmail: _userEmail, existingProfile }: Props) {
   const router = useRouter();
   const supabase = createClient();
   const analytics = useOnboardingAnalytics(userId);
@@ -91,6 +92,14 @@ export function OnboardingShell({ userId, userEmail, existingProfile }: Props) {
     },
     []
   );
+
+  const handleYearGroup = useCallback((v: YearGroup) => update('year_group', v), [update]);
+  const handleSubjects = useCallback((v: string[]) => update('subjects', v), [update]);
+  const handleExamBoard = useCallback((v: ExamBoard) => update('exam_board', v), [update]);
+  const handleExamDates = useCallback((v: Record<string, string>) => update('exam_dates', v), [update]);
+  const handleTargetGrades = useCallback((v: Record<string, TargetGrade>) => update('target_grades', v), [update]);
+  const handlePrimaryStruggle = useCallback((v: PrimaryStruggle) => update('primary_struggle', v), [update]);
+  const handleWeeklyHours = useCallback((v: number) => update('weekly_revision_hours', v), [update]);
 
   const canProceed = (): boolean => {
     switch (step) {
@@ -177,27 +186,31 @@ export function OnboardingShell({ userId, userEmail, existingProfile }: Props) {
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Top bar */}
         <header className="flex items-center justify-between px-6 py-5">
-          <Link href="/" className="text-xl font-bold tracking-tight text-white">
-            alevel<span className="text-[#5a35f8]">mentor</span>
+          <Link href="/" className="text-xl font-bold tracking-tight text-[var(--text-primary)]">
+            alevel<span className="text-[var(--accent-2)]">mentor</span>
           </Link>
-          <span className="text-[11px] font-medium uppercase tracking-wider text-white/40">
-            {STEP_LABELS[step]}
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="text-[11px] font-medium uppercase tracking-wider text-[var(--text-dimmed)]">
+              {STEP_LABELS[step]}
+            </span>
+            <ThemeToggle />
+          </div>
         </header>
 
         {/* Progress bar */}
         <div className="px-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-medium text-white/40">
+            <span className="text-[11px] font-medium text-[var(--text-dimmed)]">
               Step {step + 1} of {TOTAL_STEPS}
             </span>
-            <span className="text-[11px] font-medium text-white/40">
+            <span className="text-[11px] font-medium text-[var(--text-dimmed)]">
               {Math.round(((step + 1) / TOTAL_STEPS) * 100)}%
             </span>
           </div>
-          <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+          <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--glass-bg)' }}>
             <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-[#5a35f8] to-[#8b6cf9]"
+              className="h-full rounded-full"
+              style={{ background: 'var(--shimmer-btn-bg)' }}
               initial={false}
               animate={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }}
               transition={{ duration: 0.4, ease: 'easeInOut' }}
@@ -212,17 +225,27 @@ export function OnboardingShell({ userId, userEmail, existingProfile }: Props) {
             <div
               className="relative overflow-hidden rounded-[20px] p-8"
               style={{
-                background: 'linear-gradient(145deg, rgba(16,16,18,0.97) 0%, rgba(10,10,12,0.97) 100%)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                boxShadow: '0 24px 64px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
+                background: 'var(--bg-card)',
+                border: '1px solid var(--glass-border)',
+                boxShadow: 'var(--card-shadow)',
               }}
             >
-              <div className="absolute inset-0 rounded-[20px] ring-1 ring-inset ring-white/5 pointer-events-none" />
+              <div
+                className="absolute inset-0 rounded-[20px] ring-1 ring-inset pointer-events-none"
+                style={{ boxShadow: 'inset 0 0 0 1px var(--card-ring)' }}
+              />
 
               {/* Step icon */}
               <div className="flex items-center justify-center mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-[#5a35f8]/15 border border-[#5a35f8]/30 flex items-center justify-center shadow-[0_0_24px_rgba(90,53,248,0.15)]">
-                  <Icon className="w-6 h-6 text-[#8b6cf9]" />
+                <div
+                  className="h-12 w-12 rounded-2xl flex items-center justify-center border"
+                  style={{
+                    background: 'color-mix(in srgb, var(--accent-2) 15%, transparent)',
+                    borderColor: 'color-mix(in srgb, var(--accent-2) 30%, transparent)',
+                    boxShadow: 'var(--accent-glow)',
+                  }}
+                >
+                  <Icon className="w-6 h-6" style={{ color: 'var(--accent-2)' }} />
                 </div>
               </div>
 
@@ -236,20 +259,20 @@ export function OnboardingShell({ userId, userEmail, existingProfile }: Props) {
                   exit="exit"
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {step === 0 && <StepYearGroup value={data.year_group} onChange={(v) => update('year_group', v)} />}
-                  {step === 1 && <StepSubjects value={data.subjects} onChange={(v) => update('subjects', v)} />}
-                  {step === 2 && <StepExamBoard value={data.exam_board} onChange={(v) => update('exam_board', v)} />}
+                  {step === 0 && <StepYearGroup value={data.year_group} onChange={handleYearGroup} />}
+                  {step === 1 && <StepSubjects value={data.subjects} onChange={handleSubjects} />}
+                  {step === 2 && <StepExamBoard value={data.exam_board} onChange={handleExamBoard} />}
                   {step === 3 && (
                     <StepExamDatesGrades
                       subjects={data.subjects}
                       examDates={data.exam_dates}
                       targetGrades={data.target_grades}
-                      onDatesChange={(v) => update('exam_dates', v)}
-                      onGradesChange={(v) => update('target_grades', v)}
+                      onDatesChange={handleExamDates}
+                      onGradesChange={handleTargetGrades}
                     />
                   )}
-                  {step === 4 && <StepStruggle value={data.primary_struggle} onChange={(v) => update('primary_struggle', v)} />}
-                  {step === 5 && <StepWeeklyHours value={data.weekly_revision_hours} onChange={(v) => update('weekly_revision_hours', v)} />}
+                  {step === 4 && <StepStruggle value={data.primary_struggle} onChange={handlePrimaryStruggle} />}
+                  {step === 5 && <StepWeeklyHours value={data.weekly_revision_hours} onChange={handleWeeklyHours} />}
                 </motion.div>
               </AnimatePresence>
 
@@ -260,11 +283,12 @@ export function OnboardingShell({ userId, userEmail, existingProfile }: Props) {
               )}
 
               {/* Navigation */}
-              <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/10">
+              <div className="flex items-center justify-between mt-8 pt-6 border-t" style={{ borderColor: 'var(--glass-border)' }}>
                 <button
                   onClick={back}
                   disabled={step === 0}
-                  className="flex items-center gap-2 text-sm font-medium text-white/50 hover:text-white disabled:opacity-0 disabled:pointer-events-none transition-all"
+                  className="flex items-center gap-2 text-sm font-medium hover:text-[var(--text-primary)] disabled:opacity-0 disabled:pointer-events-none transition-all"
+                  style={{ color: 'var(--text-dimmed)' }}
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back
@@ -272,7 +296,11 @@ export function OnboardingShell({ userId, userEmail, existingProfile }: Props) {
                 <button
                   onClick={next}
                   disabled={!canProceed() || saving}
-                  className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#5a35f8] px-7 py-3 text-[14px] font-semibold text-white transition-all duration-300 shadow-[0_0_24px_rgba(90,53,248,0.4)] hover:shadow-[0_0_40px_rgba(90,53,248,0.55)] hover:scale-[1.03] active:scale-[0.98] disabled:opacity-40 disabled:hover:scale-100 disabled:hover:shadow-none"
+                  className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full px-7 py-3 text-[14px] font-semibold text-white transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] disabled:opacity-40 disabled:hover:scale-100"
+                  style={{
+                    background: 'var(--shimmer-btn-bg)',
+                    boxShadow: 'var(--shimmer-btn-shadow)',
+                  }}
                 >
                   <span
                     className="pointer-events-none absolute inset-0 animate-shimmer-sweep"

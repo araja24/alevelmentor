@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { PrimaryStruggle } from '@/types/db';
 import { OptionCard } from '../OptionCard';
@@ -41,15 +42,16 @@ interface Props {
 }
 
 export function StepStruggle({ value, onChange }: Props) {
+  const handleSelect = useCallback((v: PrimaryStruggle) => onChange(v), [onChange]);
   return (
     <div className="text-center">
-      <h2 className="text-xl font-semibold text-white mb-2">What&apos;s holding you back?</h2>
-      <p className="text-sm text-white/50 mb-6">Be honest. We&apos;ll build your plan around it.</p>
+      <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>What&apos;s holding you back?</h2>
+      <p className="text-sm text-muted mb-6">Be honest. We&apos;ll build your plan around it.</p>
 
       <div className="space-y-2.5">
         {OPTIONS.map((o) => (
-          <OptionCard key={o} selected={value === o} onClick={() => onChange(o)}>
-            <p className="text-sm font-medium text-white text-center">{o}</p>
+          <OptionCard key={o} selected={value === o} onClick={() => handleSelect(o)}>
+            <p className="text-sm font-medium text-center" style={{ color: 'var(--text-primary)' }}>{o}</p>
           </OptionCard>
         ))}
       </div>
@@ -62,12 +64,16 @@ export function StepStruggle({ value, onChange }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 p-4 rounded-xl bg-[#5a35f8]/10 border border-[#5a35f8]/20"
+            className="mt-6 p-4 rounded-xl border"
+            style={{
+              background: 'color-mix(in srgb, var(--accent-2) 10%, transparent)',
+              borderColor: 'color-mix(in srgb, var(--accent-2) 20%, transparent)',
+            }}
           >
-            <p className="text-[32px] font-bold bg-gradient-to-r from-[#5a35f8] to-[#8b6cf9] bg-clip-text text-transparent">
+            <p className="text-[32px] font-bold bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-2), var(--accent-2-dark))' }}>
               {INFOGRAPHICS[value].stat}
             </p>
-            <p className="text-sm text-white/70 mt-1 leading-relaxed">{INFOGRAPHICS[value].message}</p>
+            <p className="text-sm mt-1 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{INFOGRAPHICS[value].message}</p>
           </motion.div>
         )}
       </AnimatePresence>

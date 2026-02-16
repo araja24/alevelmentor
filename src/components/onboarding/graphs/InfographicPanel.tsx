@@ -56,7 +56,8 @@ function ChecklistVisual() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: i * 0.1, duration: 0.35, ease: taskEase }}
-          className="flex items-center gap-3 rounded-xl bg-white/[0.03] border border-white/10 px-4 py-3"
+          className="flex items-center gap-3 rounded-xl border px-4 py-3"
+          style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)' }}
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -66,7 +67,7 @@ function ChecklistVisual() {
           >
             <CheckCircle className="w-3 h-3 text-emerald-400" />
           </motion.div>
-          <span className="text-xs text-white/70">{task}</span>
+          <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{task}</span>
         </motion.div>
       ))}
     </div>
@@ -80,12 +81,12 @@ function HeatmapVisual() {
     <div className="mt-4 space-y-1.5">
       <div className="flex gap-1 ml-8">
         {Array.from({ length: weeks }).map((_, w) => (
-          <span key={w} className="text-[9px] text-white/30 w-6 text-center">W{w + 1}</span>
+          <span key={w} className="text-[9px] w-6 text-center" style={{ color: 'var(--text-dimmed)' }}>W{w + 1}</span>
         ))}
       </div>
       {days.map((day, di) => (
         <div key={day} className="flex items-center gap-1">
-          <span className="text-[9px] text-white/30 w-7">{day}</span>
+          <span className="text-[9px] w-7" style={{ color: 'var(--text-dimmed)' }}>{day}</span>
           {Array.from({ length: weeks }).map((_, wi) => {
             const intensity = Math.random();
             return (
@@ -97,10 +98,10 @@ function HeatmapVisual() {
                 className="w-6 h-6 rounded-[4px]"
                 style={{
                   background: intensity > 0.7
-                    ? 'rgba(90,53,248,0.5)'
+                    ? 'color-mix(in srgb, var(--accent-2) 50%, transparent)'
                     : intensity > 0.4
-                      ? 'rgba(90,53,248,0.25)'
-                      : 'rgba(90,53,248,0.08)',
+                      ? 'color-mix(in srgb, var(--accent-2) 25%, transparent)'
+                      : 'color-mix(in srgb, var(--accent-2) 8%, transparent)',
                 }}
               />
             );
@@ -124,11 +125,11 @@ function WorkloadBalanceVisual() {
             transition={{ delay: i * 0.1, duration: 0.75, ease: 'easeOut' }}
             className="w-8 rounded-t-md"
             style={{
-              background: `linear-gradient(180deg, #5a35f8 0%, #8b6cf9 100%)`,
+              background: 'linear-gradient(180deg, var(--accent-2) 0%, var(--accent-2-dark) 100%)',
               opacity: 0.8,
             }}
           />
-          <span className="text-[9px] text-white/30">{w}</span>
+          <span className="text-[9px]" style={{ color: 'var(--text-dimmed)' }}>{w}</span>
         </div>
       ))}
     </div>
@@ -137,17 +138,17 @@ function WorkloadBalanceVisual() {
 
 function TimelineVisual() {
   const blocks = [
-    { topic: 'Algebra', width: '65%', color: '#5a35f8' },
-    { topic: 'Calculus', width: '80%', color: '#8b6cf9' },
+    { topic: 'Algebra', width: '65%', color: 'var(--accent-2)' },
+    { topic: 'Calculus', width: '80%', color: 'var(--accent-2-dark)' },
     { topic: 'Statistics', width: '45%', color: '#3ed6ff' },
-    { topic: 'Mechanics', width: '55%', color: '#5a35f8' },
+    { topic: 'Mechanics', width: '55%', color: 'var(--accent-2)' },
   ];
   return (
     <div className="mt-4 space-y-2.5">
       {blocks.map((b, i) => (
         <div key={b.topic} className="space-y-1">
-          <span className="text-[10px] text-white/50">{b.topic}</span>
-          <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+          <span className="text-[10px]" style={{ color: 'var(--text-dimmed)' }}>{b.topic}</span>
+          <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--glass-bg)' }}>
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: b.width }}
@@ -170,7 +171,7 @@ export function InfographicPanel({ struggle }: Props) {
   if (!struggle) {
     return (
       <AnalyticsCard glow className="p-6">
-        <p className="text-sm text-white/40 text-center py-12">
+        <p className="text-sm text-center py-12" style={{ color: 'var(--text-dimmed)' }}>
           Select what&apos;s holding you back to see how we&apos;ll help.
         </p>
       </AnalyticsCard>
@@ -191,12 +192,12 @@ export function InfographicPanel({ struggle }: Props) {
   return (
     <AnalyticsCard glow className="p-6">
       <div className="flex items-center gap-3 mb-3">
-        <div className="h-8 w-8 rounded-[10px] bg-gradient-to-br from-[#5a35f8] to-[#8b6cf9] flex items-center justify-center">
+        <div className="h-8 w-8 rounded-[10px] flex items-center justify-center" style={{ background: 'linear-gradient(to bottom right, var(--accent-2), var(--accent-2-dark))' }}>
           <Icon className="w-4 h-4 text-white" />
         </div>
         <div>
-          <h4 className="text-[13px] font-semibold text-white">{config.title}</h4>
-          <p className="text-[11px] text-white/50">{config.description}</p>
+          <h4 className="text-[13px] font-semibold" style={{ color: 'var(--text-primary)' }}>{config.title}</h4>
+          <p className="text-[11px]" style={{ color: 'var(--text-dimmed)' }}>{config.description}</p>
         </div>
       </div>
       <StatBadge variant="primary" className="mb-2">How we solve this</StatBadge>

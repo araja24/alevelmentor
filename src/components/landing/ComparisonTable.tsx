@@ -96,7 +96,7 @@ export function ComparisonTable() {
           </div>
 
           {/* Rows */}
-          {ROWS.map((row, i) => (
+          {ROWS.map((row) => (
             <motion.div
               key={row.title}
               variants={staggerItem}

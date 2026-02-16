@@ -515,3 +515,10 @@ input[type="range"].accent-slider::-moz-range-thumb {
   box-shadow: 0 0 16px rgba(90, 53, 248, 0.5);
   cursor: pointer;
 }
+
+/* Reduce animated background layers on small screens for performance */
+@media (max-width: 768px) {
+  .animated-bg .animated-bg-reduce {
+    display: none;
+  }
+}

@@ -4,7 +4,6 @@ import { useRef, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
 export function useOnboardingAnalytics(userId: string) {
-  const supabase = createClient();
   const stepTimers = useRef<Record<number, number>>({});
 
   const trackStepEnter = useCallback(
@@ -18,7 +17,7 @@ export function useOnboardingAnalytics(userId: string) {
     async (stepIndex: number, metadata?: Record<string, unknown>) => {
       const enterTime = stepTimers.current[stepIndex];
       const duration = enterTime ? Date.now() - enterTime : 0;
-
+      const supabase = createClient();
       await supabase.from('onboarding_events').insert({
         user_id: userId,
         event_type: 'step_complete',
@@ -26,22 +25,24 @@ export function useOnboardingAnalytics(userId: string) {
         metadata: { ...metadata, duration_ms: duration },
       }).then(() => {});
     },
-    [userId, supabase]
+    [userId]
   );
 
   const trackDropoff = useCallback(
     async (stepIndex: number) => {
+      const supabase = createClient();
       await supabase.from('onboarding_events').insert({
         user_id: userId,
         event_type: 'step_dropoff',
         step_index: stepIndex,
       }).then(() => {});
     },
-    [userId, supabase]
+    [userId]
   );
 
   const trackEvent = useCallback(
     async (eventType: string, stepIndex: number, metadata?: Record<string, unknown>) => {
+      const supabase = createClient();
       await supabase.from('onboarding_events').insert({
         user_id: userId,
         event_type: eventType,
@@ -49,7 +50,7 @@ export function useOnboardingAnalytics(userId: string) {
         metadata: metadata ?? {},
       }).then(() => {});
     },
-    [userId, supabase]
+    [userId]
   );
 
   return { trackStepEnter, trackStepComplete, trackDropoff, trackEvent };
