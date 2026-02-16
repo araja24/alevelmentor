@@ -32,7 +32,7 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/dashboard";
+    window.location.href = "/onboarding";
   }
 
   async function handleGoogleLogin() {

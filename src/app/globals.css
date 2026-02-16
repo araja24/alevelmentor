@@ -263,3 +263,39 @@
     transform: translateX(-100%);
   }
 }
+
+/* ─── Custom range slider (onboarding) ─── */
+input[type="range"].accent-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 9999px;
+  outline: none;
+}
+
+input[type="range"].accent-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #5a35f8;
+  border: 3px solid #fff;
+  box-shadow: 0 0 16px rgba(90, 53, 248, 0.5);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+input[type="range"].accent-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 24px rgba(90, 53, 248, 0.7);
+}
+
+input[type="range"].accent-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #5a35f8;
+  border: 3px solid #fff;
+  box-shadow: 0 0 16px rgba(90, 53, 248, 0.5);
+  cursor: pointer;
+}

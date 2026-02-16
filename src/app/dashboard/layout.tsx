@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({
   children,
@@ -7,11 +7,26 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  if (!user) {
-    redirect("/login");
-  }
+  if (!session) redirect("/login");
 
-  return <>{children}</>;
+  const { data: user } = await supabase
+    .from("users")
+    .select("onboarding_completed")
+    .eq("id", session.user.id)
+    .single();
+
+  if (!user?.onboarding_completed) redirect("/onboarding");
+
+  return (
+    <div
+      className="min-h-screen text-white"
+      style={{ background: "var(--bg-primary)" }}
+    >
+      {children}
+    </div>
+  );
 }

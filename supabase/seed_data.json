@@ -1,0 +1,109 @@
+{
+  "topics": [
+    {
+      "subject": "Maths",
+      "paper": "Pure 1",
+      "module": "Algebra and Functions",
+      "topic_name": "Indices and Surds",
+      "difficulty_weight": 2,
+      "spec_reference": "1.1",
+      "estimated_hours": 1.5
+    },
+    {
+      "subject": "Maths",
+      "paper": "Pure 1",
+      "module": "Algebra and Functions",
+      "topic_name": "Quadratics",
+      "difficulty_weight": 3,
+      "spec_reference": "1.2",
+      "estimated_hours": 2.0
+    },
+    {
+      "subject": "Maths",
+      "paper": "Pure 1",
+      "module": "Coordinate Geometry",
+      "topic_name": "Straight Lines",
+      "difficulty_weight": 2,
+      "spec_reference": "2.1",
+      "estimated_hours": 1.5
+    },
+    {
+      "subject": "Maths",
+      "paper": "Pure 1",
+      "module": "Calculus",
+      "topic_name": "Differentiation",
+      "difficulty_weight": 4,
+      "spec_reference": "7.1",
+      "estimated_hours": 3.0
+    },
+    {
+      "subject": "Maths",
+      "paper": "Pure 2",
+      "module": "Trigonometry",
+      "topic_name": "Radian Measure",
+      "difficulty_weight": 3,
+      "spec_reference": "5.1",
+      "estimated_hours": 2.0
+    },
+     {
+      "subject": "Maths",
+      "paper": "Statistics",
+      "module": "Probability",
+      "topic_name": "Probability Distributions",
+      "difficulty_weight": 4,
+      "spec_reference": "4.1",
+      "estimated_hours": 2.5
+    },
+    {
+      "subject": "Maths",
+      "paper": "Mechanics",
+      "module": "Kinematics",
+      "topic_name": "Constant Acceleration",
+      "difficulty_weight": 3,
+      "spec_reference": "6.1",
+      "estimated_hours": 2.0
+    }
+  ],
+  "past_papers": [
+    {
+      "year": 2023,
+      "session": "June",
+      "paper_number": 1,
+      "subject": "Maths",
+      "exam_board": "Edexcel",
+      "total_marks": 100
+    },
+    {
+      "year": 2023,
+      "session": "June",
+      "paper_number": 2,
+      "subject": "Maths",
+      "exam_board": "Edexcel",
+      "total_marks": 100
+    },
+    {
+      "year": 2023,
+      "session": "June",
+      "paper_number": 3,
+      "subject": "Maths",
+      "exam_board": "Edexcel",
+      "total_marks": 50
+    },
+    {
+      "year": 2022,
+      "session": "June",
+      "paper_number": 1,
+      "subject": "Maths",
+      "exam_board": "Edexcel",
+      "total_marks": 100
+    },
+     {
+      "year": 2022,
+      "session": "June",
+      "paper_number": 2,
+      "subject": "Maths",
+      "exam_board": "Edexcel",
+      "total_marks": 100
+    }
+  ]
+}
