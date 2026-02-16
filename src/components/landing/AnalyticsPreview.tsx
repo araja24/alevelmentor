@@ -46,7 +46,7 @@ export function AnalyticsPreview() {
     <section id="analytics" className="py-28 px-6 relative">
       <div className="mx-auto max-w-6xl">
         <RevealSection className="text-center mb-16">
-          <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
+          <p className="text-xs text-[var(--accent-2)] uppercase tracking-wider font-semibold mb-3">
             Live Analytics
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -95,12 +95,12 @@ export function AnalyticsPreview() {
                       >
                         <stop
                           offset="0%"
-                          stopColor="#5a35f8"
+                          stopColor="var(--accent-2)"
                           stopOpacity={0.3}
                         />
                         <stop
                           offset="100%"
-                          stopColor="#5a35f8"
+                          stopColor="var(--accent-2)"
                           stopOpacity={0}
                         />
                       </linearGradient>
@@ -135,7 +135,7 @@ export function AnalyticsPreview() {
                     <Area
                       type="monotone"
                       dataKey="score"
-                      stroke="#5a35f8"
+                      stroke="var(--accent-2)"
                       strokeWidth={2}
                       fill="url(#areaGradient)"
                       animationDuration={animDuration}

@@ -39,51 +39,23 @@ function CardShell({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      className={`group relative rounded-[20px] overflow-hidden ${className}`}
+      className={`group relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors h-full flex flex-col ${className}`}
     >
-      {/* Hover gradient border */}
-      <div
-        className="absolute -inset-[1px] rounded-[21px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ background: "linear-gradient(135deg, rgba(90,53,248,0.2) 0%, transparent 50%, rgba(90,53,248,0.1) 100%)" }}
-      />
-
-      <div
-        className="relative rounded-[20px] overflow-hidden h-full flex flex-col"
-        style={{
-          background: "linear-gradient(160deg, rgba(18,18,22,0.98) 0%, rgba(12,12,14,0.98) 100%)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.4), 0 16px 48px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.3)",
-        }}
-      >
-        {/* Spotlight glow */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[200px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-          style={{ background: "radial-gradient(circle, rgba(90,53,248,0.12) 0%, transparent 70%)", filter: "blur(40px)" }}
-        />
-
-        {/* Preview Area */}
-        <div className="relative p-5 pb-0 flex-1">
-          <div
-            className="relative rounded-[14px] p-4 overflow-hidden h-full"
-            style={{
-              background: "linear-gradient(180deg, rgba(8,8,10,0.8) 0%, rgba(12,12,14,0.95) 100%)",
-              border: "1px solid rgba(255,255,255,0.04)",
-              boxShadow: "inset 0 2px 6px rgba(0,0,0,0.4), inset 0 -1px 2px rgba(255,255,255,0.02)",
-            }}
-          >
+      {/* Preview Area */}
+      <div className="relative p-5 pb-0 flex-1">
+        <div className="relative rounded-xl p-4 overflow-hidden h-full bg-white/[0.03] border border-white/[0.06]">
             {children}
-            {/* Bottom fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-14 pointer-events-none"
-              style={{ background: "linear-gradient(to top, rgba(12,12,14,0.95) 0%, transparent 100%)" }}
-            />
-          </div>
+          {/* Bottom fade */}
+          <div className="absolute bottom-0 left-0 right-0 h-14 pointer-events-none"
+            style={{ background: "linear-gradient(to top, rgba(12,12,14,0.95) 0%, transparent 100%)" }}
+          />
         </div>
+      </div>
 
-        {/* Title + Description */}
-        <div className="p-5 pt-4">
-          <h3 className="text-[15px] font-semibold text-white">{title}</h3>
-          <p className="text-[13px] mt-1.5 leading-relaxed text-white/35">{description}</p>
-        </div>
+      {/* Title + Description */}
+      <div className="p-5 pt-4">
+        <h3 className="text-[15px] font-semibold gradient-text-heading">{title}</h3>
+        <p className="body mt-1.5 leading-relaxed text-muted">{description}</p>
       </div>
     </motion.div>
   );
@@ -103,7 +75,7 @@ function SubjectPickerPreview() {
   return (
     <div className="space-y-1.5">
       <div className="flex items-center gap-2 mb-3">
-        <Sparkles className="h-3.5 w-3.5 text-[#5a35f8]" />
+        <Sparkles className="h-3.5 w-3.5 text-[var(--accent-2)]" />
         <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">Pick your subjects</span>
       </div>
       {subjects.map((s) => (
@@ -114,7 +86,7 @@ function SubjectPickerPreview() {
         >
           <span className="text-sm">{s.icon}</span>
           <span className={`text-[13px] font-medium flex-1 ${s.selected ? "text-white/80" : "text-white/30"}`}>{s.name}</span>
-          <div className={`h-[18px] w-[18px] rounded-[5px] flex items-center justify-center transition-colors ${s.selected ? "bg-[#5a35f8]" : "border border-white/15"}`}>
+          <div className={`h-[18px] w-[18px] rounded-[5px] flex items-center justify-center transition-colors ${s.selected ? "bg-[var(--accent-2)]" : "border border-white/15"}`}>
             {s.selected && (
               <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -142,7 +114,7 @@ function RoadmapPreview() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Calendar className="h-3.5 w-3.5 text-[#5a35f8]" />
+          <Calendar className="h-3.5 w-3.5 text-[var(--accent-2)]" />
           <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">This Week</span>
         </div>
         <span className="text-[10px] text-emerald-400 font-semibold">3/5 done</span>
@@ -151,13 +123,13 @@ function RoadmapPreview() {
         {tasks.map((t, i) => (
           <div
             key={i}
-            className={`flex items-center gap-2.5 rounded-[8px] px-3 py-2 ${t.status === "current" ? "bg-[#5a35f8]/8 border border-[#5a35f8]/20" : ""}`}
+            className={`flex items-center gap-2.5 rounded-[8px] px-3 py-2 ${t.status === "current" ? "bg-[var(--accent-2)]/8 border border-[var(--accent-2)]/20" : ""}`}
           >
             {t.status === "done" ? (
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
             ) : t.status === "current" ? (
-              <div className="h-3.5 w-3.5 rounded-full border-2 border-[#5a35f8] flex items-center justify-center shrink-0">
-                <div className="h-1.5 w-1.5 rounded-full bg-[#5a35f8] animate-pulse" />
+              <div className="h-3.5 w-3.5 rounded-full border-2 border-[var(--accent-2)] flex items-center justify-center shrink-0">
+                <div className="h-1.5 w-1.5 rounded-full bg-[var(--accent-2)] animate-pulse" />
               </div>
             ) : (
               <Circle className="h-3.5 w-3.5 text-white/12 shrink-0" />
@@ -165,7 +137,7 @@ function RoadmapPreview() {
             <span className={`text-[12px] flex-1 ${t.status === "done" ? "text-white/25 line-through" : t.status === "current" ? "text-white font-medium" : "text-white/35"}`}>
               {t.name}
             </span>
-            <span className={`text-[9px] font-medium ${t.status === "current" ? "text-[#5a35f8]" : "text-white/15"}`}>{t.time}</span>
+            <span className={`text-[9px] font-medium ${t.status === "current" ? "text-[var(--accent-2)]" : "text-white/15"}`}>{t.time}</span>
           </div>
         ))}
       </div>
@@ -186,18 +158,18 @@ function PastPaperPreview() {
   return (
     <div className="space-y-1">
       <div className="flex items-center gap-2 mb-3">
-        <BookOpen className="h-3.5 w-3.5 text-[#5a35f8]" />
+        <BookOpen className="h-3.5 w-3.5 text-[var(--accent-2)]" />
         <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">Past Papers</span>
       </div>
       {papers.map((p, i) => (
         <div key={i} className="flex items-center justify-between rounded-[8px] px-3 py-2.5 hover:bg-white/[0.02] transition-colors">
           <div className="flex items-center gap-2">
             <span className="text-[12px] font-medium text-white/70">{p.name}</span>
-            <span className="text-[8px] font-bold rounded px-1.5 py-0.5 text-[#5a35f8] bg-[#5a35f8]/10 border border-[#5a35f8]/15 uppercase">{p.board}</span>
+            <span className="text-[8px] font-bold rounded px-1.5 py-0.5 text-[var(--accent-2)] bg-[var(--accent-2)]/10 border border-[var(--accent-2)]/15 uppercase">{p.board}</span>
           </div>
           <div className="flex items-center gap-3">
             {p.score !== "—" && <span className="text-[10px] text-emerald-400 font-semibold">{p.score}</span>}
-            <Download className="h-3.5 w-3.5 text-white/20 hover:text-[#5a35f8] transition-colors cursor-pointer" />
+            <Download className="h-3.5 w-3.5 text-white/20 hover:text-[var(--accent-2)] transition-colors cursor-pointer" />
           </div>
         </div>
       ))}
@@ -210,7 +182,7 @@ function PastPaperPreview() {
    ═══════════════════════════════════════════ */
 function ProgressPreview() {
   const subjects = [
-    { name: "Chemistry", score: 84, prev: 72, color: "#5a35f8" },
+    { name: "Chemistry", score: 84, prev: 72, color: "#6366f1" },
     { name: "Maths", score: 78, prev: 74, color: "#3ed6ff" },
     { name: "Physics", score: 65, prev: 58, color: "#f59e0b" },
   ];
@@ -218,14 +190,14 @@ function ProgressPreview() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <BarChart3 className="h-3.5 w-3.5 text-[#5a35f8]" />
+          <BarChart3 className="h-3.5 w-3.5 text-[var(--accent-2)]" />
           <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">Performance</span>
         </div>
         <div className="flex gap-1">
           {["Week", "Month", "All Time"].map((t, i) => (
             <span key={t} className="text-[9px] px-2 py-0.5 rounded-full font-semibold"
               style={{
-                background: i === 0 ? "#5a35f8" : "transparent",
+                background: i === 0 ? "#6366f1" : "transparent",
                 color: i === 0 ? "#fff" : "rgba(255,255,255,0.25)",
               }}>{t}</span>
           ))}
@@ -271,7 +243,7 @@ function MentorPreview() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-4">
-        <MessageCircle className="h-3.5 w-3.5 text-[#5a35f8]" />
+        <MessageCircle className="h-3.5 w-3.5 text-[var(--accent-2)]" />
         <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">Study Mentor</span>
         <span className="text-[9px] text-emerald-400 font-semibold ml-auto flex items-center gap-1">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 inline-block" /> Online
@@ -279,7 +251,7 @@ function MentorPreview() {
       </div>
       <div className="space-y-2">
         <div className="flex justify-end">
-          <div className="rounded-2xl rounded-br-sm px-3 py-2 max-w-[80%] bg-[#5a35f8]">
+          <div className="rounded-2xl rounded-br-sm px-3 py-2 max-w-[80%] bg-[var(--accent-2)]">
             <p className="text-[11px] text-white leading-relaxed">Explain Le Chatelier&apos;s principle</p>
           </div>
         </div>
@@ -293,9 +265,9 @@ function MentorPreview() {
         <div className="flex justify-start">
           <div className="rounded-2xl rounded-bl-sm px-3 py-2.5 border border-white/[0.05]" style={{ background: "rgba(255,255,255,0.02)" }}>
             <div className="flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[#5a35f8]" style={{ animationDelay: "0ms" }} />
-              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[#5a35f8]" style={{ animationDelay: "150ms" }} />
-              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[#5a35f8]" style={{ animationDelay: "300ms" }} />
+              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[var(--accent-2)]" style={{ animationDelay: "0ms" }} />
+              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[var(--accent-2)]" style={{ animationDelay: "150ms" }} />
+              <span className="h-1.5 w-1.5 rounded-full animate-bounce bg-[var(--accent-2)]" style={{ animationDelay: "300ms" }} />
             </div>
           </div>
         </div>
@@ -347,8 +319,8 @@ function GradePreview() {
       </div>
 
       <div className="mt-auto pt-3">
-        <div className="rounded-[10px] p-2.5 border border-[#5a35f8]/10 flex items-center gap-2.5" style={{ background: "rgba(90,53,248,0.03)" }}>
-          <Sparkles className="h-3.5 w-3.5 text-[#5a35f8] shrink-0" />
+        <div className="rounded-[10px] p-2.5 border border-[var(--accent-2)]/10 flex items-center gap-2.5 bg-[var(--accent-2)]/5">
+          <Sparkles className="h-3.5 w-3.5 text-[var(--accent-2)] shrink-0" />
           <p className="text-[11px] text-white/40 leading-snug">Complete 2 papers to hit <span className="text-white/80 font-medium">A* in Maths</span></p>
         </div>
       </div>
@@ -364,15 +336,18 @@ export function AppPreview() {
     <section className="section-pad relative" style={{ background: "var(--bg-primary)" }}>
       {/* Ambient background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-[#5a35f8]/[0.03] blur-[120px]" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-violet-900/10 blur-[120px]" />
       </div>
 
       <div className="mx-auto max-w-[1100px] px-6 relative z-10">
-        <RevealSection className="text-center mb-16">
+        <RevealSection className="text-center mb-16" fast>
           <span className="pill-badge mb-6 inline-flex">Platform</span>
-          <h2 className="h2 mt-4">
-            Built for <span className="gradient-text">every part</span> of your revision
+          <h2 className="h2 mt-4 gradient-text-heading">
+            Everything you need in <span className="gradient-text-purple-vertical">one place</span>
           </h2>
+          <p className="body mt-4 max-w-[55ch] mx-auto text-muted">
+            From your roadmap to past papers and your AI mentor — built for A-Level.
+          </p>
         </RevealSection>
 
         {/* Row 1: 50% + 50% */}

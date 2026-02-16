@@ -44,7 +44,7 @@ export function Testimonials() {
         <RevealSection className="text-center mb-16">
           <span className="pill-badge mb-6 inline-flex">Community</span>
           <h2 className="h2 mt-4">
-            Built for students, <span className="gradient-text">by students</span>
+            Built for students, <span className="gradient-text-purple-vertical">by students</span>
           </h2>
           <p className="body mt-4 max-w-[500px] mx-auto opacity-60">
             Real feedback from A-Level students using the platform.

@@ -11,6 +11,8 @@ interface RevealSectionProps {
   className?: string;
   staggerChildren?: number;
   as?: "div" | "section";
+  /** Use shorter duration (≤500ms) for landing; default dur.base */
+  fast?: boolean;
 }
 
 const directionOffsets = {
@@ -28,9 +30,11 @@ export function RevealSection({
   className = "",
   staggerChildren = 0.1,
   as = "div",
+  fast = false,
 }: RevealSectionProps) {
   const prefersReduced = useReducedMotion();
   const Component = as === "section" ? motion.section : motion.div;
+  const duration = fast ? dur.revealShort : dur.base;
 
   if (prefersReduced) {
     return (
@@ -63,7 +67,7 @@ export function RevealSection({
       }}
       viewport={viewport}
       transition={{
-        duration: dur.base,
+        duration,
         delay,
         ease: ease.out,
         staggerChildren,

@@ -116,8 +116,8 @@ export function SocialProof() {
                 className="flex items-start gap-3 rounded-xl border border-border bg-card/50 px-4 py-3 max-w-xs card-hover"
               >
                 <div className="shrink-0 mt-0.5">
-                  <div className="h-6 w-6 rounded-full bg-[#5a35f8]/10 flex items-center justify-center">
-                    <span className="text-[10px] font-bold text-[#5a35f8]">
+                  <div className="h-6 w-6 rounded-full bg-[var(--accent-2)]/10 flex items-center justify-center">
+                    <span className="text-[10px] font-bold text-[var(--accent-2)]">
                       {q.name[0]}
                     </span>
                   </div>

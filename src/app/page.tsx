@@ -1,26 +1,28 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
+import { DashboardPreviewSection } from "@/components/landing/DashboardPreviewSection";
 import { Problem } from "@/components/landing/Problem";
-import { Solution } from "@/components/landing/Solution";
+import { SystemBridge } from "@/components/landing/SystemBridge";
 import { ImpactStats } from "@/components/landing/ImpactStats";
 import { FeaturePreviews } from "@/components/landing/FeaturePreviews";
-import { AppPreview } from "@/components/landing/AppPreview";
-
+import { MoreFeatures } from "@/components/landing/MoreFeatures";
+import { ComparisonTable } from "@/components/landing/ComparisonTable";
 import { FAQ } from "@/components/landing/FAQ";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 
 export default function Home() {
     return (
-        <main className="min-h-screen bg-[var(--bg-primary)] overflow-x-clip selection:bg-[#5a35f8]/30 selection:text-white">
+        <main className="min-h-screen bg-[var(--bg-primary)] overflow-x-clip selection:bg-indigo-500/30 selection:text-white">
             <Navbar />
             <Hero />
+            <DashboardPreviewSection />
             <Problem />
-            <Solution />
-            <ImpactStats />
+            <SystemBridge />
             <FeaturePreviews />
-            <AppPreview />
-
+            <MoreFeatures />
+            <ComparisonTable />
+            <ImpactStats />
             <FAQ />
             <FinalCTA />
             <Footer />

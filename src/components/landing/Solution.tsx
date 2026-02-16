@@ -35,7 +35,7 @@ function AnimatedCounter({ target, suffix = "", duration = 2000 }: { target: num
 /* ═══════════════════════════════════════════
    Circular Progress Ring
    ═══════════════════════════════════════════ */
-function ProgressRing({ percent, size = 80, strokeWidth = 6, color = "#5a35f8", label, value }: {
+function ProgressRing({ percent, size = 80, strokeWidth = 6, color = "#6366f1", label, value }: {
     percent: number; size?: number; strokeWidth?: number; color?: string; label: string; value: string;
 }) {
     const r = (size - strokeWidth) / 2;
@@ -67,14 +67,14 @@ function ProgressRing({ percent, size = 80, strokeWidth = 6, color = "#5a35f8", 
 }
 
 /* ═══════════════════════════════════════════
-   Animated Dashboard Preview — The showpiece
+   Animated Dashboard Preview — The showpiece (exported for DashboardPreviewSection)
    ═══════════════════════════════════════════ */
-function DashboardPreview() {
+export function DashboardPreview() {
     const ref = useRef<HTMLDivElement>(null);
     const inView = useInView(ref, { once: true, margin: "-100px" });
 
     const subjects = [
-        { name: "Chemistry", progress: 78, grade: "A*", color: "#5a35f8", topics: 24, done: 19 },
+        { name: "Chemistry", progress: 78, grade: "A*", color: "#6366f1", topics: 24, done: 19 },
         { name: "Mathematics", progress: 65, grade: "A", color: "#3ed6ff", topics: 30, done: 20 },
         { name: "Physics", progress: 52, grade: "A", color: "#f59e0b", topics: 22, done: 11 },
     ];
@@ -87,27 +87,23 @@ function DashboardPreview() {
 
     return (
         <div ref={ref} className="relative">
-            {/* Ambient glow */}
-            <div className="absolute -inset-10 pointer-events-none z-0">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-[#5a35f8]/15 blur-[120px]" />
-                <div className="absolute top-[70%] left-[20%] w-[200px] h-[200px] rounded-full bg-[#3ed6ff]/8 blur-[80px]" />
+            {/* Ambient glow — hidden in light via .light .solution-glows */}
+            <div className="solution-glows absolute -inset-10 pointer-events-none z-0">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-violet-900/20 blur-[80px]" />
+                <div className="absolute top-[70%] left-[20%] w-[200px] h-[200px] rounded-full bg-indigo-900/15 blur-[80px]" />
             </div>
 
             <div className="relative z-10 space-y-3 w-full max-w-[520px]">
-                {/* ── Header Bar ── */}
+                {/* ── Header Bar (Bento) ── */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}
                     transition={{ delay: 0.1 }}
-                    className="rounded-[16px] p-4 border border-white/[0.06]"
-                    style={{
-                        background: "linear-gradient(135deg, rgba(12,12,14,0.95) 0%, rgba(20,20,24,0.95) 100%)",
-                        boxShadow: "0 16px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)",
-                    }}
+                    className="bento-card rounded-2xl p-4 backdrop-blur-sm transition-colors"
                 >
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2.5">
-                            <div className="h-8 w-8 rounded-[10px] bg-gradient-to-br from-[#5a35f8] to-[#8b6cf9] flex items-center justify-center">
+                            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center">
                                 <Target className="h-4 w-4 text-white" />
                             </div>
                             <div>
@@ -124,7 +120,7 @@ function DashboardPreview() {
                     {/* Stats row */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {[
-                            { label: "Study Hours", value: "127", icon: Clock, color: "#5a35f8" },
+                            { label: "Study Hours", value: "127", icon: Clock, color: "#6366f1" },
                             { label: "Papers Done", value: "43", icon: BookOpen, color: "#3ed6ff" },
                             { label: "Avg Score", value: "82%", icon: TrendingUp, color: "#10b981" },
                             { label: "Target", value: "A*A*A", icon: Target, color: "#f59e0b" },
@@ -134,8 +130,7 @@ function DashboardPreview() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={inView ? { opacity: 1, y: 0 } : {}}
                                 transition={{ delay: 0.2 + i * 0.08 }}
-                                className="rounded-[10px] p-2.5 border border-white/[0.04]"
-                                style={{ background: "rgba(255,255,255,0.02)" }}
+                                className="rounded-xl p-2.5 border border-white/10 bg-white/[0.03]"
                             >
                                 <stat.icon className="h-3 w-3 mb-1.5" style={{ color: stat.color }} />
                                 <p className="text-[14px] font-bold text-white leading-none">
@@ -157,11 +152,7 @@ function DashboardPreview() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={inView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 0.3 }}
-                        className="sm:col-span-3 rounded-[16px] p-4 border border-white/[0.06]"
-                        style={{
-                            background: "linear-gradient(135deg, rgba(12,12,14,0.95) 0%, rgba(18,18,22,0.95) 100%)",
-                            boxShadow: "0 12px 36px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03)",
-                        }}
+                        className="sm:col-span-3 bento-card rounded-2xl p-4 backdrop-blur-sm transition-colors"
                     >
                         <p className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-3">Subject Progress</p>
                         <div className="flex items-center justify-around">
@@ -184,11 +175,7 @@ function DashboardPreview() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={inView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 0.4 }}
-                        className="sm:col-span-2 rounded-[16px] p-4 border border-white/[0.06]"
-                        style={{
-                            background: "linear-gradient(135deg, rgba(12,12,14,0.95) 0%, rgba(18,18,22,0.95) 100%)",
-                            boxShadow: "0 12px 36px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03)",
-                        }}
+                        className="sm:col-span-2 bento-card rounded-2xl p-4 backdrop-blur-sm transition-colors"
                     >
                         <p className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-3">Up Next</p>
                         <div className="space-y-2">
@@ -198,10 +185,10 @@ function DashboardPreview() {
                                     initial={{ opacity: 0, x: 10 }}
                                     animate={inView ? { opacity: 1, x: 0 } : {}}
                                     transition={{ delay: 0.5 + i * 0.1 }}
-                                    className="flex items-start gap-2 rounded-[8px] px-2.5 py-2 border border-white/[0.04]"
-                                    style={{ background: t.urgent ? "rgba(90,53,248,0.06)" : "rgba(255,255,255,0.01)" }}
+                                    className="flex items-start gap-2 rounded-lg px-2.5 py-2 border border-white/[0.06] bg-white/[0.02]"
+                                    style={{ background: t.urgent ? "rgba(99,102,241,0.08)" : undefined }}
                                 >
-                                    <div className={`h-1.5 w-1.5 rounded-full mt-1 shrink-0 ${t.urgent ? "bg-[#5a35f8] animate-pulse" : "bg-white/20"}`} />
+                                    <div className={`h-1.5 w-1.5 rounded-full mt-1 shrink-0 ${t.urgent ? "bg-[var(--accent-2)] animate-pulse" : "bg-white/20"}`} />
                                     <div>
                                         <p className="text-[10px] font-medium text-white/80 leading-tight">{t.task}</p>
                                         <p className="text-[8px] text-white/30 mt-0.5">{t.time}</p>
@@ -217,29 +204,22 @@ function DashboardPreview() {
                     initial={{ opacity: 0, y: 16 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}
                     transition={{ delay: 0.6 }}
-                    className="rounded-[16px] p-4 border border-[#5a35f8]/20 relative overflow-hidden"
-                    style={{
-                        background: "linear-gradient(135deg, rgba(90,53,248,0.08) 0%, rgba(12,12,14,0.95) 60%)",
-                        boxShadow: "0 12px 36px rgba(0,0,0,0.3), 0 0 24px rgba(90,53,248,0.06)",
-                    }}
+                    className="bento-card rounded-2xl p-4 border-[var(--accent-2)]/20 relative overflow-hidden backdrop-blur-sm bg-[var(--accent-2)]/5"
                 >
-                    {/* Shimmer accent */}
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#5a35f8]/5 rounded-full blur-[60px] pointer-events-none" />
-
                     <div className="flex items-start gap-3 relative z-10">
-                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#5a35f8] to-[#8b6cf9] flex items-center justify-center shrink-0">
+                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center shrink-0">
                             <Sparkles className="h-4 w-4 text-white" />
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1.5">
-                                <span className="text-[11px] font-semibold text-[#8b6cf9]">AI Mentor</span>
+                                <span className="text-[11px] font-semibold text-[var(--accent-2)]">AI Mentor</span>
                                 <span className="text-[8px] text-white/20">Just now</span>
                             </div>
                             <p className="text-[12px] text-white/55 leading-relaxed">
                                 You&apos;re <span className="text-emerald-400 font-medium">2 topics ahead</span> in Chemistry — great momentum! Focus on <span className="text-white/80 font-medium">Electrochemistry</span> today. I&apos;ve queued 3 AQA past paper questions that match your weak areas.
                             </p>
                             <div className="flex items-center gap-2 mt-2.5">
-                                <button className="text-[10px] font-medium text-[#5a35f8] bg-[#5a35f8]/10 px-3 py-1 rounded-full border border-[#5a35f8]/20 hover:bg-[#5a35f8]/15 transition-colors">
+                                <button className="text-[10px] font-medium text-[var(--accent-2)] bg-[var(--accent-2)]/10 px-3 py-1 rounded-full border border-[var(--accent-2)]/20 hover:bg-[var(--accent-2)]/15 transition-colors">
                                     Start Session →
                                 </button>
                                 <button className="text-[10px] font-medium text-white/30 hover:text-white/50 transition-colors">
@@ -285,7 +265,7 @@ export function Solution() {
                                     key={platform.label}
                                     className="glass-card flex items-center gap-2 text-sm font-medium px-4 py-2.5 rounded-full text-[#a1a1aa]"
                                 >
-                                    <platform.Icon className="h-4 w-4 text-[#5a35f8]" />
+                                    <platform.Icon className="h-4 w-4 text-[var(--accent-2)]" />
                                     <span>{platform.label}</span>
                                 </div>
                             ))}

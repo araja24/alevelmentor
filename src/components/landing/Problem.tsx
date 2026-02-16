@@ -21,15 +21,15 @@ function Word({
     return (
         <span className="relative inline-block mr-[0.3em]">
             {/* Dim state */}
-            <motion.span style={{ opacity: dimOpacity, color: "#2a2a2e" }}>
+            <motion.span style={{ opacity: dimOpacity, color: "var(--text-dimmed)" }}>
                 {children}
             </motion.span>
-            {/* Highlighted — stronger gradient: bright white → warm silver */}
+            {/* Highlighted — matches landing gradient-text-heading (bright white → warm silver) */}
             <motion.span
                 className="absolute left-0 top-0"
                 style={{
                     opacity: activeOpacity,
-                    backgroundImage: "linear-gradient(180deg, #ffffff 20%, #8a8a94 100%)",
+                    backgroundImage: "var(--gradient-text-heading)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -54,8 +54,9 @@ export function Problem() {
 
     return (
         <section
+            id="text-highlight"
             ref={containerRef}
-            className="relative z-0"
+            className="relative z-0 snap-start"
             style={{ height: "200vh", background: "var(--bg-primary)" }}
         >
             <div className="sticky top-0 h-screen flex items-center justify-center px-6">
