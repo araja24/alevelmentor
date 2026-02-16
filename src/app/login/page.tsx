@@ -1,19 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { AnimatedBackground } from "@/components/landing/AnimatedBackground";
 import { ThemeToggle } from "@/components/landing/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { ArrowLeft } from "lucide-react";
 
-export default function LoginPage() {
+function LoginContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [comingSoon, setComingSoon] = useState(false);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("coming_soon") === "1") setComingSoon(true);
+  }, [searchParams]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -32,7 +39,8 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/dashboard";
+    setComingSoon(true);
+    setLoading(false);
   }
 
   async function handleGoogleLogin() {
@@ -56,7 +64,7 @@ export default function LoginPage() {
       <div className="fixed top-6 left-6 z-50">
         <Link
           href="/"
-          className="flex items-center gap-2 text-sm font-medium text-white/50 hover:text-white transition-colors"
+          className="flex items-center gap-2 text-sm font-medium text-[var(--text-dimmed)] hover:text-[var(--text-primary)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to home
@@ -70,16 +78,33 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-[420px]">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
-            <h1 className="text-2xl font-bold tracking-tight text-white">
-              alevel<span className="text-[#5a35f8]">mentor</span>
+            <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+              alevel<span className="text-[var(--accent-2)]">mentor</span>
             </h1>
           </Link>
         </div>
 
         <GlassCard className="p-8">
+          {comingSoon ? (
+            <div className="text-center py-6">
+              <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Coming Soon</h2>
+              <p className="text-sm text-muted mb-6">
+                The dashboard is not available yet. We&apos;ll notify you when it&apos;s ready.
+              </p>
+              <Link href="/">
+                <Button
+                  variant="outline"
+                  className="w-full h-11 bg-[var(--glass-bg)] border-[var(--glass-border)] hover:bg-[var(--surface-subtle)] text-[var(--text-primary)] rounded-xl"
+                >
+                  Back to home
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <>
           <div className="text-center mb-8">
-            <h2 className="text-xl font-semibold text-white mb-2">Welcome back</h2>
-            <p className="text-sm text-white/50">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Welcome back</h2>
+            <p className="text-sm text-muted">
               Sign in to continue your progress
             </p>
           </div>
@@ -87,7 +112,7 @@ export default function LoginPage() {
           <Button
             type="button"
             variant="outline"
-            className="w-full h-11 bg-white/[0.03] border-white/10 hover:bg-white/[0.08] hover:text-white text-white/80 gap-3 rounded-xl transition-all"
+            className="w-full h-11 bg-[var(--glass-bg)] border-[var(--glass-border)] hover:bg-[var(--surface-subtle)] hover:text-[var(--text-primary)] text-[var(--text-secondary)] gap-3 rounded-xl transition-all"
             onClick={handleGoogleLogin}
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -167,7 +192,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-11 bg-[#5a35f8] hover:bg-[#4a25e8] text-white rounded-xl text-sm font-semibold shadow-lg shadow-[#5a35f8]/20 transition-all mt-2"
+              className="w-full h-11 bg-[var(--shimmer-btn-bg)] hover:opacity-90 text-white rounded-xl text-sm font-semibold shadow-[var(--shimmer-btn-shadow)] hover:shadow-[var(--shimmer-btn-shadow-hover)] transition-all mt-2"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -177,17 +202,27 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="mt-8 text-center text-sm text-white/40">
+          <p className="mt-8 text-center text-sm text-[var(--text-dimmed)]">
             Don&apos;t have an account?{" "}
             <Link
               href="/signup"
-              className="font-medium text-[#5a35f8] hover:text-[#7f63f9] transition-colors"
+              className="font-medium text-[var(--accent-2)] hover:opacity-80 transition-colors"
             >
               Sign up
             </Link>
           </p>
+            </>
+          )}
         </GlassCard>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background">Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

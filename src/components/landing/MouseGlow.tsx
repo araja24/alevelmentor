@@ -150,7 +150,7 @@ export function MouseGlow() {
        * soft ambient cloud. Barely visible (3px, low opacity).
        */}
       <motion.div
-        className="pointer-events-none fixed z-50 h-[6px] w-[6px] rounded-full bg-[#5a35f8] opacity-0 dark:opacity-30"
+        className="pointer-events-none fixed z-50 h-[6px] w-[6px] rounded-full bg-[var(--accent-2)] opacity-0 dark:opacity-30"
         style={{
           x: rawX,
           y: rawY,

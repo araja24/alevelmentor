@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { RevealSection } from "./RevealSection";
-import { Plus, Minus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 const faqs = [
   {
@@ -32,26 +32,21 @@ function FAQItem({ faq, index }: { faq: (typeof faqs)[number]; index: number }) 
   const [open, setOpen] = useState(false);
 
   return (
-    <RevealSection delay={index * 0.05}>
+    <RevealSection delay={index * 0.15}>
       <div
-        className="group border-b border-white/[0.08] transition-all duration-300 cursor-pointer hover:border-white/[0.2]"
+        className="bento-card rounded-2xl backdrop-blur-sm transition-colors cursor-pointer hover:border-[var(--border-muted-strong)]"
         onClick={() => setOpen(!open)}
       >
-        <div className="flex items-center justify-between py-6">
+        <div className="flex items-center justify-between gap-4 p-5">
           <h3
-            className={`text-[16px] font-medium pr-8 transition-colors duration-300 ${open ? "text-white" : "text-white/70 group-hover:text-white"
-              }`}
+            className={`text-[16px] font-medium pr-2 transition-colors duration-300 ${open ? "gradient-text-heading" : "text-muted"}`}
           >
             {faq.q}
           </h3>
           <div
-            className={`shrink-0 transition-transform duration-300 ${open ? "rotate-45" : "rotate-0"
-              }`}
+            className={`shrink-0 transition-transform duration-300 ${open ? "rotate-45" : "rotate-0"}`}
           >
-            <Plus
-              className={`h-5 w-5 transition-colors duration-300 ${open ? "text-white" : "text-white/40 group-hover:text-white"
-                }`}
-            />
+            <Plus className="h-5 w-5 text-muted" />
           </div>
         </div>
 
@@ -64,8 +59,8 @@ function FAQItem({ faq, index }: { faq: (typeof faqs)[number]; index: number }) 
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               className="overflow-hidden"
             >
-              <div className="pb-6 pr-12">
-                <p className="text-[15px] leading-relaxed text-white/50">
+              <div className="px-5 pb-5 pt-0">
+                <p className="body leading-relaxed text-muted">
                   {faq.a}
                 </p>
               </div>
@@ -83,13 +78,12 @@ export function FAQ() {
       <div className="mx-auto max-w-[700px] px-6 relative z-10">
         <RevealSection className="text-center mb-16">
           <span className="pill-badge mb-6 inline-flex">FAQ</span>
-          <h2 className="h2 mt-4">
-            Frequently asked <span className="gradient-text">questions</span>
+          <h2 className="h2 mt-4 gradient-text-heading">
+            Frequently asked <span className="gradient-text-purple-vertical">questions</span>
           </h2>
         </RevealSection>
 
-        {/* Top border for the list */}
-        <div className="border-t border-white/[0.08]">
+        <div className="space-y-4">
           {faqs.map((faq, i) => (
             <FAQItem key={i} faq={faq} index={i} />
           ))}

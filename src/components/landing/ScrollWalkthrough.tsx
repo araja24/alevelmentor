@@ -51,9 +51,9 @@ function RoadmapPanel() {
   return (
     <div className="space-y-3.5">
       {/* Next session card */}
-      <div className="rounded-xl border border-[#5a35f8]/25 bg-[#5a35f8]/5 p-3.5">
+      <div className="rounded-xl border border-[var(--accent-2)]/25 bg-[var(--accent-2)]/5 p-3.5">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[10px] uppercase tracking-widest text-[#5a35f8] font-semibold">
+          <span className="text-[10px] uppercase tracking-widest text-[var(--accent-2)] font-semibold">
             Next Session
           </span>
           <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
@@ -83,7 +83,7 @@ function RoadmapPanel() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.07, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs ${t.current
-                ? "bg-[#5a35f8]/10 border border-[#5a35f8]/20"
+                ? "bg-[var(--accent-2)]/10 border border-[var(--accent-2)]/20"
                 : t.done
                   ? "bg-muted/20"
                   : "bg-muted/30"
@@ -93,7 +93,7 @@ function RoadmapPanel() {
               className={`h-4 w-4 rounded-full flex items-center justify-center shrink-0 ${t.done
                   ? "bg-emerald-500"
                   : t.current
-                    ? "border-2 border-[#5a35f8]"
+                    ? "border-2 border-[var(--accent-2)]"
                     : "border-2 border-muted-foreground/30"
                 }`}
             >
@@ -118,7 +118,7 @@ function RoadmapPanel() {
                 t.done
                   ? "line-through text-muted-foreground"
                   : t.current
-                    ? "font-semibold text-[#5a35f8]"
+                    ? "font-semibold text-[var(--accent-2)]"
                     : ""
               }
             >
@@ -141,7 +141,7 @@ function AnalyticsPanel() {
     { label: "Organic Chemistry", score: 42, color: "bg-red-500" },
     { label: "Electrochemistry", score: 58, color: "bg-amber-500" },
     { label: "Equilibria", score: 67, color: "bg-amber-400" },
-    { label: "Energetics", score: 79, color: "bg-[#5a35f8]" },
+    { label: "Energetics", score: 79, color: "bg-[var(--accent-2)]" },
     { label: "Atomic Structure", score: 91, color: "bg-emerald-500" },
   ];
 
@@ -226,14 +226,14 @@ function TrajectoryPanel() {
         <svg viewBox="0 0 332 84" className="w-full h-20" fill="none">
           <defs>
             <linearGradient id="sw-traj-grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#5a35f8" stopOpacity={0.22} />
-              <stop offset="100%" stopColor="#5a35f8" stopOpacity={0} />
+              <stop offset="0%" stopColor="var(--accent-2)" stopOpacity={0.22} />
+              <stop offset="100%" stopColor="var(--accent-2)" stopOpacity={0} />
             </linearGradient>
           </defs>
           <path d={`${linePath} L 320 84 L 8 84 Z`} fill="url(#sw-traj-grad)" />
           <motion.path
             d={linePath}
-            stroke="#5a35f8"
+            stroke="var(--accent-2)"
             strokeWidth={2.5}
             strokeLinecap="round"
             fill="none"
@@ -245,7 +245,7 @@ function TrajectoryPanel() {
             cx={320}
             cy={8}
             r={4}
-            fill="#5a35f8"
+            fill="var(--accent-2)"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 1.1, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -275,7 +275,7 @@ function TrajectoryPanel() {
           >
             <p className="text-[9px] text-muted-foreground">{item.s}</p>
             <p className="text-base font-bold mt-0.5">{item.g}</p>
-            <p className="text-[9px] text-[#5a35f8] font-medium">{item.p}</p>
+            <p className="text-[9px] text-[var(--accent-2)] font-medium">{item.p}</p>
           </motion.div>
         ))}
       </div>
@@ -312,7 +312,7 @@ export function ScrollWalkthrough() {
       <div className="mx-auto max-w-6xl">
         {/* Header */}
         <RevealSection className="mb-16 text-center">
-          <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
+          <p className="text-xs text-[var(--accent-2)] uppercase tracking-wider font-semibold mb-3">
             Guided Study Journey
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -326,7 +326,7 @@ export function ScrollWalkthrough() {
 
         {/* ── Mobile: stacked ── */}
         <div className="lg:hidden space-y-5">
-          <div className="rounded-2xl border border-border bg-card shadow-xl shadow-[#5a35f8]/5 overflow-hidden">
+          <div className="rounded-2xl border border-border bg-card shadow-xl shadow-[var(--accent-2)]/5 overflow-hidden">
             <div className="flex items-center gap-2 px-5 py-3.5 border-b border-border bg-muted/40">
               <div className="flex gap-1.5">
                 {[0, 1, 2].map((i) => (
@@ -345,10 +345,10 @@ export function ScrollWalkthrough() {
           {FEATURES.map((f) => (
             <div key={f.id} className="rounded-2xl border border-border bg-card p-6">
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="h-8 w-8 rounded-xl bg-[#5a35f8] flex items-center justify-center">
+                <div className="h-8 w-8 rounded-xl bg-[var(--accent-2)] flex items-center justify-center">
                   <f.Icon className="h-4 w-4 text-white" />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#5a35f8]">
+                <span className="text-xs font-semibold uppercase tracking-wider text-[var(--accent-2)]">
                   {f.label}
                 </span>
               </div>
@@ -364,7 +364,7 @@ export function ScrollWalkthrough() {
         <div className="hidden lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
           {/* Sticky dashboard */}
           <motion.div
-            className="sticky top-24 rounded-2xl border border-border bg-card shadow-2xl shadow-[#5a35f8]/6 overflow-hidden"
+            className="sticky top-24 rounded-2xl border border-border bg-card shadow-2xl shadow-[var(--accent-2)]/6 overflow-hidden"
             style={prefersReduced ? undefined : { y: dashboardY, opacity: dashboardOpacity }}
           >
             <div className="flex items-center px-5 py-3.5 border-b border-border bg-muted/40">
@@ -383,7 +383,7 @@ export function ScrollWalkthrough() {
                     key={i}
                     animate={{
                       width: active === i ? 16 : 6,
-                      backgroundColor: active === i ? "#5a35f8" : "rgba(113,113,122,0.3)",
+                      backgroundColor: active === i ? "var(--accent-2)" : "rgba(113,113,122,0.3)",
                     }}
                     transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     className="h-1.5 rounded-full"
@@ -444,20 +444,20 @@ export function ScrollWalkthrough() {
                     }}
                     transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                     className={`w-full rounded-2xl border p-7 transition-colors duration-300 ${isActive
-                        ? "border-[#5a35f8]/30 bg-card shadow-lg shadow-[#5a35f8]/6"
+                        ? "border-[var(--accent-2)]/30 bg-card shadow-lg shadow-[var(--accent-2)]/6"
                         : "border-border bg-card/50"
                       }`}
                   >
                     <div className="flex items-center gap-2.5 mb-5">
                       <motion.div
-                        animate={{ backgroundColor: isActive ? "#5a35f8" : "#e4e4e7" }}
+                        animate={{ backgroundColor: isActive ? "var(--accent-2)" : "#e4e4e7" }}
                         transition={{ duration: 0.3 }}
                         className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0"
                       >
                         <f.Icon className={`h-4 w-4 ${isActive ? "text-white" : "text-muted-foreground"}`} />
                       </motion.div>
                       <span
-                        className={`text-xs font-semibold uppercase tracking-wider transition-colors duration-300 ${isActive ? "text-[#5a35f8]" : "text-muted-foreground"
+                        className={`text-xs font-semibold uppercase tracking-wider transition-colors duration-300 ${isActive ? "text-[var(--accent-2)]" : "text-muted-foreground"
                           }`}
                       >
                         {f.label}
@@ -478,7 +478,7 @@ export function ScrollWalkthrough() {
                           animate={{ scaleX: 1, opacity: 1 }}
                           exit={{ scaleX: 0, opacity: 0 }}
                           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                          className="mt-6 h-0.5 rounded-full bg-gradient-to-r from-[#5a35f8] to-[#8b6cf9] origin-left"
+                          className="mt-6 h-0.5 rounded-full bg-gradient-to-r from-[var(--accent-2)] to-[var(--accent-2-dark)] origin-left"
                         />
                       )}
                     </AnimatePresence>

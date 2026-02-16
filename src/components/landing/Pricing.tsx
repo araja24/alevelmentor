@@ -64,7 +64,7 @@ export function Pricing() {
     <section id="pricing" className="py-16 md:py-28 px-6 relative">
       <div className="mx-auto max-w-6xl">
         <RevealSection className="text-center mb-16">
-          <p className="text-xs text-[#5a35f8] uppercase tracking-wider font-semibold mb-3">
+          <p className="text-xs text-[var(--accent-2)] uppercase tracking-wider font-semibold mb-3">
             Pricing
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -91,7 +91,7 @@ export function Pricing() {
               >
                 {/* Gradient border for popular */}
                 {plan.popular && (
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#5a35f8] via-[#7c5cf9] to-[#5a35f8] opacity-100" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[var(--accent-2)] via-[var(--accent-2-dark)] to-[var(--accent-2)] opacity-100" />
                 )}
 
                 <div
@@ -103,7 +103,7 @@ export function Pricing() {
                   {/* Popular badge */}
                   {plan.popular && (
                     <div className="absolute -top-px left-1/2 -translate-x-1/2">
-                      <div className="bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white text-[11px] font-semibold px-4 py-1 rounded-b-lg">
+                      <div className="bg-gradient-to-r from-[var(--accent-2)] to-[var(--accent-2-dark)] text-white text-[11px] font-semibold px-4 py-1 rounded-b-lg">
                         Most Popular
                       </div>
                     </div>
@@ -135,7 +135,7 @@ export function Pricing() {
                           className="flex items-center gap-3 text-sm"
                         >
                           {feature.included ? (
-                            <Check className="h-4 w-4 text-[#5a35f8] shrink-0" />
+                            <Check className="h-4 w-4 text-[var(--accent-2)] shrink-0" />
                           ) : (
                             <X className="h-4 w-4 text-muted-foreground/40 shrink-0" />
                           )}

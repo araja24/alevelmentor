@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
 @theme {
   --radius-sm: 8px;
@@ -11,6 +12,7 @@
   --animate-scroll-left: scroll-left 40s linear infinite;
   --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
   --animate-shimmer-sweep: shimmer-sweep 3s ease-in-out infinite;
+  --animate-shimmer-radial: shimmer-radial 2.5s ease-in-out infinite;
   --animate-border-rotate: border-rotate 4s linear infinite;
   --animate-spin-slow: spin 8s linear infinite;
 
@@ -47,32 +49,148 @@
 }
 
 :root {
-  /* 
-   * FOUNDATION: OPAL-LEVEL DARK PALETTE (REVERTED)
-   * Base: Deep Purple/Black #09090b
-   * Accent: Vivid Purple/Blue #5a35f8 + #3ed6ff
+  /*
+   * Crypton-style: Off-black base, Blurple accent (dark theme default)
    */
-  --bg-primary: #09090b;
-  /* Zn-950/Black base */
-  --bg-secondary: #0c0c0e;
-  /* Slightly lighter for sections */
-  --bg-card: #121214;
-  /* Card bg */
+  --bg-primary: #050505;
+  --bg-secondary: #0a0a0a;
+  --bg-card: #121212;
+  --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
   --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
+  --text-dimmed: #2a2a2e;
 
-  /* Brand/Accent Colors */
-  --accent-1: #5a35f8;
-  /* Deep Purple (Primary brand) */
-  --accent-2: #8b6cf9;
-  /* Lighter Purple */
+  /* Tailwind theme alignment */
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+
+  /* Theme-aware glass/bento (dark: white-based) */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-border-strong: rgba(255, 255, 255, 0.1);
+  --surface-subtle: rgba(255, 255, 255, 0.05);
+  --border-muted: rgba(255, 255, 255, 0.08);
+  --border-muted-strong: rgba(255, 255, 255, 0.1);
+
+  /* Nav island (scrolled) */
+  --nav-island-bg: rgba(0, 0, 0, 0.5);
+  --nav-island-border: rgba(255, 255, 255, 0.1);
+
+  /* Brand: keep for compatibility; Blurple for primary CTAs */
+  --accent-1: #6366f1;
+  --accent-2: #9333ea;
+  --accent-2-dark: #6d28d9;
   --accent-3: #3ed6ff;
-  /* Cyan/Blue (Highlights) */
+  --gradient-blurple: linear-gradient(to right, rgb(99 102 241), rgb(147 51 234));
+
+  /* Landing typography: match text-highlight section */
+  --gradient-text-heading: linear-gradient(180deg, #ffffff 20%, #8a8a94 100%);
+  --gradient-text-purple: linear-gradient(135deg, #fff 30%, var(--accent-2) 100%);
+  /* Purple phrase endings: all purple, light (top) to dark (bottom) per letter */
+  --gradient-text-purple-vertical: linear-gradient(180deg, #c4b5fd 0%, #8b5cf6 40%, #6d28d9 70%, #4c1d95 100%);
 
   --border: 240 3.7% 15.9%;
   --input: 240 3.7% 15.9%;
   --ring: 240 4.9% 83.9%;
+
+  --impact-stat-gradient: linear-gradient(180deg, #ffffff 20%, #4ade80 100%);
+  --stat-glow: radial-gradient(circle, rgba(74, 222, 128, 0.12) 0%, rgba(74, 222, 128, 0.04) 40%, transparent 70%);
+  --color-text-green-accent: #4ade80;
+  --color-pill-light-green-bg: rgba(74, 222, 128, 0.15);
+  --color-text-orange-accent: #fb923c;
+  --color-pill-light-orange-bg: rgba(251, 146, 60, 0.15);
+
+  /* Hero/CTA blob colors (dark: violet/indigo; overridden in .light with warm) */
+  --hero-blob-a: rgba(139, 92, 246, 0.2);
+  --hero-blob-b: rgba(99, 102, 241, 0.15);
+  --cta-blob: rgba(139, 92, 246, 0.15);
+
+  /* ShimmerButton (dark: purple) */
+  --shimmer-btn-bg: #5a35f8;
+  --shimmer-btn-shadow: 0 0 24px rgba(90, 53, 248, 0.4);
+  --shimmer-btn-shadow-hover: 0 0 40px rgba(90, 53, 248, 0.55);
+  --accent-glow: 0 0 24px rgba(90, 53, 248, 0.15);
+}
+
+/* Light theme overrides — next-themes sets class="light" on html — Ametrix-aligned */
+.light {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-card: #ffffff;
+  --surface-subtle: rgba(0, 0, 0, 0.02);
+
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-dimmed: #888888;
+
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+
+  --glass-bg: rgba(0, 0, 0, 0.03);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-border-strong: rgba(0, 0, 0, 0.12);
+  --border-muted: rgba(0, 0, 0, 0.08);
+  --border-muted-strong: rgba(0, 0, 0, 0.12);
+
+  --nav-island-bg: rgba(255, 255, 255, 0.9);
+  --nav-island-border: rgba(0, 0, 0, 0.1);
+
+  /* Ametrix palette — single source of truth */
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f9fafb;
+  --color-card-background: linear-gradient(180deg, #ffffff 0%, #fffdf7 100%);
+  --color-pill-light-orange-bg: #fff5e6;
+  --color-pill-light-green-bg: #d1fae5;
+  --color-text-heading: #1a1a1a;
+  --color-text-body: #4a4a4a;
+  --color-text-muted: #888888;
+  --color-text-orange-accent: #fe7f00;
+  --color-text-green-accent: #065f46;
+  --color-accent-orange-primary: #fe7f00;
+  --color-accent-orange-dark: #d36a00;
+  --color-button-primary-bg: #1a1a1a;
+  --color-button-primary-text: #ffffff;
+  --color-button-secondary-bg: #f2f2f2;
+  --color-button-secondary-text: #333333;
+  --color-border-subtle: #e0e0e0;
+  --color-icon-background: #fe7f00;
+
+  /* No page-level glows in light mode — zero out so components render nothing */
+  --glow-warm-primary: transparent;
+  --glow-warm-secondary: transparent;
+  --hero-blob-a: transparent;
+  --hero-blob-b: transparent;
+  --cta-blob: transparent;
+  --stat-glow: transparent;
+
+  /* Cards: crisp white with subtle shadow (Ametrix depth) */
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+  /* Light mode accent: solid orange (no vertical gradient on headlines) */
+  --accent-2: var(--color-accent-orange-primary);
+  --accent-2-dark: var(--color-accent-orange-dark);
+  --gradient-text-heading: linear-gradient(180deg, #1a1a1a 20%, #52525b 100%);
+  --gradient-text-purple: linear-gradient(135deg, #1a1a1a 30%, var(--accent-2) 100%);
+  --gradient-text-purple-vertical: var(--color-accent-orange-primary);
+
+  --border: 240 5% 84%;
+  --input: 240 5% 84%;
+  --ring: 240 5% 34%;
+
+  /* Impact stat headline: darker green for contrast on white */
+  --impact-stat-gradient: linear-gradient(180deg, #1a1a1a 20%, #166534 100%);
+
+  /* ShimmerButton and focus rings — orange in light */
+  --shimmer-btn-bg: var(--color-accent-orange-primary);
+  --shimmer-btn-shadow: 0 0 24px rgba(254, 127, 0, 0.35);
+  --shimmer-btn-shadow-hover: 0 0 40px rgba(254, 127, 0, 0.5);
+  --accent-glow: 0 0 24px rgba(254, 127, 0, 0.15);
+}
+
+.light ::selection {
+  background: rgba(254, 127, 0, 0.35);
+  color: #1a1a1a;
 }
 
 @layer base {
@@ -81,20 +199,21 @@
     color: var(--text-primary);
     font-family: var(--font-sans), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    scroll-snap-type: y proximity;
   }
 }
 
 /* 
  * UTILITIES: GLASS & DEPTH
- * Reusable classes for the "Opal" feel
+ * Reusable classes for the "Opal" feel — theme-aware via CSS vars
  */
 @utility glass-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--glass-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
   box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.2),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    inset 0 0 0 1px var(--glass-border);
 }
 
 /* Complex selectors cannot be used with @utility in Tailwind v4. 
@@ -105,17 +224,39 @@
 
 .glass-card-lift:hover {
   transform: translateY(-6px);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-subtle);
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.4),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    inset 0 0 0 1px var(--glass-border-strong);
 }
 
-@utility gradient-text {
-  background: linear-gradient(135deg, #fff 30%, var(--accent-2) 100%);
+/* White → silver: primary headings (matches text-highlight section) */
+@utility gradient-text-heading {
+  background: var(--gradient-text-heading);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* White → purple: emphasis phrases */
+@utility gradient-text {
+  background: var(--gradient-text-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* All purple, light (top) to dark (bottom) for phrase endings / required words */
+@utility gradient-text-purple-vertical {
+  background: var(--gradient-text-purple-vertical);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Muted body text (landing) */
+@utility text-muted {
+  color: var(--text-secondary);
 }
 
 @utility section-pad {
@@ -129,7 +270,15 @@
 }
 
 @utility pill-badge {
-  @apply rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-wider bg-white/5 border border-white/10 text-[var(--accent-2)];
+  @apply rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-[var(--accent-2)];
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-muted-strong);
+}
+
+.light .pill-badge {
+  background: var(--color-pill-light-orange-bg);
+  color: var(--color-text-orange-accent);
+  border-color: rgba(254, 127, 0, 0.25);
 }
 
 .purple-glow {
@@ -146,6 +295,26 @@
   opacity: 0.6;
 }
 
+.light .purple-glow::before {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hide theme-dependent glows in light mode (avoids hydration mismatch from useTheme) */
+.light .hero-glows,
+.light .cta-glows,
+.light .stat-glows,
+.light .dashboard-preview-glows,
+.light .solution-glows,
+.light .analytics-card-glow {
+  display: none !important;
+}
+
+/* ShimmerButton hover shadow — theme-aware */
+.shimmer-btn:hover {
+  box-shadow: var(--shimmer-btn-shadow-hover);
+}
+
 @utility glow-blob {
   position: absolute;
   border-radius: 9999px;
@@ -154,14 +323,38 @@
   pointer-events: none;
 }
 
+/* Crypton-style Bento cards — theme-aware via CSS vars */
+@utility bento-card {
+  background: var(--surface-subtle);
+  border: 1px solid var(--glass-border-strong);
+  border-radius: 24px; /* rounded-2xl */
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.bento-card:hover {
+  border-color: var(--border-muted-strong);
+  background: var(--glass-bg);
+}
+
+.light .bento-card {
+  box-shadow: var(--card-shadow);
+}
+
+.light .glass-card {
+  box-shadow: var(--card-shadow);
+}
+
 /* 
  * TYPOGRAPHY UTILITIES
  */
+/* Crypton-style: headings pure white, tight tracking */
 @utility h1 {
   font-size: 36px;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
+  color: var(--text-primary);
 
   @media (min-width: 768px) {
     font-size: 64px;
@@ -173,6 +366,7 @@
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
+  color: var(--text-primary);
 
   @media (min-width: 768px) {
     font-size: 44px;
@@ -191,7 +385,7 @@
 
 @utility body-lg {
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--text-secondary);
 
   @media (min-width: 768px) {
@@ -262,4 +456,62 @@
   100% {
     transform: translateX(-100%);
   }
+}
+
+/* Crypton-style: radial shimmer emanating from center */
+@keyframes shimmer-radial {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(1.5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.shimmer-radial {
+  animation: shimmer-radial 2.5s ease-in-out infinite;
+}
+
+/* ─── Custom range slider ─── */
+input[type="range"].accent-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 9999px;
+  outline: none;
+}
+
+input[type="range"].accent-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #5a35f8;
+  border: 3px solid #fff;
+  box-shadow: 0 0 16px rgba(90, 53, 248, 0.5);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+input[type="range"].accent-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 24px rgba(90, 53, 248, 0.7);
+}
+
+input[type="range"].accent-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #5a35f8;
+  border: 3px solid #fff;
+  box-shadow: 0 0 16px rgba(90, 53, 248, 0.5);
+  cursor: pointer;
 }

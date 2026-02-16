@@ -4,9 +4,9 @@
  * All easing, durations, viewport config, and Framer variants live here.
  * Never hardcode cubic-bezier values inline — always reference ease.out.
  *
- * Spec:
- *   Reveal: 700ms cubic-bezier(0.22, 1, 0.36, 1)
- *   Stagger: 100ms per card
+ * Spec (Crypton-style):
+ *   Reveal: 600ms cubic-bezier(0.22, 1, 0.36, 1), trigger 100px before in view
+ *   Stagger: 150ms per card
  *   Lift: -6px on hover
  *   Press: scale 1.03 + brightness 1.1
  */
@@ -28,7 +28,8 @@ export const ease = {
 
 export const dur = {
   micro: 0.2,    // Hover, press
-  base: 0.7,     // Section reveals (700ms)
+  base: 0.6,     // Section reveals (600ms, snappy pop)
+  revealShort: 0.45, // Landing / quick reveals (≤500ms)
   slow: 0.9,     // Immersive transitions
   count: 1.2,    // Count-up animations
 } as const;
@@ -37,12 +38,14 @@ export const dur = {
 
 export const viewport = {
   once: true,
-  amount: 0.3,
+  amount: 0.2,
+  margin: "-100px", // Trigger slightly before element enters view
 } as const;
 
 export const viewportLoose = {
   once: true,
   amount: 0.15,
+  margin: "-100px",
 } as const;
 
 // ─── Reveal variants ──────────────────────────────────
@@ -98,12 +101,12 @@ export const fadeRight: Variants = {
 
 // ─── Stagger variants ─────────────────────────────────
 
-/** Parent: orchestrates 100ms stagger timing. */
+/** Parent: orchestrates 150ms stagger timing (Crypton cascade). */
 export const staggerContainer: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.15,
       delayChildren: 0,
     },
   },

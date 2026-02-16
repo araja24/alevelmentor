@@ -41,10 +41,10 @@ export function GlowButton({
     // overall sizing + typography
     "relative inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold whitespace-nowrap",
     // shared transitions
-    "transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5a35f8]/50",
+    "transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-2)]/50",
     variant === "primary"
       ? // primary gradient: slightly toned-down, less chunky shadow
-        "bg-gradient-to-r from-[#5a35f8] to-[#7c5cf9] text-white shadow-md shadow-[#5a35f8]/25 hover:shadow-lg hover:shadow-[#5a35f8]/35"
+        "bg-gradient-to-r from-[var(--accent-2)] to-[var(--accent-2-dark)] text-white shadow-md shadow-[var(--accent-2)]/25 hover:shadow-lg hover:shadow-[var(--accent-2)]/35"
       : "border border-border bg-card/60 text-foreground backdrop-blur-sm hover:bg-muted",
     disabled && "opacity-50 pointer-events-none",
     className
