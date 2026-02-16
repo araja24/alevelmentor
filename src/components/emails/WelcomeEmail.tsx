@@ -6,7 +6,6 @@ import {
   Heading,
   Hr,
   Html,
-  Img,
   Link,
   Preview,
   Section,
@@ -30,86 +29,151 @@ export function WelcomeEmail({
   const referralUrl = `${appUrl}/?ref=${referralCode}`;
 
   return (
-    <Html lang="en">
+    <Html lang="en" dir="ltr">
       <Head>
-        <meta name="color-scheme" content="dark" />
-        <meta name="supported-color-schemes" content="dark" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="dark light" />
+        <meta name="supported-color-schemes" content="dark light" />
+        <style>{`
+          /* Base dark mode (default) */
+          :root { color-scheme: dark light; }
+
+          /* Responsive */
+          @media only screen and (max-width: 480px) {
+            .email-container { width: 100% !important; border-radius: 0 !important; }
+            .email-padding { padding-left: 20px !important; padding-right: 20px !important; }
+            .hero-heading { font-size: 24px !important; }
+            .rank-number { font-size: 36px !important; }
+            .cta-button { display: block !important; text-align: center !important; width: 100% !important; box-sizing: border-box !important; }
+            .referral-url { font-size: 11px !important; }
+            .stats-table { width: 100% !important; }
+            .stat-cell { display: block !important; width: 100% !important; padding-bottom: 12px !important; }
+          }
+
+          /* Light mode overrides for supporting clients (Apple Mail, iOS) */
+          @media (prefers-color-scheme: light) {
+            .email-body { background-color: #f4f4f5 !important; }
+            .email-container { background-color: #ffffff !important; border-color: #e4e4e7 !important; }
+            .header-bg { background-color: #fafafa !important; border-color: #e4e4e7 !important; }
+            .footer-bg { background-color: #fafafa !important; }
+            .text-primary { color: #09090b !important; }
+            .text-secondary { color: #52525b !important; }
+            .text-muted { color: #71717a !important; }
+            .brand-text { color: #09090b !important; }
+            .rank-card { background-color: rgba(90,53,248,0.06) !important; border-color: rgba(90,53,248,0.15) !important; }
+            .link-box { background-color: #f4f4f5 !important; border-color: #e4e4e7 !important; }
+            .cta-button { background-color: #09090b !important; color: #ffffff !important; }
+            .divider { border-color: #e4e4e7 !important; }
+          }
+        `}</style>
       </Head>
       <Preview>
-        You&apos;re #{rank.toString()} on the alevelmentor waitlist — share your link to
-        move up
+        You&apos;re #{rank.toString()} on the A Level Mentor waitlist — share
+        your link to move up
       </Preview>
-      <Body style={main}>
-        {/* Outer wrapper to enforce dark background on all clients */}
+      <Body style={main} className="email-body">
         <Section style={outerWrapper}>
-          <Container style={cardsWrapper}>
-            {/* ── Header ─────────────────────────────────────────────────── */}
-            <Section style={header}>
-              <Img
-                src={`${appUrl}/logo_large_light.svg`}
-                alt="A Level Mentor"
-                width={140}
-                height={20}
-                style={{ display: "block", margin: "0 auto" }}
-              />
+          <Container style={container} className="email-container">
+            {/* ── Header ──────────────────────────────────────────── */}
+            <Section style={headerStyle} className="header-bg">
+              <table
+                cellPadding={0}
+                cellSpacing={0}
+                role="presentation"
+                style={{ width: "100%", borderCollapse: "collapse" }}
+              >
+                <tr>
+                  <td style={{ textAlign: "center" as const }}>
+                    <Text style={logoText} className="brand-text">
+                      a<span style={logoIcon}>l</span>m
+                    </Text>
+                  </td>
+                </tr>
+              </table>
             </Section>
 
-            {/* ── Hero ─────────────────────────────────────────────────── */}
-            <Section style={hero}>
+            {/* ── Hero ────────────────────────────────────────────── */}
+            <Section style={hero} className="email-padding">
               <Text style={eyebrow}>EARLY ACCESS CONFIRMED</Text>
-              <Heading style={h1}>You&apos;re on the list. 🚀</Heading>
-              <Text style={heroBody}>
-                Welcome to the inner circle. You&apos;ve secured your spot among the first{" "}
-                <span style={{ color: "#fafafa", fontWeight: 600 }}>{totalCount}</span>{" "}
+              <Heading style={h1} className="hero-heading text-primary">
+                You&apos;re on the list. 🚀
+              </Heading>
+              <Text style={heroBody} className="text-secondary">
+                Welcome to the inner circle. You&apos;ve secured your spot among
+                the first{" "}
+                <span style={{ fontWeight: 700 }} className="text-primary">
+                  {totalCount}
+                </span>{" "}
                 students to revolutionize their revision.
               </Text>
             </Section>
 
-            {/* ── Rank Card ────────────────────────────────────────────── */}
-            <Section style={rankCard}>
-              <Text style={rankTitle}>YOUR CURRENT POSITION</Text>
-              <Heading style={rankNumber}>#{rank}</Heading>
-              <Text style={rankSubtitle}>
-                You are ahead of <span style={{ color: "#3ed6ff" }}>{totalCount - rank}</span> others
+            {/* ── Rank Card ───────────────────────────────────────── */}
+            <Section style={rankCard} className="rank-card email-padding">
+              <Text style={rankTitle} className="text-muted">
+                YOUR CURRENT POSITION
+              </Text>
+              <Heading style={rankNumber} className="rank-number text-primary">
+                #{rank}
+              </Heading>
+              <Text style={rankSubtitle} className="text-muted">
+                You are ahead of{" "}
+                <span style={{ color: "#3ed6ff", fontWeight: 600 }}>
+                  {totalCount - rank}
+                </span>{" "}
+                others
               </Text>
             </Section>
 
-            {/* ── Referral ─────────────────────────────────────────────── */}
-            <Section style={referralSection}>
-              <Heading style={h2}>Skip the queue</Heading>
-              <Text style={bodyText}>
-                Want to get access sooner? Use your unique link below. Every friend who joins bumps you up the list.
+            {/* ── Referral ────────────────────────────────────────── */}
+            <Section style={referralSection} className="email-padding">
+              <Heading style={h2} className="text-primary">
+                Skip the queue
+              </Heading>
+              <Text style={bodyText} className="text-secondary">
+                Want to get access sooner? Share your unique link below. Every
+                friend who joins bumps you up the list.
               </Text>
 
-              <Section style={linkContainer}>
-                <Text style={linkText}>{referralUrl}</Text>
+              <Section style={linkBox} className="link-box">
+                <Text style={linkText} className="referral-url">
+                  {referralUrl}
+                </Text>
               </Section>
 
-              <Button style={ctaButton} href={referralUrl}>
-                Share Referral Link →
-              </Button>
+              <table
+                cellPadding={0}
+                cellSpacing={0}
+                role="presentation"
+                style={{ width: "100%", borderCollapse: "collapse" }}
+              >
+                <tr>
+                  <td style={{ textAlign: "center" as const }}>
+                    <Button style={ctaButton} href={referralUrl} className="cta-button">
+                      Share Referral Link →
+                    </Button>
+                  </td>
+                </tr>
+              </table>
             </Section>
 
-            <Hr style={divider} />
+            <Hr style={divider} className="divider" />
 
-            {/* ── Footer ───────────────────────────────────────────────── */}
-            <Section style={footer}>
-              <Img
-                src={`${appUrl}/logo_small.svg`}
-                alt="ALM"
-                width={24}
-                height={24}
-                style={{ display: "block", margin: "0 auto 24px" }}
-              />
-              <Text style={footerText}>
+            {/* ── Footer ──────────────────────────────────────────── */}
+            <Section style={footerStyle} className="footer-bg email-padding">
+              <Text style={footerBrand} className="brand-text">
+                a<span style={footerBrandAccent}>l</span>m
+              </Text>
+              <Text style={footerText} className="text-muted">
                 You received this email because you joined the waitlist at{" "}
                 <Link href={appUrl} style={footerLink}>
                   alevelmentor.com
                 </Link>
                 .
               </Text>
-              <Text style={footerCopyright}>
-                © {new Date().getFullYear()} A Level Mentor. All rights reserved.
+              <Text style={footerCopyright} className="text-muted">
+                © {new Date().getFullYear()} A Level Mentor. All rights
+                reserved.
               </Text>
             </Section>
           </Container>
@@ -121,21 +185,27 @@ export function WelcomeEmail({
 
 export default WelcomeEmail;
 
-// ─── Styles ─────────────────────────────────────────────────────────────────
+/* ─── Styles ──────────────────────────────────────────────────────────────── */
+
+const fontStack =
+  'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 
 const main: React.CSSProperties = {
   backgroundColor: "#000000",
-  fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  fontFamily: fontStack,
+  margin: 0,
+  padding: 0,
 };
 
 const outerWrapper: React.CSSProperties = {
   backgroundColor: "#000000",
   width: "100%",
-  padding: "40px 0",
+  padding: "32px 16px",
 };
 
-const cardsWrapper: React.CSSProperties = {
+const container: React.CSSProperties = {
   maxWidth: "480px",
+  width: "100%",
   margin: "0 auto",
   backgroundColor: "#121214",
   borderRadius: "16px",
@@ -143,24 +213,42 @@ const cardsWrapper: React.CSSProperties = {
   overflow: "hidden",
 };
 
-const header: React.CSSProperties = {
-  padding: "32px 0 24px",
+/* Header */
+const headerStyle: React.CSSProperties = {
+  padding: "28px 24px",
   textAlign: "center" as const,
-  borderBottom: "1px solid rgba(255,255,255,0.05)",
+  borderBottom: "1px solid rgba(255,255,255,0.06)",
   backgroundColor: "#0c0c0e",
 };
 
+const logoText: React.CSSProperties = {
+  fontSize: "22px",
+  fontWeight: "800",
+  color: "#fafafa",
+  letterSpacing: "-0.04em",
+  margin: 0,
+  fontFamily: fontStack,
+};
+
+const logoIcon: React.CSSProperties = {
+  color: "#8b6cf9",
+  fontWeight: "800",
+};
+
+/* Hero */
 const hero: React.CSSProperties = {
   padding: "32px 32px 16px",
   textAlign: "center" as const,
 };
 
 const eyebrow: React.CSSProperties = {
-  color: "#5a35f8",
+  color: "#8b6cf9",
   fontSize: "11px",
   fontWeight: "700",
-  letterSpacing: "0.1em",
+  letterSpacing: "0.12em",
+  textTransform: "uppercase" as const,
   marginBottom: "12px",
+  marginTop: 0,
 };
 
 const h1: React.CSSProperties = {
@@ -175,10 +263,11 @@ const h1: React.CSSProperties = {
 const heroBody: React.CSSProperties = {
   color: "#a1a1aa",
   fontSize: "14px",
-  lineHeight: "1.6",
+  lineHeight: "1.7",
   margin: 0,
 };
 
+/* Rank card */
 const rankCard: React.CSSProperties = {
   margin: "16px 32px 32px",
   padding: "24px",
@@ -192,7 +281,8 @@ const rankTitle: React.CSSProperties = {
   color: "#a1a1aa",
   fontSize: "10px",
   fontWeight: "700",
-  letterSpacing: "0.1em",
+  letterSpacing: "0.12em",
+  textTransform: "uppercase" as const,
   margin: "0 0 8px",
 };
 
@@ -209,8 +299,10 @@ const rankSubtitle: React.CSSProperties = {
   color: "#a1a1aa",
   fontSize: "12px",
   margin: 0,
+  lineHeight: "1.5",
 };
 
+/* Referral */
 const referralSection: React.CSSProperties = {
   padding: "0 32px 32px",
   textAlign: "center" as const,
@@ -221,57 +313,74 @@ const h2: React.CSSProperties = {
   fontSize: "18px",
   fontWeight: "700",
   margin: "0 0 8px",
+  letterSpacing: "-0.01em",
 };
 
 const bodyText: React.CSSProperties = {
   color: "#a1a1aa",
   fontSize: "14px",
-  lineHeight: "1.6",
+  lineHeight: "1.7",
   marginBottom: "20px",
+  marginTop: 0,
 };
 
-const linkContainer: React.CSSProperties = {
+const linkBox: React.CSSProperties = {
   backgroundColor: "#000000",
   border: "1px solid rgba(255,255,255,0.1)",
   borderRadius: "8px",
-  padding: "12px",
+  padding: "14px",
   marginBottom: "20px",
 };
 
 const linkText: React.CSSProperties = {
   color: "#8b6cf9",
   fontSize: "12px",
-  fontFamily: "monospace",
+  fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace',
   margin: 0,
   wordBreak: "break-all" as const,
+  lineHeight: "1.5",
 };
 
 const ctaButton: React.CSSProperties = {
   backgroundColor: "#fafafa",
-  color: "#000000",
+  color: "#09090b",
   fontSize: "14px",
   fontWeight: "600",
-  padding: "14px 28px",
+  padding: "14px 32px",
   borderRadius: "50px",
   textDecoration: "none",
+  display: "inline-block",
 };
 
 const divider: React.CSSProperties = {
   borderColor: "rgba(255,255,255,0.08)",
-  marginTop: "0",
-  marginBottom: "0",
+  margin: 0,
 };
 
-const footer: React.CSSProperties = {
+/* Footer */
+const footerStyle: React.CSSProperties = {
   backgroundColor: "#0c0c0e",
-  padding: "32px",
+  padding: "28px 32px",
   textAlign: "center" as const,
+};
+
+const footerBrand: React.CSSProperties = {
+  fontSize: "16px",
+  fontWeight: "800",
+  color: "#fafafa",
+  letterSpacing: "-0.04em",
+  margin: "0 0 16px",
+  fontFamily: fontStack,
+};
+
+const footerBrandAccent: React.CSSProperties = {
+  color: "#8b6cf9",
 };
 
 const footerText: React.CSSProperties = {
   color: "#52525b",
   fontSize: "12px",
-  lineHeight: "1.5",
+  lineHeight: "1.6",
   margin: "0 0 8px",
 };
 

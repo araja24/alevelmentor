@@ -1,20 +1,17 @@
 import { NextResponse } from "next/server";
 import { createElement } from "react";
-import { Resend } from "resend";
 import { render } from "@react-email/render";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import { sendWaitlistEmails } from "@/lib/resend";
 import { WelcomeEmail } from "@/components/emails/WelcomeEmail";
 import { AdminNotificationEmail } from "@/components/emails/AdminNotificationEmail";
 import rateLimit from "@/lib/rate-limit";
 import { waitlistSchema } from "@/lib/validations";
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
-const ADMIN_EMAIL = process.env.RESEND_ADMIN_EMAIL ?? "alevelmentor.business@gmail.com";
-
-// 1. Rate Limiting: 5 requests per minute per IP
+// Rate Limiting: 5 requests per minute per IP
 const limiter = rateLimit({
-  interval: 60 * 1000, // 60 seconds
-  uniqueTokenPerInterval: 500, // Max 500 users per second
+  interval: 60 * 1000,
+  uniqueTokenPerInterval: 500,
 });
 
 // Helper: Generate a short random referral code
@@ -58,10 +55,10 @@ export async function POST(request: Request) {
   try {
     const start = Date.now();
 
-    // 2. Apply Rate Limiting
+    // 1. Rate Limiting
     const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
     try {
-      await limiter.check(5, ip); // 5 requests per minute
+      await limiter.check(5, ip);
     } catch {
       return NextResponse.json(
         { error: "Too many requests. Please try again later." },
@@ -71,7 +68,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    // 3. Strict Zod Validation & Sanitization
+    // 2. Validation
     const result = waitlistSchema.safeParse(body);
     if (!result.success) {
       return NextResponse.json(
@@ -82,7 +79,7 @@ export async function POST(request: Request) {
 
     const { email, referralCode: referralParam } = result.data;
 
-    // 4. Check if user already exists
+    // 3. Check if user already exists
     const { data: existingUser } = await supabaseAdmin
       .from("waitlist_users")
       .select("*")
@@ -90,7 +87,6 @@ export async function POST(request: Request) {
       .single();
 
     if (existingUser) {
-      // User exists - return their current status
       const [rank, totalCount] = await Promise.all([
         calculateRank(existingUser.referral_count, existingUser.created_at),
         getTotalCount(),
@@ -106,12 +102,11 @@ export async function POST(request: Request) {
       });
     }
 
-    // 5. New User - Generate unique referral code
+    // 4. Generate unique referral code
     let referralCode = generateReferralCode();
     let isUnique = false;
     let attempts = 0;
 
-    // Ensure uniqueness
     while (!isUnique && attempts < 5) {
       const { data } = await supabaseAdmin
         .from("waitlist_users")
@@ -126,10 +121,9 @@ export async function POST(request: Request) {
       }
     }
 
-    // 6. Handle Referral (if applicable)
+    // 5. Handle Referral
     let referredBy: string | null = null;
     if (referralParam) {
-      // Check if referrer code is valid
       const { data: referrer } = await supabaseAdmin
         .from("waitlist_users")
         .select("id")
@@ -138,14 +132,13 @@ export async function POST(request: Request) {
 
       if (referrer) {
         referredBy = referralParam;
-        // Atomically increment referrer's count
         await supabaseAdmin.rpc("increment_referral_count", {
           p_referral_code: referralParam,
         });
       }
     }
 
-    // 7. Insert New User
+    // 6. Insert New User
     const { data: newUser, error: insertError } = await supabaseAdmin
       .from("waitlist_users")
       .insert({
@@ -164,58 +157,46 @@ export async function POST(request: Request) {
       );
     }
 
-    // 8. Get Stats (Rank & Total)
+    // 7. Get Stats
     const [rank, totalCount] = await Promise.all([
       calculateRank(newUser.referral_count, newUser.created_at),
       getTotalCount(),
     ]);
 
-    // 9. Send Emails (Welcome & Admin Notification)
-    // We await this to ensure delivery before responding, given serverless environment
-    if (process.env.RESEND_API_KEY) {
-      const resend = new Resend(process.env.RESEND_API_KEY);
-
-      try {
-        // Render emails
-        const [welcomeHtml, adminHtml] = await Promise.all([
-          render(createElement(WelcomeEmail, {
+    // 8. Send Emails (non-blocking — never fails the request)
+    try {
+      const [welcomeHtml, adminHtml] = await Promise.all([
+        render(
+          createElement(WelcomeEmail, {
             email,
             referralCode: newUser.referral_code,
             rank,
-            totalCount
-          })),
-          render(createElement(AdminNotificationEmail, {
+            totalCount,
+          })
+        ),
+        render(
+          createElement(AdminNotificationEmail, {
             newUserEmail: email,
             rank,
             totalCount,
-            referredBy
-          })),
-        ]);
+            referredBy,
+          })
+        ),
+      ]);
 
-        await Promise.allSettled([
-          resend.emails.send({
-            from: FROM_EMAIL,
-            to: email,
-            subject: `You're #${rank} on the alevelmentor waitlist 🎉`,
-            html: welcomeHtml,
-          }),
-          resend.emails.send({
-            from: FROM_EMAIL,
-            to: ADMIN_EMAIL,
-            subject: `New Signup: ${email} (#${rank})`,
-            html: adminHtml,
-          }),
-        ]);
-        console.log(`Emails sent for ${email} in ${Date.now() - start}ms`);
-      } catch (emailError) {
-        // Non-blocking error - we still want to return success to client
-        console.error("Email Sending Error:", emailError);
-      }
-    } else {
-      console.warn("RESEND_API_KEY is missing. Skipping emails.");
+      await sendWaitlistEmails({
+        welcomeHtml,
+        adminHtml,
+        userEmail: email,
+        rank,
+      });
+
+      console.log(`[waitlist] Complete for ${email} in ${Date.now() - start}ms`);
+    } catch (emailErr) {
+      console.error("[waitlist] Email step failed:", emailErr);
     }
 
-    // 10. Return Success
+    // 9. Return Success
     return NextResponse.json({
       success: true,
       already_registered: false,
@@ -224,12 +205,10 @@ export async function POST(request: Request) {
       referral_count: newUser.referral_count,
       total_count: totalCount,
     });
-
-  } catch (err: any) {
+  } catch (err) {
     console.error("Waitlist API Error:", err);
-    // 11. Generic Error Message
     return NextResponse.json(
-      { error: "Internal Server Error" }, // Don't leak err.message
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }

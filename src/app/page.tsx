@@ -89,16 +89,10 @@ const SplashCursor = dynamic(
   { ssr: true }
 );
 
-const MouseGlow = dynamic(
-  () => import("@/components/landing/MouseGlow").then((m) => ({ default: m.MouseGlow })),
-  { ssr: true }
-);
-
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] overflow-x-clip selection:bg-indigo-500/30 selection:text-white">
       <SplashCursor />
-      <MouseGlow />
       <Navbar />
       <Hero />
       <DashboardPreviewSection />

@@ -30,74 +30,109 @@ export function AdminNotificationEmail({
   });
 
   return (
-    <Html lang="en">
+    <Html lang="en" dir="ltr">
       <Head>
-        <meta name="color-scheme" content="dark" />
-        <meta name="supported-color-schemes" content="dark" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="dark light" />
+        <meta name="supported-color-schemes" content="dark light" />
+        <style>{`
+          :root { color-scheme: dark light; }
+
+          @media only screen and (max-width: 480px) {
+            .email-container { width: 100% !important; border-radius: 0 !important; }
+            .email-padding { padding-left: 16px !important; padding-right: 16px !important; }
+            .data-label { font-size: 11px !important; }
+            .data-value { font-size: 12px !important; }
+          }
+
+          @media (prefers-color-scheme: light) {
+            .email-body { background-color: #f4f4f5 !important; }
+            .email-container { background-color: #ffffff !important; border-color: #e4e4e7 !important; box-shadow: 0 2px 16px rgba(0,0,0,0.06) !important; }
+            .header-bg { background-color: #fafafa !important; border-color: #e4e4e7 !important; }
+            .footer-bg { background-color: #fafafa !important; }
+            .text-primary { color: #09090b !important; }
+            .text-secondary { color: #52525b !important; }
+            .text-muted { color: #71717a !important; }
+            .brand-text { color: #09090b !important; }
+            .data-card { border-color: #e4e4e7 !important; }
+            .row-divider { border-color: #f4f4f5 !important; }
+            .milestone-box { background-color: rgba(90,53,248,0.06) !important; border-color: rgba(90,53,248,0.15) !important; }
+            .divider { border-color: #e4e4e7 !important; }
+          }
+        `}</style>
       </Head>
       <Preview>
-        New signup: {newUserEmail} — #{rank.toString()} of {totalCount.toString()}
+        New signup: {newUserEmail} — #{rank.toString()} of{" "}
+        {totalCount.toString()}
       </Preview>
-      <Body style={main}>
-        <Container style={wrapper}>
-          {/* ── Header ─────────────────────────────────────────────── */}
-          <Section style={header}>
-            <table
-              cellPadding={0}
-              cellSpacing={0}
-              style={{ width: "100%", borderCollapse: "collapse" }}
-            >
-              <tr>
-                <td>
-                  <Text style={brandName}>
-                    alevel<span style={brandAccent}>mentor</span>
-                  </Text>
-                </td>
-                <td style={{ textAlign: "right" }}>
-                  <Text style={badge}>Admin</Text>
-                </td>
-              </tr>
-            </table>
-          </Section>
-
-          {/* ── Body ───────────────────────────────────────────────── */}
-          <Section style={body}>
-            <Heading style={h2}>New waitlist signup</Heading>
-            <Text style={subtitle}>{timestamp}</Text>
-
-            {/* Data rows */}
-            <Section style={dataCard}>
-              <DataRow label="Email" value={newUserEmail} highlight />
-              <Hr style={rowDivider} />
-              <DataRow label="Position" value={`#${rank}`} />
-              <Hr style={rowDivider} />
-              <DataRow label="Total signups" value={String(totalCount)} />
-              <Hr style={rowDivider} />
-              <DataRow
-                label="Referred by"
-                value={referredBy ?? "Organic"}
-                muted={!referredBy}
-              />
+      <Body style={main} className="email-body">
+        <Section style={outerWrapper}>
+          <Container style={container} className="email-container">
+            {/* ── Header ────────────────────────────────────────── */}
+            <Section style={headerStyle} className="header-bg">
+              <table
+                cellPadding={0}
+                cellSpacing={0}
+                role="presentation"
+                style={{ width: "100%", borderCollapse: "collapse" }}
+              >
+                <tr>
+                  <td>
+                    <Text style={brandName} className="brand-text">
+                      a<span style={brandAccent}>l</span>m
+                    </Text>
+                  </td>
+                  <td style={{ textAlign: "right" as const }}>
+                    <Text style={badge}>Admin</Text>
+                  </td>
+                </tr>
+              </table>
             </Section>
 
-            {/* Milestone callout */}
-            {totalCount % 50 === 0 && (
-              <Section style={milestone}>
-                <Text style={milestoneText}>
-                  🎉 Milestone: {totalCount} people have joined the waitlist!
-                </Text>
-              </Section>
-            )}
-          </Section>
+            {/* ── Body ──────────────────────────────────────────── */}
+            <Section style={bodySection} className="email-padding">
+              <Heading style={h2} className="text-primary">
+                New waitlist signup
+              </Heading>
+              <Text style={subtitle} className="text-muted">
+                {timestamp}
+              </Text>
 
-          {/* ── Footer ─────────────────────────────────────────────── */}
-          <Hr style={footerDivider} />
-          <Section style={footer}>
-            <Text style={footerText}>
-              Sent automatically · alevelmentor waitlist system
-            </Text>
-          </Section>
-        </Container>
+              <Section style={dataCard} className="data-card">
+                <DataRow label="Email" value={newUserEmail} highlight />
+                <Hr style={rowDivider} className="row-divider" />
+                <DataRow label="Position" value={`#${rank}`} />
+                <Hr style={rowDivider} className="row-divider" />
+                <DataRow
+                  label="Total signups"
+                  value={String(totalCount)}
+                />
+                <Hr style={rowDivider} className="row-divider" />
+                <DataRow
+                  label="Referred by"
+                  value={referredBy ?? "Organic"}
+                  muted={!referredBy}
+                />
+              </Section>
+
+              {totalCount % 50 === 0 && (
+                <Section style={milestone} className="milestone-box">
+                  <Text style={milestoneText}>
+                    🎉 Milestone: {totalCount} people have joined the waitlist!
+                  </Text>
+                </Section>
+              )}
+            </Section>
+
+            {/* ── Footer ────────────────────────────────────────── */}
+            <Hr style={footerDivider} className="divider" />
+            <Section style={footerStyle} className="footer-bg email-padding">
+              <Text style={footerText} className="text-muted">
+                Sent automatically · A Level Mentor waitlist system
+              </Text>
+            </Section>
+          </Container>
+        </Section>
       </Body>
     </Html>
   );
@@ -118,14 +153,18 @@ function DataRow({
     <table
       cellPadding={0}
       cellSpacing={0}
+      role="presentation"
       style={{ width: "100%", borderCollapse: "collapse" }}
     >
       <tr>
         <td style={rowLeft}>
-          <Text style={rowLabel}>{label}</Text>
+          <Text style={rowLabel} className="text-muted data-label">
+            {label}
+          </Text>
         </td>
         <td style={rowRight}>
           <Text
+            className="data-value"
             style={{
               ...rowValue,
               color: highlight ? "#8b6cf9" : muted ? "#52525b" : "#fafafa",
@@ -141,18 +180,27 @@ function DataRow({
 
 export default AdminNotificationEmail;
 
-// ─── Styles ─────────────────────────────────────────────────────────────────
+/* ─── Styles ──────────────────────────────────────────────────────────────── */
+
+const fontStack =
+  'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 
 const main: React.CSSProperties = {
   backgroundColor: "#09090b",
-  fontFamily:
-    'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  fontFamily: fontStack,
   margin: 0,
-  padding: "40px 0",
+  padding: 0,
 };
 
-const wrapper: React.CSSProperties = {
+const outerWrapper: React.CSSProperties = {
+  backgroundColor: "#09090b",
+  width: "100%",
+  padding: "32px 16px",
+};
+
+const container: React.CSSProperties = {
   maxWidth: "480px",
+  width: "100%",
   margin: "0 auto",
   backgroundColor: "#121214",
   borderRadius: "14px",
@@ -161,7 +209,8 @@ const wrapper: React.CSSProperties = {
   boxShadow: "0 2px 16px rgba(90,53,248,0.1)",
 };
 
-const header: React.CSSProperties = {
+/* Header */
+const headerStyle: React.CSSProperties = {
   backgroundColor: "#09090b",
   padding: "18px 24px",
   borderBottom: "1px solid rgba(255,255,255,0.06)",
@@ -173,6 +222,7 @@ const brandName: React.CSSProperties = {
   color: "#ffffff",
   letterSpacing: "-0.03em",
   margin: 0,
+  fontFamily: fontStack,
 };
 
 const brandAccent: React.CSSProperties = {
@@ -185,7 +235,7 @@ const badge: React.CSSProperties = {
   color: "#a78bfa",
   fontSize: "10px",
   fontWeight: "700",
-  textTransform: "uppercase",
+  textTransform: "uppercase" as const,
   letterSpacing: "0.1em",
   padding: "3px 10px",
   borderRadius: "999px",
@@ -193,7 +243,8 @@ const badge: React.CSSProperties = {
   margin: 0,
 };
 
-const body: React.CSSProperties = {
+/* Body */
+const bodySection: React.CSSProperties = {
   padding: "24px 24px 20px",
 };
 
@@ -211,7 +262,7 @@ const subtitle: React.CSSProperties = {
   margin: "0 0 20px",
 };
 
-// Data card
+/* Data card */
 const dataCard: React.CSSProperties = {
   border: "1px solid rgba(255,255,255,0.08)",
   borderRadius: "10px",
@@ -219,15 +270,15 @@ const dataCard: React.CSSProperties = {
 };
 
 const rowLeft: React.CSSProperties = {
-  padding: "11px 14px",
+  padding: "12px 14px",
   width: "40%",
-  verticalAlign: "middle",
+  verticalAlign: "middle" as const,
 };
 
 const rowRight: React.CSSProperties = {
-  padding: "11px 14px",
-  textAlign: "right",
-  verticalAlign: "middle",
+  padding: "12px 14px",
+  textAlign: "right" as const,
+  verticalAlign: "middle" as const,
 };
 
 const rowLabel: React.CSSProperties = {
@@ -248,7 +299,7 @@ const rowDivider: React.CSSProperties = {
   margin: 0,
 };
 
-// Milestone banner
+/* Milestone */
 const milestone: React.CSSProperties = {
   marginTop: "16px",
   backgroundColor: "rgba(90,53,248,0.1)",
@@ -264,14 +315,14 @@ const milestoneText: React.CSSProperties = {
   margin: 0,
 };
 
-// Footer
+/* Footer */
 const footerDivider: React.CSSProperties = {
   borderColor: "rgba(255,255,255,0.06)",
   margin: 0,
 };
 
-const footer: React.CSSProperties = {
-  padding: "12px 24px 16px",
+const footerStyle: React.CSSProperties = {
+  padding: "14px 24px 18px",
   backgroundColor: "#0c0c0e",
 };
 
