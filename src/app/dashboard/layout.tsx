@@ -13,19 +13,16 @@ export default async function DashboardLayout({
 
   if (!session) redirect("/login");
 
-  const { data: user } = await supabase
-    .from("users")
+  const { data: profile } = await supabase
+    .from("profiles")
     .select("onboarding_completed")
     .eq("id", session.user.id)
-    .single();
+    .maybeSingle();
 
-  if (!user?.onboarding_completed) redirect("/onboarding");
+  if (!profile?.onboarding_completed) redirect("/onboarding");
 
   return (
-    <div
-      className="min-h-screen text-white"
-      style={{ background: "var(--bg-primary)" }}
-    >
+    <div className="min-h-screen text-white" style={{ background: "var(--bg-primary)" }}>
       {children}
     </div>
   );
