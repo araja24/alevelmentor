@@ -472,6 +472,7 @@
 /* Continuous smooth loop for university carousel */
 .university-carousel-track {
   animation: scroll-left 35s linear infinite;
+  will-change: transform;
 }
 
 @keyframes scroll-left-slow {

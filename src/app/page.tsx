@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
+import { SplashCursorGate } from "@/components/landing/SplashCursorGate";
 
 const Navbar = dynamic(
   () => import("@/components/landing/Navbar").then((m) => ({ default: m.Navbar })),
@@ -74,15 +75,10 @@ const Footer = dynamic(
   { ssr: true, loading: () => <footer className="min-h-[200px]" aria-hidden /> }
 );
 
-const SplashCursor = dynamic(
-  () => import("@/components/landing/SplashCursor"),
-  { ssr: true }
-);
-
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] overflow-x-clip selection:bg-indigo-500/30 selection:text-white">
-      <SplashCursor />
+      <SplashCursorGate />
       <Navbar />
       <Hero />
       <DashboardPreviewSection />

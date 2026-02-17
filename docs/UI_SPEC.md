@@ -134,7 +134,7 @@ This document is the single reference to reproduce the app’s UI. Use it for de
 ## 7. Assets and branding
 
 - **Logo**: Use project logo paths as configured (e.g. `/logo_small.svg`, `/logo_small_light.svg` for theme-aware).
-A-Level students who now study at” carousel.
+- **University logo carousel**: Below the hero CTA, displays the line "Built by A-Level students who now study at" with a horizontally scrolling track of university names (e.g. University of British Columbia, McGill University, University of Warwick, University of Nottingham).
 - **Icons**: lucide-react as the standard icon set.
 
 ---
