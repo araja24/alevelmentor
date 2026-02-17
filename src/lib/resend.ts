@@ -7,8 +7,18 @@ const resend = process.env.RESEND_API_KEY
 
 const FROM_EMAIL =
   process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
-const ADMIN_EMAIL =
-  process.env.RESEND_ADMIN_EMAIL ?? "alevelmentor.business@gmail.com";
+
+function getAdminEmail(): string {
+  const env = process.env.RESEND_ADMIN_EMAIL;
+  if (process.env.NODE_ENV === "production" && !env) {
+    throw new Error(
+      "RESEND_ADMIN_EMAIL is required in production. Set it in your environment."
+    );
+  }
+  return env ?? "alevelmentor.business@gmail.com";
+}
+
+const ADMIN_EMAIL = getAdminEmail();
 
 export interface SendResult {
   id: string;

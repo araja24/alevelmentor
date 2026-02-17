@@ -44,11 +44,6 @@ const Problem = dynamic(
   { ssr: true, loading: () => <section className="min-h-[320px]" aria-hidden /> }
 );
 
-const SystemBridge = dynamic(
-  () => import("@/components/landing/SystemBridge").then((m) => ({ default: m.SystemBridge })),
-  { ssr: true, loading: () => <section className="min-h-[280px]" aria-hidden /> }
-);
-
 const FeaturePreviews = dynamic(
   () => import("@/components/landing/FeaturePreviews").then((m) => ({ default: m.FeaturePreviews })),
   { ssr: true, loading: () => <section className="min-h-[400px]" aria-hidden /> }
@@ -62,11 +57,6 @@ const MoreFeatures = dynamic(
 const ComparisonTable = dynamic(
   () => import("@/components/landing/ComparisonTable").then((m) => ({ default: m.ComparisonTable })),
   { ssr: true, loading: () => <section className="min-h-[360px]" aria-hidden /> }
-);
-
-const ImpactStats = dynamic(
-  () => import("@/components/landing/ImpactStats").then((m) => ({ default: m.ImpactStats })),
-  { ssr: true, loading: () => <section className="min-h-[200px]" aria-hidden /> }
 );
 
 const FAQ = dynamic(
@@ -99,7 +89,6 @@ export default function Home() {
 
       <Suspense fallback={<section className="min-h-[600px]" aria-hidden />}>
         <Problem />
-        <SystemBridge />
       </Suspense>
 
       <Suspense fallback={<section className="min-h-[720px]" aria-hidden />}>
@@ -107,9 +96,8 @@ export default function Home() {
         <MoreFeatures />
       </Suspense>
 
-      <Suspense fallback={<section className="min-h-[560px]" aria-hidden />}>
+      <Suspense fallback={<section className="min-h-[360px]" aria-hidden />}>
         <ComparisonTable />
-        <ImpactStats />
       </Suspense>
 
       <Suspense fallback={<section className="min-h-[980px]" aria-hidden />}>

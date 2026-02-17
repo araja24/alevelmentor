@@ -12,8 +12,8 @@ const stats = [
 
 const quotes = [
   { text: "Went from B to A* in Chemistry in 8 weeks.", name: "Amara K." },
-  { text: "The roadmap changed everything for me.", name: "James T." },
-  { text: "I finally feel in control of my revision.", name: "Sofia L." },
+  { text: "The plan adapts to everything — I just follow it and de-stress.", name: "James T." },
+  { text: "Finally in control. Built by students who get it.", name: "Sofia L." },
 ];
 
 function CountUpStat({ value, prefix = "", suffix = "", label }: {

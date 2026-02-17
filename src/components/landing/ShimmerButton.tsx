@@ -9,7 +9,7 @@ interface ShimmerButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export function ShimmerButton({ href, children, className, disabled, ...props }: ShimmerButtonProps) {
     const baseStyles = cn(
-        "shimmer-btn group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full px-8 py-3.5 text-[15px] font-semibold text-white transition-all duration-300",
+        "shimmer-btn group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full px-8 py-3.5 text-[18px] font-semibold text-white transition-all duration-300",
         "hover:scale-[1.03] active:scale-[0.98]",
         disabled && "opacity-50 cursor-not-allowed hover:scale-100 hover:shadow-none",
         className

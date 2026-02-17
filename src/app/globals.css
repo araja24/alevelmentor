@@ -310,6 +310,11 @@
   display: none !important;
 }
 
+/* Light mode: soften dashboard preview shadow to avoid gray rectangle on phone */
+.light .dashboard-preview-shadow {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.06));
+}
+
 /* Impact stats in light: show neon blue glow (exception to .stat-glows hidden above) */
 .light .impact-stats-section .impact-stat-glow {
   display: block !important;
@@ -355,9 +360,9 @@
 /* 
  * TYPOGRAPHY UTILITIES
  */
-/* Crypton-style: headings pure white, tight tracking */
+/* Crypton-style: headings pure white, tight tracking. Alevels-style hierarchy: 48–64px hero, 28–36px subheadings, 16–20px body. */
 @utility h1 {
-  font-size: 36px;
+  font-size: 48px;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -376,7 +381,7 @@
   color: var(--text-primary);
 
   @media (min-width: 768px) {
-    font-size: 44px;
+    font-size: 36px;
   }
 }
 
@@ -396,7 +401,7 @@
   color: var(--text-secondary);
 
   @media (min-width: 768px) {
-    font-size: 18px;
+    font-size: 20px;
   }
 }
 
@@ -435,7 +440,13 @@
 
 @keyframes scroll-left {
   to {
-    transform: translateX(-50%)
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-left-slow {
+  to {
+    transform: translateX(-50%);
   }
 }
 

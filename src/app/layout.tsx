@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "A Level Mentor — Your Personal Revision Mentor",
   description:
-    "Personalised revision roadmap, instant answers, and grade predictions that adapt as you learn. Ace your A-Levels.",
+    "Personalised revision plan that adapts to real life — topic tests, sick days, lazy days. We manage everything so you can follow worry-free. Built by A-Level students at UBC, Warwick, Nottingham, McGill. Ace your A-Levels.",
 };
 
 export default function RootLayout({

@@ -253,7 +253,7 @@ export function Solution() {
                         </h2>
                         <p className="body-lg mb-8 opacity-60">
                             Your revision mentor is almost here. Any browser, any device.
-                            Everything you need to hit your target grades, structured and ready.
+                            A plan that adapts to real life so you can follow worry-free — built by students who now study at top universities.
                         </p>
                         <div className="flex items-center gap-4 flex-wrap">
                             {[

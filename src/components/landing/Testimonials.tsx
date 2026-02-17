@@ -7,7 +7,7 @@ const personas = [
   { initials: "JT", name: "James T.", detail: "Y12, Manchester", quote: "The weak area detection found gaps I didn't know existed. My mock scores jumped 15%." },
   { initials: "PS", name: "Priya S.", detail: "Y13, Birmingham", quote: "Best tool for my A-Levels. Real progress every week, not just busy work." },
   { initials: "DM", name: "Daniel M.", detail: "Y12, Leeds", quote: "Already getting As but couldn't break into A*. This pushed me over the line." },
-  { initials: "SL", name: "Sofia L.", detail: "Y13, Bristol", quote: "Having everything planned out day by day removed all the stress. I just follow the roadmap." },
+  { initials: "SL", name: "Sofia L.", detail: "Y13, Bristol", quote: "The plan adapts to sick days and topic tests — I just follow it worry-free. No more stress." },
   { initials: "RW", name: "Ryan W.", detail: "Y12, Edinburgh", quote: "The mentor explained things better than my textbook. Tailored to my exact exam board." },
   { initials: "AR", name: "Aisha R.", detail: "Y13, Glasgow", quote: "Three subjects, one dashboard. I can see exactly where I stand in each one — no more guessing." },
   { initials: "TH", name: "Tom H.", detail: "Y12, Cardiff", quote: "Started using it in October and already feel more prepared than friends who've been revising since summer." },
@@ -47,7 +47,7 @@ export function Testimonials() {
             Built for students, <span className="gradient-text-purple-vertical">by students</span>
           </h2>
           <p className="body mt-4 max-w-[500px] mx-auto opacity-60">
-            Real feedback from A-Level students using the platform.
+            From A-Level students who now study at UBC, Warwick, Nottingham, and McGill. Real feedback — real revision, not another vibe-coded app.
           </p>
         </RevealSection>
       </div>

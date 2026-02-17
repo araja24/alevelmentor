@@ -344,7 +344,7 @@ export function AppPreview() {
             Everything you need in <span className="gradient-text-purple-vertical">one place</span>
           </h2>
           <p className="body mt-4 max-w-[55ch] mx-auto text-muted">
-            From your roadmap to past papers and your AI mentor — built for A-Level.
+            From your adaptive plan to past papers and your AI mentor — built by students, for A-Level.
           </p>
         </RevealSection>
 
@@ -362,7 +362,7 @@ export function AppPreview() {
           <CardShell
             className="sm:col-span-6"
             title="Smart Roadmap"
-            description="Auto-generated week-by-week plan. Never wonder what to revise next."
+            description="Plan adapts to topic tests, sick days, real life — follow worry-free."
             delay={0.2}
           >
             <RoadmapPreview />

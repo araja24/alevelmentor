@@ -1,7 +1,7 @@
 "use client";
 
-import { RevealSection } from "./RevealSection";
-import { ArrowRight, BarChart3, TrendingUp, CheckCircle2, Circle, Clock, Sparkles, Upload, BookOpen, Route } from "lucide-react";
+import { RevealSection } from "@/components/landing/RevealSection";
+import { ArrowRight, BarChart3, Calendar, TrendingUp, CheckCircle2, Circle, Clock, Sparkles } from "lucide-react";
 import Link from "next/link";
 import {
     LineChart,
@@ -127,6 +127,103 @@ function AnalyticsCard() {
 }
 
 /* ═══════════════════════════════════════════
+   Feature 1: Smart Roadmap — Weekly Timeline
+   ═══════════════════════════════════════════ */
+function RoadmapCard() {
+    const weeks = [
+        {
+            label: "This Week",
+            active: true,
+            tasks: [
+                { name: "Organic Mechanisms", done: true },
+                { name: "Equilibria Qs", done: true },
+                { name: "Electrochemistry", done: false, current: true },
+            ],
+        },
+        {
+            label: "Next Week",
+            active: false,
+            tasks: [
+                { name: "Acids & Bases", done: false },
+                { name: "Thermodynamics", done: false },
+            ],
+        },
+    ];
+
+    return (
+        <div className="relative">
+            <div
+                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
+            >
+                {/* Header */}
+                <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)]">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center">
+                                <Calendar className="h-4 w-4 text-white" />
+                            </div>
+                            <div>
+                                <p className="text-[13px] font-semibold text-[var(--text-primary)]">Chemistry A2</p>
+                                <p className="text-[10px] text-muted">AQA · Week 12 of 18</p>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-[18px] font-bold text-emerald-500">67%</p>
+                            <p className="text-[9px] text-muted">complete</p>
+                        </div>
+                    </div>
+                    {/* Progress bar */}
+                    <div className="mt-3 h-1.5 rounded-full bg-[var(--surface-subtle)] overflow-hidden">
+                        <div className="h-full rounded-full bg-gradient-to-r from-[var(--accent-2)] to-[var(--accent-2-dark)] w-[67%] transition-all" />
+                    </div>
+                </div>
+
+                {/* Timeline */}
+                <div className="p-5 space-y-4">
+                    {weeks.map((week, wi) => (
+                        <div key={wi}>
+                            <div className="flex items-center gap-2 mb-2.5">
+                                <Clock className="h-3 w-3 text-muted opacity-60" />
+                                <span className={`text-[10px] font-semibold uppercase tracking-wider ${week.active ? "text-[var(--accent-2)]" : "text-muted opacity-60"}`}>
+                                    {week.label}
+                                </span>
+                                {week.active && (
+                                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-2)] animate-pulse" />
+                                )}
+                            </div>
+                            <div className="space-y-1.5 ml-1 border-l border-[var(--border-muted)] pl-4">
+                                {week.tasks.map((task, ti) => (
+                                    <div
+                                        key={ti}
+                                        className={`flex items-center gap-2.5 rounded-xl px-3 py-2 transition-colors ${task.current
+                                            ? "bg-[var(--accent-2)]/10 border border-[var(--accent-2)]/25"
+                                            : "border border-transparent hover:bg-[var(--surface-subtle)]"
+                                            }`}
+                                    >
+                                        {task.done ? (
+                                            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                                        ) : (
+                                            <Circle className={`h-3.5 w-3.5 shrink-0 ${task.current ? "text-[var(--accent-2)]" : "text-muted opacity-50"}`} />
+                                        )}
+                                        <span className={`text-[12px] ${task.done ? "text-muted line-through" : task.current ? "text-[var(--text-primary)] font-medium" : "text-muted"
+                                            }`}>
+                                            {task.name}
+                                        </span>
+                                        {task.current && (
+                                            <span className="ml-auto text-[8px] text-[var(--accent-2)] font-semibold uppercase tracking-wider">In Progress</span>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+/* ═══════════════════════════════════════════
    Feature 2: Study Mentor — AI Chat
    ═══════════════════════════════════════════ */
 function MentorCard() {
@@ -203,151 +300,7 @@ function MentorCard() {
 }
 
 /* ═══════════════════════════════════════════
-   Personalized plan — Roadmap preview card (weekly timeline)
-   ═══════════════════════════════════════════ */
-function RoadmapPreviewCard() {
-    const weeks = [
-        {
-            label: "This week",
-            active: true,
-            tasks: [
-                { name: "Organic Mechanisms", done: true },
-                { name: "Equilibria Qs", done: true },
-                { name: "Electrochemistry", done: false, current: true },
-            ],
-        },
-        {
-            label: "Next week",
-            active: false,
-            tasks: [
-                { name: "Acids & Bases", done: false },
-                { name: "Thermodynamics", done: false },
-            ],
-        },
-    ];
-
-    return (
-        <div className="relative">
-            <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
-            >
-                <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)] flex items-center gap-2.5">
-                    <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center">
-                        <Route className="h-4 w-4 text-white" />
-                    </div>
-                    <div>
-                        <p className="text-[13px] font-semibold text-[var(--text-primary)]">Personalized plan</p>
-                        <p className="text-[10px] text-muted">Adapts to real life — follow worry-free</p>
-                    </div>
-                </div>
-                <div className="px-5 pt-4 pb-4">
-                    <div className="flex items-center justify-between mb-3">
-                        <p className="text-[11px] text-muted">Chemistry A2 · AQA</p>
-                        <div className="text-right">
-                            <p className="text-[16px] font-bold text-emerald-500">67%</p>
-                            <p className="text-[9px] text-muted">complete</p>
-                        </div>
-                    </div>
-                    <div className="h-1.5 rounded-full bg-[var(--surface-subtle)] overflow-hidden mb-4">
-                        <div className="h-full rounded-full bg-gradient-to-r from-[var(--accent-2)] to-[var(--accent-2-dark)] w-[67%] transition-all" />
-                    </div>
-                    <div className="space-y-4">
-                        {weeks.map((week, wi) => (
-                            <div key={wi}>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <Clock className="h-3 w-3 text-muted opacity-60" />
-                                    <span className={`text-[10px] font-semibold uppercase tracking-wider ${week.active ? "text-[var(--accent-2)]" : "text-muted opacity-60"}`}>
-                                        {week.label}
-                                    </span>
-                                    {week.active && (
-                                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-2)] animate-pulse" />
-                                    )}
-                                </div>
-                                <div className="space-y-1.5 ml-1 border-l border-[var(--border-muted)] pl-4">
-                                    {week.tasks.map((task, ti) => (
-                                        <div
-                                            key={ti}
-                                            className={`flex items-center gap-2.5 rounded-xl px-3 py-2 transition-colors ${task.current
-                                                ? "bg-[var(--accent-2)]/10 border border-[var(--accent-2)]/25"
-                                                : "border border-transparent hover:bg-[var(--surface-subtle)]"
-                                                }`}
-                                        >
-                                            {task.done ? (
-                                                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                                            ) : (
-                                                <Circle className={`h-3.5 w-3.5 shrink-0 ${task.current ? "text-[var(--accent-2)]" : "text-muted opacity-50"}`} />
-                                            )}
-                                            <span className={`text-[12px] ${task.done ? "text-muted line-through" : task.current ? "text-[var(--text-primary)] font-medium" : "text-muted"}`}>
-                                                {task.name}
-                                            </span>
-                                            {task.current && (
-                                                <span className="ml-auto text-[8px] text-[var(--accent-2)] font-semibold uppercase tracking-wider">In progress</span>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-/* ═══════════════════════════════════════════
-   Past paper engine — Upload or do digitally
-   ═══════════════════════════════════════════ */
-const PAST_PAPER_ROWS = [
-    { name: "June 2023 — Paper 1", board: "AQA", score: "78%" },
-    { name: "Nov 2022 — Paper 1", board: "OCR", score: "82%" },
-];
-
-function PastPaperCard() {
-    return (
-        <div className="relative">
-            <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
-            >
-                <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)] flex items-center gap-2.5">
-                    <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center">
-                        <BookOpen className="h-4 w-4 text-white" />
-                    </div>
-                    <div>
-                        <p className="text-[13px] font-semibold text-[var(--text-primary)]">Past paper engine</p>
-                        <p className="text-[10px] text-muted">Upload for marking · or do digitally</p>
-                    </div>
-                </div>
-                <div className="p-5 space-y-4">
-                    <div className="rounded-xl border-2 border-dashed border-[var(--border-muted)] bg-[var(--surface-subtle)] flex flex-col items-center justify-center py-6 px-4">
-                        <Upload className="h-8 w-8 text-muted mb-2" />
-                        <p className="text-[12px] font-medium text-[var(--text-primary)]">Drop your paper or click to upload</p>
-                        <p className="text-[10px] text-muted mt-0.5">PDF or image</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="flex-1 h-px bg-[var(--border-muted)]" />
-                        <span className="text-[10px] text-muted font-medium">or do digitally</span>
-                        <div className="flex-1 h-px bg-[var(--border-muted)]" />
-                    </div>
-                    <div className="space-y-1.5">
-                        {PAST_PAPER_ROWS.map((p, i) => (
-                            <div key={i} className="flex items-center justify-between rounded-lg px-3 py-2 bg-[var(--surface-subtle)] border border-[var(--border-muted)]">
-                                <div className="flex items-center gap-2 min-w-0">
-                                    <span className="text-[11px] font-medium text-[var(--text-primary)] truncate">{p.name}</span>
-                                    <span className="text-[8px] font-bold rounded px-1.5 py-0.5 text-[var(--accent-2)] bg-[var(--accent-2)]/10 border border-[var(--accent-2)]/20 shrink-0">{p.board}</span>
-                                </div>
-                                <span className="text-[10px] text-emerald-500 font-semibold shrink-0">{p.score}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-/* ═══════════════════════════════════════════
-   Feature 3: Grade Predictor — Visualization (kept for possible reuse)
+   Feature 3: Grade Predictor — Visualization
    ═══════════════════════════════════════════ */
 function GradeCard() {
     const subjects = [
@@ -426,26 +379,32 @@ function GradeCard() {
 }
 
 /* ═══════════════════════════════════════════
-   MVP Features — Personalized plan, Past paper engine, Data analytics dashboard
+   Features Data — Order: analytics, personalized plan, AI mentor, then grade predictor
    ═══════════════════════════════════════════ */
 const features = [
     {
-        pill: "Personalized plan",
-        heading: "A plan that adapts — so you can follow it worry-free.",
-        body: "Your week-by-week plan fits real life: topic tests, sick days, lazy days. We manage the reshuffling so you don't have to. Built by A-Level students who now study at top universities like UBC, Warwick, Nottingham, and McGill — real revision, not just another revision app on the block.",
-        Card: RoadmapPreviewCard,
-    },
-    {
-        pill: "Past paper engine",
-        heading: "Upload for marking or do them digitally.",
-        body: "Drop your completed paper and get instant AI marking and feedback. Prefer to work on-screen? Do past papers digitally and see your score and weak spots as you go.",
-        Card: PastPaperCard,
-    },
-    {
-        pill: "Data analytics dashboard",
-        heading: "See all your progress in one place.",
-        body: "Track performance by subject and topic. Charts and trends show where you're strong and where to focus — no more guessing what to revise next.",
+        pill: "Data & analytics",
+        heading: "See your progress and weak spots at a glance.",
+        body: "Track performance by subject and topic. Know exactly where to focus so you don't waste time on what you've already mastered.",
         Card: AnalyticsCard,
+    },
+    {
+        pill: "Personalized plan",
+        heading: "Know exactly what to study, when.",
+        body: "A week-by-week plan built from your A-Level subjects and exam board. No more guessing — just follow the roadmap.",
+        Card: RoadmapCard,
+    },
+    {
+        pill: "AI mentor",
+        heading: "Ask anything. Get exam-ready answers.",
+        body: "Trained on A-Level syllabuses, the mentor explains concepts, generates practice questions, and breaks down mark schemes — instantly.",
+        Card: MentorCard,
+    },
+    {
+        pill: "Grade predictor",
+        heading: "Watch your predicted grade climb.",
+        body: "Every past paper and topic you revise updates your prediction. See exactly where you stand and what it takes to hit your target.",
+        Card: GradeCard,
     },
 ];
 
@@ -456,15 +415,6 @@ export function FeaturePreviews() {
     return (
         <section id="features" className="section-pad relative z-10" style={{ background: "var(--bg-primary)" }}>
             <div className="mx-auto max-w-[1100px] px-6 space-y-32">
-                <RevealSection className="text-center mb-20">
-                    <h2 className="h2 gradient-text-heading">
-                        That&apos;s why we built you the complete{" "}
-                        <span className="whitespace-nowrap gradient-text-purple-vertical">A-Level revision system</span>.
-                    </h2>
-                    <p className="body-lg mt-4 text-muted max-w-[55ch] mx-auto">
-                        One place for your plan, past papers, and progress. We handle the rest so you can follow worry-free.
-                    </p>
-                </RevealSection>
                 {features.map((feature, i) => {
                     const isEven = i % 2 === 0;
                     return (

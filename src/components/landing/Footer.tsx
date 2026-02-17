@@ -10,14 +10,14 @@ export function Footer() {
         borderTop: "1px solid var(--border-muted)",
       }}
     >
-      <div className="mx-auto max-w-[1100px] grid sm:grid-cols-3 gap-12">
+      <div className="w-full mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
         {/* Brand */}
         <div>
           <p className="text-lg font-semibold gradient-text-heading">
             A Level Mentor
           </p>
           <p className="body mt-2 max-w-[260px] text-muted opacity-80">
-            Personalised revision for A-Level students. Built by students, powered by technology.
+            Personalised revision for A-Level students. Built by students who now study at UBC, Warwick, Nottingham, and McGill — real revision, real results.
           </p>
           <a
             href="https://www.instagram.com/alevelmentorapp/"
@@ -29,6 +29,28 @@ export function Footer() {
             <Instagram className="h-5 w-5" />
             <span className="text-sm">@alevelmentorapp</span>
           </a>
+        </div>
+
+        {/* Supported subjects & exam boards */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider mb-4 text-muted">
+            Supported subjects & exam boards
+          </p>
+          <p className="text-xs text-muted mb-3">Exam boards</p>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {["AQA", "OCR", "Edexcel", "WJEC"].map((board) => (
+              <span
+                key={board}
+                className="text-xs font-medium text-muted rounded-full px-3 py-1.5 bg-[var(--surface-subtle)] border border-[var(--border-muted)]"
+              >
+                {board}
+              </span>
+            ))}
+          </div>
+          <p className="text-xs text-muted mb-2">Subjects (more coming)</p>
+          <p className="body text-sm text-muted opacity-90">
+            Chemistry, Mathematics, Physics, Biology
+          </p>
         </div>
 
         {/* Product */}
@@ -73,8 +95,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1100px] mt-12 pt-8" style={{ borderTop: "1px solid var(--border-muted)" }}>
-        <p className="text-xs text-center text-muted opacity-70">
+      <div className="w-full mx-auto max-w-7xl mt-12 pt-8 text-center" style={{ borderTop: "1px solid var(--border-muted)" }}>
+        <p className="text-xs text-muted opacity-70">
           © {new Date().getFullYear()} A Level Mentor. All rights reserved.
         </p>
       </div>

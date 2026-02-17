@@ -6,6 +6,13 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ShimmerButton } from "./ShimmerButton";
 
+const UNIVERSITIES = [
+    { name: "University of British Columbia", short: "UBC" },
+    { name: "McGill University", short: "McGill" },
+    { name: "University of Warwick", short: "Warwick" },
+    { name: "University of Nottingham", short: "Nottingham" },
+] as const;
+
 export function Hero() {
     const { scrollY } = useScroll();
     const blobY = useTransform(scrollY, (v) => v * 0.5);
@@ -13,7 +20,7 @@ export function Hero() {
     return (
         <section
             id="hero"
-            className="relative flex flex-col items-center justify-center overflow-hidden pt-24 pb-16 lg:pt-28 lg:pb-20"
+            className="relative flex flex-col items-center justify-center overflow-hidden min-h-[min(100dvh,720px)] pt-24 pb-16 lg:pt-28 lg:pb-20"
             style={{ background: "var(--bg-primary)" }}
         >
             {/* Atmospheric glow — hidden in light via .light .hero-glows */}
@@ -32,7 +39,7 @@ export function Hero() {
                 <RevealSection direction="up" className="flex flex-col items-center">
                     {/* Pill badge (Crypton style) */}
                     <span className="pill-badge px-4 py-1.5 text-[11px] sm:text-[12px] mb-6">
-                        Built for A-Level
+                        Built by students, for students
                     </span>
 
                     <h1 className="h1 mb-6 gradient-text-heading">
@@ -55,34 +62,49 @@ export function Hero() {
                                 />
                             </svg>
                         </span>{" "}
-                        that tells you exactly what to do next. Spend 0% of your time planning and 100% of your time improving your grade.
+                        that adapts to real life — topic tests, sick days, lazy days and all. We manage everything so you can de-stress and follow worry-free. Spend 0% of your time planning and 100% improving your grade.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                        <ShimmerButton href="#join" className="w-full sm:w-auto justify-center px-8 py-3 text-[15px]">
-                            Join Waitlist
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                        <ShimmerButton href="#join" className="w-full sm:w-auto justify-center px-8 py-3">
+                            Join the waitlist
                             <ArrowRight className="h-4 w-4 ml-2" />
                         </ShimmerButton>
                         <Link
                             href="#features"
-                            className="w-full sm:w-auto text-center text-[15px] font-medium gradient-text-heading rounded-full px-8 py-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--glass-border-strong)] focus:ring-offset-2 focus:ring-offset-[var(--bg-primary)] border border-[var(--border-muted-strong)] hover:bg-[var(--surface-subtle)]"
+                            className="w-full sm:w-auto text-center text-base font-medium gradient-text-heading rounded-full px-8 py-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--glass-border-strong)] focus:ring-offset-2 focus:ring-offset-[var(--bg-primary)] border border-[var(--border-muted-strong)] hover:bg-[var(--surface-subtle)]"
                         >
-                            See how it works
+                            Browse features
                         </Link>
                     </div>
 
-                    <div className="flex items-center justify-center gap-4 flex-wrap opacity-60 hover:opacity-100 transition-opacity duration-300">
-                        <span className="text-[12px] text-muted uppercase tracking-widest font-medium">
-                            Supports
-                        </span>
-                        {["AQA", "OCR", "Edexcel", "WJEC"].map((board) => (
-                            <span
-                                key={board}
-                                className="text-[12px] font-medium text-muted rounded-full px-4 py-1.5 bg-[var(--surface-subtle)] border border-[var(--border-muted-strong)]"
+                    {/* Built by A-Level students — text-only university carousel (no logos) */}
+                    <div className="w-full max-w-[1000px] mx-auto overflow-hidden">
+                        <p className="text-[12px] sm:text-[13px] text-muted uppercase tracking-widest font-medium mb-5 sm:mb-6">
+                            Built by A-Level students who now study at
+                        </p>
+                        <div
+                            className="relative"
+                            style={{
+                                maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+                                WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+                            }}
+                        >
+                            <div
+                                className="flex items-center gap-12 sm:gap-16 lg:gap-20 shrink-0 animate-[scroll-left-slow_35s_linear_infinite] motion-reduce:animate-none"
+                                style={{ width: "max-content" }}
                             >
-                                {board}
-                            </span>
-                        ))}
+                                {[...UNIVERSITIES, ...UNIVERSITIES].map((uni, i) => (
+                                    <span
+                                        key={`${uni.short}-${i}`}
+                                        className="shrink-0 text-[22px] sm:text-[26px] lg:text-[30px] font-semibold tracking-tight text-[var(--text-primary)] opacity-90 hover:opacity-100 transition-opacity duration-300 whitespace-nowrap"
+                                        title={uni.name}
+                                    >
+                                        {uni.short}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </RevealSection>
             </div>

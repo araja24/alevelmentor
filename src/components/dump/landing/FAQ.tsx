@@ -1,4 +1,4 @@
-import { RevealSection } from "./RevealSection";
+import { RevealSection } from "@/components/landing/RevealSection";
 import { FAQItem } from "./FAQItem";
 
 const faqs = [
@@ -8,11 +8,7 @@ const faqs = [
   },
   {
     q: "How does the roadmap work?",
-    a: "We generate a week-by-week plan from your subjects and exam board. It adapts to real life: your progress, topic tests, sick days, lazy days — we reshuffle so you don't have to. You just follow the plan and focus on learning. Built so you can de-stress and stay on track.",
-  },
-  {
-    q: "Who built A Level Mentor?",
-    a: "A-Level students who now study at top universities including the University of British Columbia, University of Warwick, University of Nottingham, and McGill University. Built by students, for students — real revision, not another vibe-coded SaaS.",
+    a: "After selecting your subjects and exam dates, A Level Mentor generates a week-by-week revision plan. It adapts based on your progress, focusing more time on weak areas and less on topics you've already mastered.",
   },
   {
     q: "Is it free?",

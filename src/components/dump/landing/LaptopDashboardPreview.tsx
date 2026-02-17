@@ -64,7 +64,7 @@ const GET_STARTED_STEPS = [
   },
   {
     title: "Start first session",
-    description: "Get your plan — it adapts to your life so you follow worry-free",
+    description: "Get your personalised plan",
     icon: Zap,
     cta: "Start",
   },
@@ -318,7 +318,7 @@ export function LaptopDashboardPreview() {
                 <div className="min-w-0">
                   <h3 className="text-[14px] font-semibold text-[var(--text-primary)]">Your Revision Dashboard</h3>
                   <p className="text-[11px] text-muted mt-1 leading-relaxed">
-                    Your plan adapts to topic tests, sick days, and real life — we manage the rest. See weak spots and predicted grades in one place.
+                    See your plan, weak spots, and predicted grades in one place. Updated after every session.
                   </p>
                   <div className="flex items-center gap-2 mt-3">
                     <Link

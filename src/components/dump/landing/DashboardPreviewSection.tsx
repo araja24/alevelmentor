@@ -57,16 +57,16 @@ export function DashboardPreviewSection() {
             style={{ background: "var(--bg-primary)" }}
         >
             <div
-                className="mx-auto max-w-[1400px] px-6 max-md:px-2 flex justify-center relative z-10"
+                className="mx-auto max-w-[1400px] px-6 flex justify-center relative z-10"
                 style={{ perspective: 1200 }}
             >
                 {/* Wrapper keeps aspect ratio and scales down on mobile for performance */}
                 <div
-                    className="dashboard-preview-aspect-wrapper w-full max-w-[1280px] max-md:max-w-[100%] aspect-[16/10] mx-auto overflow-hidden"
+                    className="dashboard-preview-aspect-wrapper w-full max-w-[1280px] max-md:max-w-[90vw] aspect-[16/10] mx-auto overflow-hidden"
                     style={{ contain: "paint" }}
                 >
                     <motion.div
-                        className="dashboard-preview-shadow relative flex justify-center drop-shadow-2xl w-full h-full"
+                        className="relative flex justify-center drop-shadow-2xl w-full h-full"
                         initial={TILT_INITIAL}
                         animate={shouldAnimate ? TILT_ANIMATE : TILT_INITIAL}
                         transition={{

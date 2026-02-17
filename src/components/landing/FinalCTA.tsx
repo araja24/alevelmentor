@@ -10,7 +10,7 @@ export function FinalCTA() {
   const blobY = useTransform(scrollY, (v) => v * 0.5);
 
   return (
-    <section id="join" className="section-pad relative overflow-hidden" style={{ background: "var(--bg-primary)" }}>
+    <section id="join" className="section-pad relative overflow-hidden overflow-x-clip" style={{ background: "var(--bg-primary)" }}>
       {/* CTA glow — hidden in light via .light .cta-glows */}
       <div className="cta-glows absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
@@ -24,11 +24,11 @@ export function FinalCTA() {
           <div className="relative h-px w-full max-w-[400px] mx-auto mb-16 bg-[var(--border-muted)]" />
 
           <div className="relative z-10">
-            <h2 className="text-[clamp(40px,6vw,72px)] font-bold tracking-tight leading-[1.1] mb-6 gradient-text-heading">
+            <h2 className="h1 mb-6 gradient-text-heading">
               Ready to improve your <span className="gradient-text-purple-vertical">grades?</span>
             </h2>
             <p className="body-lg text-muted mb-8 mx-auto max-w-[65ch] leading-relaxed font-medium">
-              Join the waitlist and be the first to get access.
+              Built by A-Level students who now study at UBC, Warwick, Nottingham, and McGill — real revision, not another vibe-coded app. Join the waitlist and be the first to get access.
             </p>
 
             <LaunchCountdown />

@@ -1,11 +1,11 @@
-import { RevealSection } from "./RevealSection";
-import { ShimmerButton } from "./ShimmerButton";
+import { RevealSection } from "@/components/landing/RevealSection";
+import { ShimmerButton } from "@/components/landing/ShimmerButton";
 import { ComparisonRows } from "./ComparisonRows";
 
 const ROWS = [
   {
     title: "Personalized roadmap",
-    description: "Week-by-week plan that adapts to your progress, topic tests, sick days, and real life — so you can follow worry-free.",
+    description: "Week-by-week plan tailored to your subjects and exam dates.",
     others: "Manual" as const,
     us: "check" as const,
   },
@@ -45,10 +45,10 @@ export function ComparisonTable() {
   return (
     <section
       id="why-us"
-      className="section-pad relative z-10 overflow-x-clip"
+      className="section-pad relative z-10"
       style={{ background: "var(--bg-primary)" }}
     >
-      <div className="mx-auto max-w-[900px] w-full px-6">
+      <div className="mx-auto max-w-[900px] px-6">
         <RevealSection className="text-center mb-12" fast>
           <span className="pill-badge mb-6 inline-flex">Why us</span>
           <h2 className="h2 mt-4 gradient-text-heading">
@@ -62,8 +62,8 @@ export function ComparisonTable() {
         <ComparisonRows rows={ROWS} />
 
         <div className="mt-10 flex justify-center">
-          <ShimmerButton href="#join" className="px-5 py-2">
-            Join the waitlist
+          <ShimmerButton href="#join" className="px-5 py-2 text-[13px]">
+            Join Waitlist
           </ShimmerButton>
         </div>
       </div>

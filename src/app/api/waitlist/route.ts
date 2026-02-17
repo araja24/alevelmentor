@@ -7,6 +7,12 @@ import { WelcomeEmail } from "@/components/emails/WelcomeEmail";
 import { AdminNotificationEmail } from "@/components/emails/AdminNotificationEmail";
 import rateLimit from "@/lib/rate-limit";
 import { waitlistSchema } from "@/lib/validations";
+import {
+  checkAndIncrementDailyWaitlist,
+  isWaitlistApiEnabled,
+} from "@/lib/waitlist-daily-cap";
+
+const MAX_BODY_BYTES = 1024;
 
 // Rate Limiting: 5 requests per minute per IP
 const limiter = rateLimit({
@@ -55,8 +61,27 @@ export async function POST(request: Request) {
   try {
     const start = Date.now();
 
-    // 1. Rate Limiting
-    const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    if (!isWaitlistApiEnabled()) {
+      return NextResponse.json(
+        { error: "Waitlist signup is temporarily unavailable." },
+        { status: 503 }
+      );
+    }
+
+    const contentLength = request.headers.get("content-length");
+    if (contentLength && parseInt(contentLength, 10) > MAX_BODY_BYTES) {
+      return NextResponse.json(
+        { error: "Request body too large." },
+        { status: 413 }
+      );
+    }
+
+    // Trust x-real-ip when set by host (e.g. Vercel); else first IP in x-forwarded-for
+    const ip =
+      request.headers.get("x-real-ip") ??
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      "127.0.0.1";
+
     try {
       await limiter.check(5, ip);
     } catch {
@@ -66,7 +91,15 @@ export async function POST(request: Request) {
       );
     }
 
-    const body = await request.json();
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid JSON body." },
+        { status: 400 }
+      );
+    }
 
     // 2. Validation
     const result = waitlistSchema.safeParse(body);
@@ -100,6 +133,13 @@ export async function POST(request: Request) {
         referral_count: existingUser.referral_count,
         total_count: totalCount,
       });
+    }
+
+    if (!checkAndIncrementDailyWaitlist()) {
+      return NextResponse.json(
+        { error: "Daily signup limit reached. Please try again tomorrow." },
+        { status: 429 }
+      );
     }
 
     // 4. Generate unique referral code

@@ -11,10 +11,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
-import { ShimmerButton } from "./ShimmerButton";
-import { ThemeToggle } from "./ThemeToggle";
-
-const SHOW_AUTH_NAV = false;
+import { ShimmerButton } from "@/components/landing/ShimmerButton";
+import { ThemeToggle } from "@/components/landing/ThemeToggle";
 
 const navLinks: { label: string; href: string }[] = [
     { label: "Features", href: "#features" },
@@ -79,19 +77,17 @@ export function Navbar() {
                             {/* Right CTA */}
                             <div className="hidden xl:flex items-center gap-4">
                                 <ThemeToggle />
-                                {SHOW_AUTH_NAV && (
-                                    <Link
-                                        href="/login"
-                                        className="text-[13px] font-medium text-muted hover:gradient-text-heading transition-colors"
-                                    >
-                                        Sign in
-                                    </Link>
-                                )}
+                                <Link
+                                    href="/login"
+                                    className="text-[13px] font-medium text-muted hover:gradient-text-heading transition-colors"
+                                >
+                                    Sign in
+                                </Link>
                                 <ShimmerButton
                                     href="#join"
-                                    className="px-5 py-2 text-base"
+                                    className="px-5 py-2 text-[13px]"
                                 >
-                                    Join the waitlist →
+                                    Join Waitlist →
                                 </ShimmerButton>
                             </div>
 
@@ -173,22 +169,20 @@ export function Navbar() {
                             {/* Theme + Sign in */}
                             <div className="hidden xl:flex items-center gap-1">
                                 <ThemeToggle />
-                                {SHOW_AUTH_NAV && (
-                                    <Link
-                                        href="/login"
-                                        className="text-[13px] font-medium text-muted hover:gradient-text-heading px-3 py-2 transition-colors"
-                                    >
-                                        Sign in
-                                    </Link>
-                                )}
+                                <Link
+                                    href="/login"
+                                    className="text-[13px] font-medium text-muted hover:gradient-text-heading px-3 py-2 transition-colors"
+                                >
+                                    Sign in
+                                </Link>
                             </div>
 
                             {/* CTA */}
                             <ShimmerButton
                                 href="#join"
-                                className="px-4 sm:px-5 py-2 text-sm sm:text-base"
+                                className="px-4 sm:px-5 py-2 text-[12px] sm:text-[13px]"
                             >
-                                <span className="hidden sm:inline">Join the waitlist →</span>
+                                <span className="hidden sm:inline">Join Waitlist →</span>
                                 <span className="sm:hidden">Join</span>
                             </ShimmerButton>
                         </div>
@@ -226,23 +220,21 @@ export function Navbar() {
                                     {item.label}
                                 </Link>
                             ))}
-                            {SHOW_AUTH_NAV && (
-                                <Link
-                                    href="/login"
-                                    onClick={() => setMobileOpen(false)}
-                                    className="text-xl text-muted mt-4 hover:gradient-text-heading transition-colors"
-                                >
-                                    Sign in
-                                </Link>
-                            )}
+                            <Link
+                                href="/login"
+                                onClick={() => setMobileOpen(false)}
+                                className="text-xl text-muted mt-4 hover:gradient-text-heading transition-colors"
+                            >
+                                Sign in
+                            </Link>
                         </div>
 
                         <div className="mt-8" onClick={() => setMobileOpen(false)}>
                             <ShimmerButton
                                 href="#join"
-                                className="px-10 py-4"
+                                className="px-10 py-4 text-lg"
                             >
-                                Join the waitlist →
+                                Join Waitlist →
                             </ShimmerButton>
                         </div>
                     </motion.div>

@@ -18,10 +18,10 @@ export function TextHighlightSection() {
                         Less time planning. More time improving your grades.
                     </h2>
                     <p className="body-lg leading-relaxed text-muted max-w-[55ch] mx-auto mb-10">
-                        We build your week-by-week plan from your subjects and exam board. You just follow it — and focus on what actually moves the needle.
+                        We build your week-by-week plan from your subjects and exam board. It adapts to topic tests, sick days, and lazy days — we manage the rest so you can follow worry-free and focus on what actually moves the needle.
                     </p>
-                    <ShimmerButton href="#join" className="inline-flex justify-center px-5 py-2 text-[13px]">
-                        Start my revision plan
+                    <ShimmerButton href="#join" className="inline-flex justify-center px-5 py-2 text-base">
+                        Get instant feedback
                     </ShimmerButton>
                 </RevealSection>
             </div>
