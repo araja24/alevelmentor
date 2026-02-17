@@ -86,6 +86,10 @@ export default function SplashCursor({
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const desktopPointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const isTouchDevice = navigator.maxTouchPoints > 0 || !desktopPointerQuery.matches;
+    if (isTouchDevice) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -760,7 +764,7 @@ export default function SplashCursor({
 
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-40 opacity-40 dark:opacity-60 [mix-blend-mode:multiply] dark:[mix-blend-mode:screen]"
+      className="pointer-events-none fixed inset-0 z-40 opacity-25 dark:opacity-40 [mix-blend-mode:multiply] dark:[mix-blend-mode:screen]"
       aria-hidden="true"
     >
       <canvas

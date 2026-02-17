@@ -11,11 +11,12 @@ export function SplashCursorGate() {
   const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    const pointerQuery = window.matchMedia("(pointer: fine)");
+    const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
     const motionQuery = window.matchMedia("(prefers-reduced-motion: no-preference)");
 
     const evaluate = () => {
-      setShouldRender(pointerQuery.matches && motionQuery.matches);
+      const hasTouch = navigator.maxTouchPoints > 0;
+      setShouldRender(pointerQuery.matches && motionQuery.matches && !hasTouch);
     };
 
     evaluate();
