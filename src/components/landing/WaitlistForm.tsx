@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import {
     Trophy,
@@ -148,18 +149,15 @@ function WaitlistFormContent() {
                 "md:p-2 md:rounded-full md:bg-[var(--surface-subtle)] md:border md:border-[var(--border-muted-strong)] md:shadow-2xl md:transition-all md:duration-300",
                 "md:focus-within:border-[var(--accent-2)]/50 md:focus-within:shadow-[0_0_40px_color-mix(in_srgb,var(--accent-2)_15%,transparent)]"
             )}>
-                <input
+                <Input
                     type="email"
                     required
                     placeholder="Enter your email address..."
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className={cn(
-                        "w-full h-14 text-[16px] focus:outline-none focus:ring-0 transition-all text-[var(--text-primary)] placeholder:text-muted",
-                        // Mobile: Separated box
-                        "bg-[var(--surface-subtle)] border border-[var(--border-muted-strong)] rounded-2xl px-6 text-center focus:border-[var(--accent-2)]/50 focus:bg-[var(--accent-2)]/5",
-                        // Desktop: Integrated field
-                        "md:bg-transparent md:border-0 md:rounded-full md:px-6 md:text-left md:focus:bg-transparent"
+                        "w-full h-14 text-[16px] focus:outline-none focus:ring-0 transition-all text-[var(--text-primary)] placeholder:text-muted border-[var(--border-muted-strong)] bg-[var(--surface-subtle)] focus-visible:border-[var(--accent-2)]/50 focus-visible:bg-[var(--accent-2)]/5 focus-visible:ring-0",
+                        "rounded-2xl px-6 text-center md:bg-transparent md:border-0 md:rounded-full md:px-6 md:text-left md:focus-visible:bg-transparent"
                     )}
                 />
                 <ShimmerButton

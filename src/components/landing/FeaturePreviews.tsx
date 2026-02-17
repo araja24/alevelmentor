@@ -10,8 +10,8 @@ import {
     YAxis,
     ResponsiveContainer,
     Legend,
-    Tooltip,
 } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 
 /* Multi-line chart data: one line per subtopic (weeks W1–W6, score %) */
 const ANALYTICS_CHART_DATA = [
@@ -22,11 +22,11 @@ const ANALYTICS_CHART_DATA = [
     { week: "W5", Electrochemistry: 80, Mechanics: 76, Waves: 65 },
     { week: "W6", Electrochemistry: 84, Mechanics: 78, Waves: 65 },
 ];
-const SUBTOPIC_COLORS = {
-    Electrochemistry: "#6366f1",
-    Mechanics: "#3ed6ff",
-    Waves: "#f59e0b",
-};
+const ANALYTICS_CHART_CONFIG = {
+    Electrochemistry: { label: "Electrochemistry", color: "#6366f1" },
+    Mechanics: { label: "Mechanics", color: "#3ed6ff" },
+    Waves: { label: "Waves", color: "#f59e0b" },
+} satisfies ChartConfig;
 
 
 /* ═══════════════════════════════════════════
@@ -50,72 +50,71 @@ function AnalyticsCard() {
                 <div className="p-5">
                     <p className="text-[10px] text-muted mb-2">Score trend by subtopic (6 weeks)</p>
                     <div className="h-[140px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={ANALYTICS_CHART_DATA} margin={{ top: 4, right: 4, left: -24, bottom: 0 }}>
-                                <XAxis
-                                    dataKey="week"
-                                    axisLine={false}
-                                    tickLine={false}
-                                    tick={{ fill: "var(--text-secondary)", fontSize: 9 }}
-                                />
-                                <YAxis
-                                    axisLine={false}
-                                    tickLine={false}
-                                    tick={{ fill: "var(--text-secondary)", fontSize: 9 }}
-                                    domain={[50, 90]}
-                                    width={24}
-                                />
-                                <Tooltip
-                                    contentStyle={{
-                                        backgroundColor: "var(--bg-card)",
-                                        border: "1px solid var(--border-muted)",
-                                        borderRadius: 8,
-                                        fontSize: 11,
-                                    }}
-                                    labelStyle={{ color: "var(--text-secondary)" }}
-                                    formatter={(value) => [value != null ? `${value}%` : "", undefined]}
-                                />
-                                <Legend
-                                    wrapperStyle={{ fontSize: 10 }}
-                                    formatter={(value) => <span className="text-[var(--text-primary)] opacity-80">{value}</span>}
-                                    iconType="line"
-                                    iconSize={8}
-                                />
-                                <Line
-                                    type="monotone"
-                                    dataKey="Electrochemistry"
-                                    stroke={SUBTOPIC_COLORS.Electrochemistry}
-                                    strokeWidth={2}
-                                    dot={false}
-                                    isAnimationActive
-                                    animationDuration={600}
-                                />
-                                <Line
-                                    type="monotone"
-                                    dataKey="Mechanics"
-                                    stroke={SUBTOPIC_COLORS.Mechanics}
-                                    strokeWidth={2}
-                                    dot={false}
-                                    isAnimationActive
-                                    animationDuration={600}
-                                />
-                                <Line
-                                    type="monotone"
-                                    dataKey="Waves"
-                                    stroke={SUBTOPIC_COLORS.Waves}
-                                    strokeWidth={2}
-                                    dot={false}
-                                    isAnimationActive
-                                    animationDuration={600}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
+                        <ChartContainer config={ANALYTICS_CHART_CONFIG} className="h-full w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={ANALYTICS_CHART_DATA} margin={{ top: 4, right: 4, left: -24, bottom: 0 }}>
+                                    <XAxis
+                                        dataKey="week"
+                                        axisLine={false}
+                                        tickLine={false}
+                                        tick={{ fill: "var(--text-secondary)", fontSize: 9 }}
+                                    />
+                                    <YAxis
+                                        axisLine={false}
+                                        tickLine={false}
+                                        tick={{ fill: "var(--text-secondary)", fontSize: 9 }}
+                                        domain={[50, 90]}
+                                        width={24}
+                                    />
+                                    <ChartTooltip
+                                        content={
+                                            <ChartTooltipContent
+                                                formatter={(value) => [value != null ? `${value}%` : "", undefined]}
+                                            />
+                                        }
+                                    />
+                                    <Legend
+                                        wrapperStyle={{ fontSize: 10 }}
+                                        formatter={(value) => <span className="text-[var(--text-primary)] opacity-80">{value}</span>}
+                                        iconType="line"
+                                        iconSize={8}
+                                    />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="Electrochemistry"
+                                        stroke="var(--color-Electrochemistry)"
+                                        strokeWidth={2}
+                                        dot={false}
+                                        isAnimationActive
+                                        animationDuration={600}
+                                    />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="Mechanics"
+                                        stroke="var(--color-Mechanics)"
+                                        strokeWidth={2}
+                                        dot={false}
+                                        isAnimationActive
+                                        animationDuration={600}
+                                    />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="Waves"
+                                        stroke="var(--color-Waves)"
+                                        strokeWidth={2}
+                                        dot={false}
+                                        isAnimationActive
+                                        animationDuration={600}
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </ChartContainer>
                     </div>
                     {/* Tags: coloured dots + labels */}
                     <div className="flex flex-wrap gap-3 mt-2 pt-2 border-t border-[var(--border-muted)]">
-                        {Object.entries(SUBTOPIC_COLORS).map(([name, color]) => (
+                        {Object.entries(ANALYTICS_CHART_CONFIG).map(([name, entry]) => (
                             <span key={name} className="flex items-center gap-1.5 text-[10px] text-[var(--text-secondary)]">
-                                <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                                <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: entry.color }} />
                                 {name}
                             </span>
                         ))}

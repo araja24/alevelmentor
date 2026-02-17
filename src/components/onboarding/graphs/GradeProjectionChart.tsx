@@ -8,17 +8,16 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
 } from 'recharts';
 import {
   CHART_COLORS,
   CHART_TYPOGRAPHY,
   CHART_GRID,
-  CHART_TOOLTIP_STYLE,
   CHART_ANIMATION,
   GRADIENT_DEFS,
 } from '@/lib/chartConfig';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 import type { TargetGrade, YearGroup } from '@/types/db';
 
 const GRADE_TO_PCT: Record<string, number> = { 'A*': 90, A: 78, B: 68, C: 58 };
@@ -81,76 +80,86 @@ export function GradeProjectionChart({ weeksUntilExam, targetGrade, yearGroup, w
   const targetLine = targetGrade ? GRADE_TO_PCT[targetGrade] ?? 70 : null;
   const noAnimation = !!prefersReducedMotion;
 
+  const gradeChartConfig: ChartConfig = {
+    projected: { label: 'With A-Level Mentor', color: CHART_COLORS.primary },
+    baseline: { label: 'Without plan', color: 'rgba(255,255,255,0.15)' },
+    target: { label: 'Target', color: CHART_COLORS.success },
+  };
+
   return (
     <div className="h-[220px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={chartData} margin={{ top: 5, right: 10, bottom: 0, left: -10 }}>
-          <defs>
-            <linearGradient id={GRADIENT_DEFS.primaryAreaId} x1="0" y1="0" x2="0" y2="1">
-              {GRADIENT_DEFS.primaryAreaStops.map((s) => (
-                <stop key={s.offset} offset={s.offset} stopColor={s.color} stopOpacity={s.opacity} />
-              ))}
-            </linearGradient>
-          </defs>
-          <CartesianGrid {...CHART_GRID} vertical={false} />
-          <XAxis
-            dataKey="week"
-            tick={{ fill: CHART_COLORS.tick, fontSize: CHART_TYPOGRAPHY.tickFontSize }}
-            axisLine={false}
-            tickLine={false}
-          />
-          <YAxis
-            domain={[20, 100]}
-            ticks={GRADE_TICKS}
-            tickFormatter={(v: number) => GRADE_LABELS[GRADE_TICKS.indexOf(v)] ?? ''}
-            tick={{ fill: CHART_COLORS.tick, fontSize: CHART_TYPOGRAPHY.tickFontSize }}
-            axisLine={false}
-            tickLine={false}
-            width={36}
-          />
-          <Tooltip contentStyle={CHART_TOOLTIP_STYLE} formatter={(v) => [`${v}%`, '']} />
+      <ChartContainer config={gradeChartConfig} className="h-full w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={chartData} margin={{ top: 5, right: 10, bottom: 0, left: -10 }}>
+            <defs>
+              <linearGradient id={GRADIENT_DEFS.primaryAreaId} x1="0" y1="0" x2="0" y2="1">
+                {GRADIENT_DEFS.primaryAreaStops.map((s) => (
+                  <stop key={s.offset} offset={s.offset} stopColor={s.color} stopOpacity={s.opacity} />
+                ))}
+              </linearGradient>
+            </defs>
+            <CartesianGrid {...CHART_GRID} vertical={false} />
+            <XAxis
+              dataKey="week"
+              tick={{ fill: CHART_COLORS.tick, fontSize: CHART_TYPOGRAPHY.tickFontSize }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <YAxis
+              domain={[20, 100]}
+              ticks={GRADE_TICKS}
+              tickFormatter={(v: number) => GRADE_LABELS[GRADE_TICKS.indexOf(v)] ?? ''}
+              tick={{ fill: CHART_COLORS.tick, fontSize: CHART_TYPOGRAPHY.tickFontSize }}
+              axisLine={false}
+              tickLine={false}
+              width={36}
+            />
+            <ChartTooltip
+              content={<ChartTooltipContent formatter={(v) => [v != null ? `${v}%` : '', undefined]} />}
+            />
 
-          {targetLine && (
+            {targetLine && (
+              <Area
+                type="monotone"
+                dataKey={() => targetLine}
+                stroke="var(--color-target)"
+                strokeDasharray="6 4"
+                strokeWidth={1}
+                fill="none"
+                isAnimationActive={false}
+                name="Target"
+              />
+            )}
+
             <Area
               type="monotone"
-              dataKey={() => targetLine}
-              stroke={CHART_COLORS.success}
-              strokeDasharray="6 4"
-              strokeWidth={1}
+              dataKey="baseline"
+              stroke="var(--color-baseline)"
+              strokeWidth={1.5}
+              strokeDasharray="4 4"
               fill="none"
-              isAnimationActive={false}
-              name="Target"
+              isAnimationActive={!noAnimation}
+              animationDuration={CHART_ANIMATION.areaDuration}
+              animationBegin={CHART_ANIMATION.areaBegin}
+              animationEasing={CHART_ANIMATION.easing as any}
+              name="Without plan"
             />
-          )}
 
-          <Area
-            type="monotone"
-            dataKey="baseline"
-            stroke="rgba(255,255,255,0.15)"
-            strokeWidth={1.5}
-            strokeDasharray="4 4"
-            fill="none"
-            isAnimationActive={!noAnimation}
-            animationDuration={CHART_ANIMATION.areaDuration}
-            animationBegin={CHART_ANIMATION.areaBegin}
-            animationEasing={CHART_ANIMATION.easing as any}
-            name="Without plan"
-          />
-
-          <Area
-            type="monotone"
-            dataKey="projected"
-            stroke={CHART_COLORS.primary}
-            strokeWidth={2.5}
-            fill={`url(#${GRADIENT_DEFS.primaryAreaId})`}
-            isAnimationActive={!noAnimation}
-            animationDuration={CHART_ANIMATION.areaDuration}
-            animationBegin={0}
-            animationEasing={CHART_ANIMATION.easing as any}
-            name="With A-Level Mentor"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+            <Area
+              type="monotone"
+              dataKey="projected"
+              stroke="var(--color-projected)"
+              strokeWidth={2.5}
+              fill={`url(#${GRADIENT_DEFS.primaryAreaId})`}
+              isAnimationActive={!noAnimation}
+              animationDuration={CHART_ANIMATION.areaDuration}
+              animationBegin={0}
+              animationEasing={CHART_ANIMATION.easing as any}
+              name="With A-Level Mentor"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </ChartContainer>
     </div>
   );
 }

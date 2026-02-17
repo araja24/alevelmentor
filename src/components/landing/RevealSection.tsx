@@ -13,6 +13,8 @@ interface RevealSectionProps {
   as?: "div" | "section";
   /** Use shorter duration (≤500ms) for landing; default dur.base */
   fast?: boolean;
+  /** If true, only animate opacity/position; no blur (avoids blur-in for carousel etc.) */
+  noBlur?: boolean;
 }
 
 const directionOffsets = {
@@ -31,6 +33,7 @@ export function RevealSection({
   staggerChildren = 0.1,
   as = "div",
   fast = false,
+  noBlur = false,
 }: RevealSectionProps) {
   const prefersReduced = useReducedMotion();
   const Component = as === "section" ? motion.section : motion.div;
@@ -51,20 +54,17 @@ export function RevealSection({
   }
 
   const offset = directionOffsets[direction];
+  const initial = noBlur
+    ? { opacity: 0, ...offset }
+    : { opacity: 0, filter: "blur(6px)", ...offset };
+  const whileInView = noBlur
+    ? { opacity: 1, x: 0, y: 0 }
+    : { opacity: 1, filter: "blur(0px)", x: 0, y: 0 };
 
   return (
     <Component
-      initial={{
-        opacity: 0,
-        filter: "blur(6px)",
-        ...offset,
-      }}
-      whileInView={{
-        opacity: 1,
-        filter: "blur(0px)",
-        x: 0,
-        y: 0,
-      }}
+      initial={initial}
+      whileInView={whileInView}
       viewport={viewport}
       transition={{
         duration,

@@ -15,12 +15,14 @@ const buttonVariants = cva(
           "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-white/[0.04] rounded-[14px]",
         gradient:
           "btn-shine bg-gradient-to-r from-[var(--accent-1)] via-[var(--accent-2)] to-[var(--accent-3)] text-white shadow-[0_0_40px_-10px_var(--accent-1)] hover:shadow-[0_0_50px_-8px_var(--accent-2)] hover:scale-[1.03] hover:brightness-110 rounded-[14px]",
+        unstyled: "",
       },
       size: {
         default: "h-11 px-6 py-2.5",
         sm: "h-9 px-4 text-xs",
         lg: "h-12 px-7 py-3.5 text-[15px]",
         icon: "h-9 w-9",
+        unstyled: "",
       },
     },
     defaultVariants: {

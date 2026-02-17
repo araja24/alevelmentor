@@ -10,9 +10,9 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 
 const performanceData = [
   { week: "W1", score: 52 },
@@ -26,6 +26,16 @@ const performanceData = [
   { week: "W9", score: 82 },
   { week: "W10", score: 85 },
 ];
+
+const performanceChartConfig = { score: { label: "Score", color: "var(--accent-2)" } } satisfies ChartConfig;
+
+const weakTopicsChartConfig = {
+  Electrochem: { label: "Electrochem", color: "#ef4444" },
+  "Org. Synth": { label: "Org. Synth", color: "#f59e0b" },
+  Equilibria: { label: "Equilibria", color: "#f59e0b" },
+  Thermo: { label: "Thermo", color: "#22c55e" },
+  Kinetics: { label: "Kinetics", color: "#22c55e" },
+} satisfies ChartConfig;
 
 const weakTopicsData = [
   { topic: "Electrochem", marks: 14, fill: "#ef4444" },
@@ -83,67 +93,60 @@ export function AnalyticsPreview() {
               </div>
 
               <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={performanceData}>
-                    <defs>
-                      <linearGradient
-                        id="areaGradient"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor="var(--accent-2)"
-                          stopOpacity={0.3}
-                        />
-                        <stop
-                          offset="100%"
-                          stopColor="var(--accent-2)"
-                          stopOpacity={0}
-                        />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke="rgba(128,128,128,0.1)"
-                      vertical={false}
-                    />
-                    <XAxis
-                      dataKey="week"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fill: "#71717a", fontSize: 11 }}
-                    />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fill: "#71717a", fontSize: 11 }}
-                      domain={[40, 100]}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "var(--card)",
-                        border: "1px solid var(--border)",
-                        borderRadius: "12px",
-                        color: "var(--foreground)",
-                        fontSize: "12px",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                      }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="score"
-                      stroke="var(--accent-2)"
-                      strokeWidth={2}
-                      fill="url(#areaGradient)"
-                      animationDuration={animDuration}
-                      animationBegin={animBegin}
-                      animationEasing="ease-out"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+                <ChartContainer config={performanceChartConfig} className="h-full w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={performanceData}>
+                      <defs>
+                        <linearGradient
+                          id="areaGradient"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="var(--accent-2)"
+                            stopOpacity={0.3}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="var(--accent-2)"
+                            stopOpacity={0}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="rgba(128,128,128,0.1)"
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="week"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fill: "#71717a", fontSize: 11 }}
+                      />
+                      <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fill: "#71717a", fontSize: 11 }}
+                        domain={[40, 100]}
+                      />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Area
+                        type="monotone"
+                        dataKey="score"
+                        stroke="var(--color-score)"
+                        strokeWidth={2}
+                        fill="url(#areaGradient)"
+                        animationDuration={animDuration}
+                        animationBegin={animBegin}
+                        animationEasing="ease-out"
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
               </div>
             </motion.div>
           </RevealSection>
@@ -172,49 +175,46 @@ export function AnalyticsPreview() {
               </div>
 
               <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={weakTopicsData} layout="vertical">
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke="rgba(128,128,128,0.1)"
-                      horizontal={false}
-                    />
-                    <XAxis
-                      type="number"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fill: "#71717a", fontSize: 11 }}
-                    />
-                    <YAxis
-                      dataKey="topic"
-                      type="category"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fill: "#a1a1aa", fontSize: 11 }}
-                      width={80}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "var(--card)",
-                        border: "1px solid var(--border)",
-                        borderRadius: "12px",
-                        color: "var(--foreground)",
-                        fontSize: "12px",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                      }}
-                      cursor={{ fill: "rgba(90,53,248,0.06)" }}
-                      formatter={(value) => [`Lost: ${value} marks`]}
-                      labelFormatter={(label) => String(label)}
-                    />
-                    <Bar
-                      dataKey="marks"
-                      radius={[0, 6, 6, 0]}
-                      animationDuration={barAnimDuration}
-                      animationBegin={barAnimBegin}
-                      animationEasing="ease-out"
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
+                <ChartContainer config={weakTopicsChartConfig} className="h-full w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={weakTopicsData} layout="vertical">
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="rgba(128,128,128,0.1)"
+                        horizontal={false}
+                      />
+                      <XAxis
+                        type="number"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fill: "#71717a", fontSize: 11 }}
+                      />
+                      <YAxis
+                        dataKey="topic"
+                        type="category"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fill: "#a1a1aa", fontSize: 11 }}
+                        width={80}
+                      />
+                      <ChartTooltip
+                        content={
+                          <ChartTooltipContent
+                            formatter={(value) => [value != null ? `Lost: ${value} marks` : "", undefined]}
+                          />
+                        }
+                        cursor={{ fill: "rgba(90,53,248,0.06)" }}
+                      />
+                      <Bar
+                        dataKey="marks"
+                        radius={[0, 6, 6, 0]}
+                        animationDuration={barAnimDuration}
+                        animationBegin={barAnimBegin}
+                        animationEasing="ease-out"
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
               </div>
             </motion.div>
           </RevealSection>

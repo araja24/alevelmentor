@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+const MotionButton = motion(Button);
 
 interface GlowButtonProps {
   children: React.ReactNode;
@@ -83,19 +86,18 @@ export function GlowButton({
 
   if (href) {
     return (
-      <motion.a
-        href={href}
-        className={baseStyles}
-        onClick={handleClick}
-        {...motionProps}
-      >
-        {content}
-      </motion.a>
+      <Button variant="unstyled" size="unstyled" asChild className={baseStyles}>
+        <motion.a href={href} onClick={handleClick} {...motionProps}>
+          {content}
+        </motion.a>
+      </Button>
     );
   }
 
   return (
-    <motion.button
+    <MotionButton
+      variant="unstyled"
+      size="unstyled"
       type={type}
       className={baseStyles}
       onClick={handleClick}
@@ -103,6 +105,6 @@ export function GlowButton({
       {...motionProps}
     >
       {content}
-    </motion.button>
+    </MotionButton>
   );
 }

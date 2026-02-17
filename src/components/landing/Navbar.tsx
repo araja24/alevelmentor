@@ -13,6 +13,7 @@ import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { ShimmerButton } from "./ShimmerButton";
 import { ThemeToggle } from "./ThemeToggle";
+import { Button } from "@/components/ui/button";
 
 const SHOW_AUTH_NAV = false;
 
@@ -104,12 +105,14 @@ export function Navbar() {
                                 >
                                     Join
                                 </Link>
-                                <button
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
                                     className="text-muted hover:gradient-text-heading"
                                     onClick={() => setMobileOpen(!mobileOpen)}
                                 >
                                     {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </motion.header>
@@ -160,12 +163,14 @@ export function Navbar() {
                             </nav>
 
                             {/* Mobile Menu Toggle (in Island) */}
-                            <button
-                                className="xl:hidden p-2 text-muted hover:gradient-text-heading"
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="xl:hidden text-muted hover:gradient-text-heading"
                                 onClick={() => setMobileOpen(true)}
                             >
                                 <Menu size={18} />
-                            </button>
+                            </Button>
 
                             {/* Divider */}
                             <div className="hidden xl:block w-px h-7 bg-[var(--border-muted)]" />
@@ -207,12 +212,14 @@ export function Navbar() {
                     >
                         <div className="absolute top-6 right-6 flex items-center gap-2">
                             <ThemeToggle />
-                            <button
-                                className="gradient-text-heading p-2 rounded-full hover:opacity-90 bg-[var(--surface-subtle)] border border-[var(--border-muted-strong)]"
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="gradient-text-heading rounded-full hover:opacity-90 bg-[var(--surface-subtle)] border-[var(--border-muted-strong)]"
                                 onClick={() => setMobileOpen(false)}
                             >
                                 <X size={24} />
-                            </button>
+                            </Button>
                         </div>
 
                         <div className="flex flex-col items-center gap-6">

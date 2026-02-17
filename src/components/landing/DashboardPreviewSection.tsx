@@ -1,37 +1,39 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, useScroll, useMotionValueEvent, useInView } from "framer-motion";
-import { ease } from "@/lib/motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { LaptopDashboardPreview } from "./LaptopDashboardPreview";
-
-const TILT_INITIAL = { opacity: 0.6, y: 60, rotateX: 10 };
-const TILT_ANIMATE = { opacity: 1, y: 0, rotateX: 0 };
 
 const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 800;
 
 /**
  * Single prominent product visual right after hero.
- * Renders at fixed 1280×800 and scales down like an image on smaller viewports so aspect ratio and widget proportions are preserved.
- * Glow is hidden in light mode via .light .dashboard-preview-glows in globals.css (no useTheme to avoid hydration mismatch).
+ * Sits on main viewport background with no containing box. Scroll-driven tilt: backward on load, forward as user scrolls.
+ * Glow hidden in light mode via .light .dashboard-preview-glows in globals.css.
  */
 export function DashboardPreviewSection() {
     const sectionRef = useRef<HTMLDivElement>(null);
-    const viewportRef = useRef<HTMLDivElement>(null);
-    const hasSetScrolled = useRef(false);
-    const [hasScrolled, setHasScrolled] = useState(false);
+    const scaleContainerRef = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
-    const { scrollY } = useScroll();
-    const inView = useInView(sectionRef, { amount: 0.2, margin: "-50px" });
+
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start 92%", "end 18%"],
+    });
+    // Stronger, more visible Crypton-like tilt: back on entry, forward through center, back near exit.
+    const rotateXRaw = useTransform(scrollYProgress, [0, 0.48, 1], [18, -8, 18]);
+    const rotateX = useSpring(rotateXRaw, { stiffness: 160, damping: 26, mass: 0.42 });
+    const opacity = useTransform(scrollYProgress, [0, 0.48, 1], [0.95, 1, 0.95]);
+    const scaleMotion = useTransform(scrollYProgress, [0, 0.48, 1], [0.992, 1, 0.992]);
 
     useEffect(() => {
-        const el = viewportRef.current;
+        const el = scaleContainerRef.current;
         if (!el) return;
         const updateScale = () => {
             const w = el.clientWidth;
-            const h = el.clientHeight;
-            const raw = Math.min(1, w / CANVAS_WIDTH, h / CANVAS_HEIGHT);
+            // Width-driven scaling: keep full size on large screens; only shrink as viewport narrows.
+            const raw = Math.min(1, w / CANVAS_WIDTH);
             setScale(Math.max(0.2, raw));
         };
         updateScale();
@@ -40,59 +42,43 @@ export function DashboardPreviewSection() {
         return () => ro.disconnect();
     }, []);
 
-    useMotionValueEvent(scrollY, "change", (v) => {
-        if (v > 80 && !hasSetScrolled.current) {
-            hasSetScrolled.current = true;
-            setHasScrolled(true);
-        }
-    });
-
-    const shouldAnimate = inView && hasScrolled;
-
     return (
         <section
             ref={sectionRef}
             id="dashboard-preview"
-            className="relative z-10 py-16 md:py-24 overflow-hidden"
-            style={{ background: "var(--bg-primary)" }}
+            className="relative z-10 pt-0 pb-8 md:pb-16"
         >
             <div
-                className="mx-auto max-w-[1400px] px-6 max-md:px-2 flex justify-center relative z-10"
-                style={{ perspective: 1200 }}
+                className="mx-auto max-w-[1400px] w-full px-6 max-md:px-2 flex justify-center relative z-10"
+                style={{ perspective: 1400 }}
             >
-                {/* Wrapper keeps aspect ratio and scales down on mobile for performance */}
                 <div
-                    className="dashboard-preview-aspect-wrapper w-full max-w-[1280px] max-md:max-w-[100%] aspect-[16/10] mx-auto overflow-hidden"
-                    style={{ contain: "paint" }}
+                    ref={scaleContainerRef}
+                    className="dashboard-preview-aspect-wrapper w-full max-w-[1280px] max-md:max-w-[100%] aspect-[16/10] mx-auto min-h-0"
                 >
                     <motion.div
-                        className="dashboard-preview-shadow relative flex justify-center drop-shadow-2xl w-full h-full"
-                        initial={TILT_INITIAL}
-                        animate={shouldAnimate ? TILT_ANIMATE : TILT_INITIAL}
-                        transition={{
-                            duration: 0.9,
-                            ease: ease.out,
+                        className="dashboard-preview-shadow relative flex justify-center drop-shadow-xl w-full h-full"
+                        style={{
+                            rotateX,
+                            opacity,
+                            scale: scaleMotion,
+                            transformOrigin: "center top",
+                            transformStyle: "preserve-3d",
                         }}
                     >
-                        {/* Top border glow — hidden in light via .light .dashboard-preview-glows */}
-                        <div className="dashboard-preview-glows absolute top-0 left-0 right-0 h-px z-0 pointer-events-none">
-                            <div
-                                className="h-full w-full max-w-[75%] mx-auto"
-                                style={{
-                                    background: "linear-gradient(to right, transparent 0%, rgba(90,53,248,0.9) 50%, transparent 100%)",
-                                }}
-                            />
-                        </div>
+                        {/* Diffused glow behind top edge */}
                         <div
-                            className="dashboard-preview-glows dashboard-preview-blur absolute top-0 left-1/2 -translate-x-1/2 h-[100px] w-1/2 max-w-[400px] z-0 pointer-events-none"
-                            style={{ background: "rgba(90,53,248,0.2)" }}
+                            className="dashboard-preview-glows dashboard-preview-blur absolute top-0 left-1/2 -translate-x-1/2 h-[120px] w-[48%] max-w-[460px] z-0 pointer-events-none"
+                            style={{ background: "rgba(90,53,248,0.26)" }}
                         />
+                        {/* Larger soft bloom behind preview */}
                         <div
-                            ref={viewportRef}
-                            className="relative z-10 w-full h-full flex items-center justify-center min-h-0"
-                        >
+                            className="dashboard-preview-glows absolute top-0 left-1/2 -translate-x-1/2 h-[220px] w-[62%] max-w-[620px] z-0 pointer-events-none"
+                            style={{ background: "rgba(90,53,248,0.14)", filter: "blur(80px)" }}
+                        />
+                        <div className="relative z-10 w-full h-full flex items-center justify-center min-h-0">
                             <div
-                                className="shrink-0"
+                                className="relative shrink-0"
                                 style={{
                                     width: CANVAS_WIDTH,
                                     height: CANVAS_HEIGHT,
@@ -100,6 +86,23 @@ export function DashboardPreviewSection() {
                                     transformOrigin: "center center",
                                 }}
                             >
+                                {/* Keep top border glow in the same scaled canvas so it stays locked to the preview frame */}
+                                <div className="dashboard-preview-glows absolute top-0 left-0 right-0 h-[2px] z-20 pointer-events-none">
+                                    <div
+                                        className="h-full w-full max-w-[92%] mx-auto"
+                                        style={{
+                                            background: "linear-gradient(to right, transparent 0%, rgba(116,79,255,0.95) 40%, rgba(240,230,255,1) 50%, rgba(116,79,255,0.95) 60%, transparent 100%)",
+                                        }}
+                                    />
+                                </div>
+                                <div className="dashboard-preview-glows absolute top-0 left-0 right-0 h-[18px] z-10 pointer-events-none blur-[12px]">
+                                    <div
+                                        className="h-full w-full max-w-[86%] mx-auto"
+                                        style={{
+                                            background: "linear-gradient(to right, transparent 0%, rgba(97,60,255,0.7) 50%, transparent 100%)",
+                                        }}
+                                    />
+                                </div>
                                 <LaptopDashboardPreview />
                             </div>
                         </div>

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
 
 interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -13,18 +14,14 @@ export function GlassCard({
   ...props
 }: GlassCardProps) {
   return (
-    <div
+    <Card
       className={cn(
-        "relative overflow-hidden rounded-2xl border backdrop-blur-xl shadow-2xl",
+        "relative overflow-hidden border backdrop-blur-xl shadow-2xl bg-[var(--bg-card)] border-[var(--glass-border)]",
+        "shadow-[var(--card-shadow,0_25px_50px_-12px_rgba(0,0,0,0.25))]",
         gradient &&
           "before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-tr before:from-[var(--accent-2)]/10 before:via-transparent before:to-[#3ed6ff]/5",
         className
       )}
-      style={{
-        background: "var(--bg-card)",
-        borderColor: "var(--glass-border)",
-        boxShadow: "var(--card-shadow, 0 25px 50px -12px rgba(0,0,0,0.25))",
-      }}
       {...props}
     >
       <div
@@ -38,6 +35,6 @@ export function GlassCard({
         style={{ boxShadow: "inset 0 0 0 1px var(--card-ring)" }}
       />
       {children}
-    </div>
+    </Card>
   );
 }

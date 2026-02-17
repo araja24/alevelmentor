@@ -1,37 +1,25 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
 import { RevealSection } from "./RevealSection";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ShimmerButton } from "./ShimmerButton";
-
-const UNIVERSITIES = [
-    { name: "University of British Columbia", short: "UBC" },
-    { name: "McGill University", short: "McGill" },
-    { name: "University of Warwick", short: "Warwick" },
-    { name: "University of Nottingham", short: "Nottingham" },
-] as const;
+import { UniversityLogoCarousel } from "./UniversityLogoCarousel";
 
 export function Hero() {
-    const { scrollY } = useScroll();
-    const blobY = useTransform(scrollY, (v) => v * 0.5);
-
     return (
         <section
             id="hero"
             className="relative flex flex-col items-center justify-center overflow-hidden min-h-[min(100dvh,720px)] pt-24 pb-16 lg:pt-28 lg:pb-20"
             style={{ background: "var(--bg-primary)" }}
         >
-            {/* Atmospheric glow — hidden in light via .light .hero-glows */}
+            {/* Vertical purple glow streaming down from CTA — hidden in light via .light .hero-glows */}
             <div className="hero-glows absolute inset-0 pointer-events-none overflow-hidden">
-                <motion.div
-                    className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[min(100%,600px)] h-[400px] rounded-full blur-[80px] lg:blur-[100px]"
-                    style={{ background: "var(--hero-blob-a)", y: blobY }}
-                />
-                <motion.div
-                    className="absolute bottom-[20%] right-[10%] w-[300px] h-[300px] rounded-full blur-[80px]"
-                    style={{ background: "var(--hero-blob-b)", y: blobY }}
+                <div
+                    className="absolute left-1/2 -translate-x-1/2 top-[52%] w-[300px] h-[600px] blur-[80px]"
+                    style={{
+                        background: "linear-gradient(180deg, rgba(90,53,248,0.5) 0%, rgba(90,53,248,0.15) 40%, transparent 100%)",
+                    }}
                 />
             </div>
 
@@ -43,7 +31,7 @@ export function Hero() {
                     </span>
 
                     <h1 className="h1 mb-6 gradient-text-heading">
-                        Your Unfair <span className="gradient-text-purple-vertical">A Level Advantage.</span>
+                        You need A*s. <span className="gradient-text-purple-vertical">We have the solution.</span>
                     </h1>
 
                     <p className="body-lg leading-relaxed text-muted max-w-[600px] mx-auto mb-10">
@@ -65,7 +53,7 @@ export function Hero() {
                         that adapts to real life — topic tests, sick days, lazy days and all. We manage everything so you can de-stress and follow worry-free. Spend 0% of your time planning and 100% improving your grade.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
                         <ShimmerButton href="#join" className="w-full sm:w-auto justify-center px-8 py-3">
                             Join the waitlist
                             <ArrowRight className="h-4 w-4 ml-2" />
@@ -78,36 +66,15 @@ export function Hero() {
                         </Link>
                     </div>
 
-                    {/* Built by A-Level students — text-only university carousel (no logos) */}
-                    <div className="w-full max-w-[1000px] mx-auto overflow-hidden">
-                        <p className="text-[12px] sm:text-[13px] text-muted uppercase tracking-widest font-medium mb-5 sm:mb-6">
-                            Built by A-Level students who now study at
-                        </p>
-                        <div
-                            className="relative"
-                            style={{
-                                maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
-                                WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
-                            }}
-                        >
-                            <div
-                                className="flex items-center gap-12 sm:gap-16 lg:gap-20 shrink-0 animate-[scroll-left-slow_35s_linear_infinite] motion-reduce:animate-none"
-                                style={{ width: "max-content" }}
-                            >
-                                {[...UNIVERSITIES, ...UNIVERSITIES].map((uni, i) => (
-                                    <span
-                                        key={`${uni.short}-${i}`}
-                                        className="shrink-0 text-[22px] sm:text-[26px] lg:text-[30px] font-semibold tracking-tight text-[var(--text-primary)] opacity-90 hover:opacity-100 transition-opacity duration-300 whitespace-nowrap"
-                                        title={uni.name}
-                                    >
-                                        {uni.short}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
                 </RevealSection>
+                    {/* Carousel: no blur (noBlur), Cormorant, full uni names */}
+                    <RevealSection direction="none" noBlur className="flex flex-col items-center w-full mt-8">
+                        <UniversityLogoCarousel />
+                    </RevealSection>
             </div>
+
+            {/* Bottom fade into dashboard area */}
+            <div className="hero-bottom-fade absolute bottom-0 left-0 right-0 h-20 pointer-events-none" />
         </section>
     );
 }

@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
 import {
   User,
   BookOpen,
@@ -104,41 +105,45 @@ function Sparkline({ trend }: { trend: string }) {
   );
 }
 
+const STUDY_HOURS_CHART_CONFIG = { hours: { label: "Hours", color: "var(--accent-2)" } } satisfies ChartConfig;
+
 /** Study hours this week — Recharts AreaChart; animation disabled on reduced motion for mobile performance */
 function StudyHoursLineChart() {
   const prefersReducedMotion = useReducedMotion();
   return (
     <div className="w-full h-[88px]">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={STUDY_HOURS_DATA} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-          <defs>
-            <linearGradient id="studyAreaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--accent-2)" stopOpacity={0.4} />
-              <stop offset="100%" stopColor="var(--accent-2-dark)" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <XAxis
-            dataKey="day"
-            axisLine={false}
-            tickLine={false}
-            tick={{ fill: "#A1A1AA", fontSize: 9 }}
-          />
-          <YAxis
-            hide
-            domain={[0, "auto"]}
-          />
-          <Area
-            type="monotone"
-            dataKey="hours"
-            stroke="var(--accent-2)"
-            strokeWidth={2}
-            fill="url(#studyAreaGrad)"
-            isAnimationActive={!prefersReducedMotion}
-            animationDuration={800}
-            animationEasing="ease-out"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      <ChartContainer config={STUDY_HOURS_CHART_CONFIG} className="h-full w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={STUDY_HOURS_DATA} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+            <defs>
+              <linearGradient id="studyAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--accent-2)" stopOpacity={0.4} />
+                <stop offset="100%" stopColor="var(--accent-2-dark)" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <XAxis
+              dataKey="day"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: "#A1A1AA", fontSize: 9 }}
+            />
+            <YAxis
+              hide
+              domain={[0, "auto"]}
+            />
+            <Area
+              type="monotone"
+              dataKey="hours"
+              stroke="var(--color-hours)"
+              strokeWidth={2}
+              fill="url(#studyAreaGrad)"
+              isAnimationActive={!prefersReducedMotion}
+              animationDuration={800}
+              animationEasing="ease-out"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </ChartContainer>
     </div>
   );
 }

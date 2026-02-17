@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface ShimmerButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -7,6 +8,11 @@ interface ShimmerButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     className?: string;
 }
 
+const shadowStyle = {
+    backgroundColor: "var(--shimmer-btn-bg)",
+    boxShadow: "var(--shimmer-btn-shadow)",
+} as React.CSSProperties;
+
 export function ShimmerButton({ href, children, className, disabled, ...props }: ShimmerButtonProps) {
     const baseStyles = cn(
         "shimmer-btn group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full px-8 py-3.5 text-[18px] font-semibold text-white transition-all duration-300",
@@ -14,10 +20,6 @@ export function ShimmerButton({ href, children, className, disabled, ...props }:
         disabled && "opacity-50 cursor-not-allowed hover:scale-100 hover:shadow-none",
         className
     );
-    const shadowStyle = {
-        backgroundColor: "var(--shimmer-btn-bg)",
-        boxShadow: "var(--shimmer-btn-shadow)",
-    } as React.CSSProperties;
 
     const shimmer = (
         <span
@@ -38,15 +40,28 @@ export function ShimmerButton({ href, children, className, disabled, ...props }:
 
     if (href) {
         return (
-            <Link href={href} className={baseStyles} style={shadowStyle}>
-                {content}
-            </Link>
+            <Button
+                variant="unstyled"
+                size="unstyled"
+                asChild
+                className={baseStyles}
+                style={shadowStyle}
+            >
+                <Link href={href}>{content}</Link>
+            </Button>
         );
     }
 
     return (
-        <button className={baseStyles} style={shadowStyle} {...props}>
+        <Button
+            variant="unstyled"
+            size="unstyled"
+            className={baseStyles}
+            style={shadowStyle}
+            disabled={disabled}
+            {...props}
+        >
             {content}
-        </button>
+        </Button>
     );
 }

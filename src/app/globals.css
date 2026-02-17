@@ -24,6 +24,13 @@
   --color-ring: var(--ring);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Chart tokens (shadcn Chart API; aligned with CHART_COLORS in chartConfig) */
+  --chart-1: #5a35f8;
+  --chart-2: #3ed6ff;
+  --chart-3: #f59e0b;
+  --chart-4: #22c55e;
+  --chart-5: #ef4444;
 }
 
 /* 
@@ -300,6 +307,21 @@
   pointer-events: none;
 }
 
+/* Hero bottom fade into dashboard (class avoids hydration mismatch from inline style) */
+.hero-bottom-fade {
+  background: linear-gradient(180deg, transparent 0%, var(--bg-primary) 100%);
+}
+
+/* University carousel: modern display font with more pop */
+.university-carousel-text {
+  font-family: var(--font-uni), var(--font-display), var(--font-sans), sans-serif;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+}
+.light .university-carousel-text {
+  color: #0a0a0a;
+}
+
 /* Hide theme-dependent glows in light mode (avoids hydration mismatch from useTheme) */
 .light .hero-glows,
 .light .cta-glows,
@@ -362,6 +384,7 @@
  */
 /* Crypton-style: headings pure white, tight tracking. Alevels-style hierarchy: 48–64px hero, 28–36px subheadings, 16–20px body. */
 @utility h1 {
+  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
   font-size: 48px;
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -374,6 +397,7 @@
 }
 
 @utility h2 {
+  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
   font-size: 28px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -386,6 +410,7 @@
 }
 
 @utility h3 {
+  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -442,6 +467,11 @@
   to {
     transform: translateX(-50%);
   }
+}
+
+/* Continuous smooth loop for university carousel */
+.university-carousel-track {
+  animation: scroll-left 35s linear infinite;
 }
 
 @keyframes scroll-left-slow {
@@ -585,11 +615,11 @@ input[type="range"].accent-slider::-moz-range-thumb {
 
 /* Dashboard preview: glow blur reduced on mobile for performance */
 .dashboard-preview-blur {
-  filter: blur(50px);
+  filter: blur(30px);
 }
 
 @media (max-width: 768px) {
   .dashboard-preview-blur {
-    filter: blur(24px);
+    filter: blur(18px);
   }
 }
