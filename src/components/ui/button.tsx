@@ -10,7 +10,7 @@ const buttonVariants = cva(
         default:
           "bg-[var(--text-primary)] text-[var(--bg-primary)] hover:brightness-110 hover:scale-[1.03] shadow-sm rounded-[14px]",
         outline:
-          "border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl text-[var(--text-primary)] hover:bg-white/[0.06] hover:border-white/[0.14] hover:scale-[1.02] rounded-[14px]",
+          "border border-[var(--border-muted)] bg-[var(--bg-card)] text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] hover:border-[var(--border-muted-strong)] hover:scale-[1.02] rounded-[14px]",
         ghost:
           "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-white/[0.04] rounded-[14px]",
         gradient:
@@ -18,9 +18,9 @@ const buttonVariants = cva(
         unstyled: "",
       },
       size: {
-        default: "h-11 px-6 py-2.5",
-        sm: "h-9 px-4 text-xs",
-        lg: "h-12 px-7 py-3.5 text-[15px]",
+        default: "h-11 px-5 sm:px-6 py-2.5 text-sm sm:text-[15px]",
+        sm: "h-10 px-4 text-xs sm:text-sm",
+        lg: "h-12 sm:h-[52px] px-7 sm:px-8 py-3.5 text-[15px] sm:text-base",
         icon: "h-9 w-9",
         unstyled: "",
       },

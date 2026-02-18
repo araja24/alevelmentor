@@ -120,7 +120,6 @@ export function MouseGlow() {
           opacity-[0.07]  dark:opacity-[0.20]
           [mix-blend-mode:multiply] dark:[mix-blend-mode:screen]
         "
-        style={{ filter: "blur(80px)" }}
         aria-hidden="true"
       >
         {layers.map(({ x, y, size, alpha, color }, i) => (

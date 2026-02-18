@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { ShimmerButton } from "./ShimmerButton";
 import { waitlistSchema } from "@/lib/validations";
+import { landingCopy } from "@/content/landingCopy";
 
 function WaitlistFormContent() {
     const searchParams = useSearchParams();
@@ -167,11 +168,13 @@ function WaitlistFormContent() {
                         "h-14 w-full md:w-auto px-8 font-medium shrink-0 text-[15px]",
                         "rounded-2xl md:rounded-full"
                     )}
+                    data-ph-capture="final_cta_submit_click"
+                    data-ph-target="final_cta_submit"
                 >
                     {loading ? (
                         <div className="w-5 h-5 border-2 border-[var(--text-secondary)]/30 border-t-[var(--text-primary)] rounded-full animate-spin" />
                     ) : (
-                        "Join Waitlist →"
+                        `${landingCopy.waitlist.submit} →`
                     )}
                 </ShimmerButton>
             </div>

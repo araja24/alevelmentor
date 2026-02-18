@@ -29,7 +29,6 @@ export function MacBookFrame({ children, className, glow = false, glowColor = "v
                     className="absolute inset-0 z-0 rounded-[12px] animate-pulse-glow"
                     style={{
                         background: `radial-gradient(ellipse at 50% 60%, color-mix(in srgb, ${glowColor} 12%, transparent), transparent 70%)`,
-                        filter: "blur(40px)",
                     }}
                 />
             )}
@@ -70,7 +69,6 @@ export function IPhoneFrame({ children, className, glow = false, glowColor = "va
                     className="absolute inset-0 z-0 rounded-[16px] animate-pulse-glow"
                     style={{
                         background: `radial-gradient(ellipse at 50% 60%, color-mix(in srgb, ${glowColor} 12%, transparent), transparent 70%)`,
-                        filter: "blur(30px)",
                     }}
                 />
             )}

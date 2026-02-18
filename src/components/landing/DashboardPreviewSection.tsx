@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { LaptopDashboardPreview } from "./LaptopDashboardPreview";
+import { MobileProductPreview } from "./MobileProductPreview";
 
 const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 800;
@@ -48,8 +49,12 @@ export function DashboardPreviewSection() {
             id="dashboard-preview"
             className="relative z-10 pt-0 pb-8 md:pb-16"
         >
+            <div className="md:hidden py-4">
+                <MobileProductPreview />
+            </div>
+
             <div
-                className="mx-auto max-w-[1400px] w-full px-6 max-md:px-2 flex justify-center relative z-10"
+                className="hidden md:flex section-container max-w-[1400px] justify-center relative z-10"
                 style={{ perspective: 1400 }}
             >
                 <div
@@ -74,7 +79,7 @@ export function DashboardPreviewSection() {
                         {/* Larger soft bloom behind preview */}
                         <div
                             className="dashboard-preview-glows absolute top-0 left-1/2 -translate-x-1/2 h-[220px] w-[62%] max-w-[620px] z-0 pointer-events-none"
-                            style={{ background: "rgba(90,53,248,0.14)", filter: "blur(80px)" }}
+                            style={{ background: "radial-gradient(ellipse at center, rgba(90,53,248,0.16) 0%, rgba(90,53,248,0.08) 45%, transparent 76%)" }}
                         />
                         <div className="relative z-10 w-full h-full flex items-center justify-center min-h-0">
                             <div
@@ -86,23 +91,6 @@ export function DashboardPreviewSection() {
                                     transformOrigin: "center center",
                                 }}
                             >
-                                {/* Keep top border glow in the same scaled canvas so it stays locked to the preview frame */}
-                                <div className="dashboard-preview-glows absolute top-0 left-0 right-0 h-[2px] z-20 pointer-events-none">
-                                    <div
-                                        className="h-full w-full max-w-[92%] mx-auto"
-                                        style={{
-                                            background: "linear-gradient(to right, transparent 0%, rgba(116,79,255,0.95) 40%, rgba(240,230,255,1) 50%, rgba(116,79,255,0.95) 60%, transparent 100%)",
-                                        }}
-                                    />
-                                </div>
-                                <div className="dashboard-preview-glows absolute top-0 left-0 right-0 h-[18px] z-10 pointer-events-none blur-[12px]">
-                                    <div
-                                        className="h-full w-full max-w-[86%] mx-auto"
-                                        style={{
-                                            background: "linear-gradient(to right, transparent 0%, rgba(97,60,255,0.7) 50%, transparent 100%)",
-                                        }}
-                                    />
-                                </div>
                                 <LaptopDashboardPreview />
                             </div>
                         </div>

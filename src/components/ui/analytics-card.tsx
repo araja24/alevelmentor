@@ -22,7 +22,6 @@ export function AnalyticsCard({ children, className, glow = false, ...props }: A
           className="absolute -inset-6 -z-10 pointer-events-none analytics-card-glow"
           style={{
             background: 'radial-gradient(circle, color-mix(in srgb, var(--accent-2) 12%, transparent) 0%, transparent 70%)',
-            filter: 'blur(80px)',
           }}
         />
       )}

@@ -37,10 +37,10 @@ function CardShell({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      className={`group relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors h-full flex flex-col ${className}`}
+      className={`group relative bento-card rounded-2xl overflow-hidden transition-colors h-full flex flex-col ${className}`}
     >
       {/* Preview Area */}
-      <div className="relative p-5 pb-0 flex-1">
+      <div className="relative p-4 sm:p-5 pb-0 flex-1">
         <div className="relative rounded-xl p-4 overflow-hidden h-full bg-white/[0.03] border border-white/[0.06]">
             {children}
           {/* Bottom fade */}
@@ -51,7 +51,7 @@ function CardShell({
       </div>
 
       {/* Title + Description */}
-      <div className="p-5 pt-4">
+      <div className="p-4 sm:p-5 pt-4">
         <h3 className="text-[15px] font-semibold gradient-text-heading">{title}</h3>
         <p className="body mt-1.5 leading-relaxed text-muted">{description}</p>
       </div>
@@ -334,10 +334,10 @@ export function AppPreview() {
     <section className="section-pad relative" style={{ background: "var(--bg-primary)" }}>
       {/* Ambient background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-violet-900/10 blur-[120px]" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[820px] h-[620px] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.12)_0%,rgba(139,92,246,0.06)_40%,transparent_72%)]" />
       </div>
 
-      <div className="mx-auto max-w-[1100px] px-6 relative z-10">
+      <div className="section-container max-w-[1100px] relative z-10">
         <RevealSection className="text-center mb-16" fast>
           <span className="pill-badge mb-6 inline-flex">Platform</span>
           <h2 className="h2 mt-4 gradient-text-heading">
@@ -349,7 +349,7 @@ export function AppPreview() {
         </RevealSection>
 
         {/* Row 1: 50% + 50% */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-5 mb-4 sm:mb-5">
           <CardShell
             className="sm:col-span-6"
             title="Subject Picker"
@@ -370,7 +370,7 @@ export function AppPreview() {
         </div>
 
         {/* Row 2: 66% + 33% */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-5 mb-4 sm:mb-5">
           <CardShell
             className="sm:col-span-8"
             title="Progress Tracker"
@@ -391,7 +391,7 @@ export function AppPreview() {
         </div>
 
         {/* Row 3: 25% + 75% */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-5">
           <CardShell
             className="sm:col-span-3"
             title="Study Mentor"

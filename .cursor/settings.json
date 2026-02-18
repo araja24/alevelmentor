@@ -1,0 +1,10 @@
+{
+  "plugins": {
+    "supabase": {
+      "enabled": true
+    },
+    "compound-engineering": {
+      "enabled": true
+    }
+  }
+}

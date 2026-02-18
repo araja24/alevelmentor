@@ -28,11 +28,27 @@ export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [useMobileIsland, setUseMobileIsland] = useState(false);
     const { scrollY } = useScroll();
     const { resolvedTheme } = useTheme();
     const isLight = resolvedTheme === "light";
 
     useEffect(() => setMounted(true), []);
+
+    // Switch to the mobile island layout at <= 1608px
+    useEffect(() => {
+        const mq = window.matchMedia("(max-width: 1608px)");
+        const update = () => setUseMobileIsland(mq.matches);
+        update();
+
+        if (typeof mq.addEventListener === "function") {
+            mq.addEventListener("change", update);
+            return () => mq.removeEventListener("change", update);
+        }
+
+        mq.addListener(update);
+        return () => mq.removeListener(update);
+    }, []);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         setScrolled((prev) => {
@@ -41,14 +57,20 @@ export function Navbar() {
         });
     });
 
-    const logoSrc = !mounted ? "/logo_large_light.svg" : (isLight ? "/logo_large.svg" : "/logo_large_light.svg");
-    const smallLogoSrc = !mounted ? "/logo_small_light.svg" : (isLight ? "/logo_small.svg" : "/logo_small_light.svg");
+    const logoSrc = !mounted
+        ? "/logo_large_light.svg"
+        : (isLight ? "/logo_large.svg" : "/logo_large_light.svg");
+
+    // Small logo for the mobile island (requested)
+    const smallLogoSrc = !mounted
+        ? "/logo_small_light.svg"
+        : (isLight ? "/logo_small.svg" : "/logo_small_light.svg");
 
     return (
         <>
             {/* ─── Normal flat navbar (visible when NOT scrolled) ─── */}
             <AnimatePresence>
-                {!scrolled && (
+                {!scrolled && !useMobileIsland && (
                     <motion.header
                         key="full-nav"
                         initial={{ opacity: 0, y: -20 }}
@@ -121,7 +143,7 @@ export function Navbar() {
 
             {/* ─── Floating Island (visible when scrolled) ─── */}
             <AnimatePresence>
-                {scrolled && (
+                {(scrolled || useMobileIsland) && (
                     <motion.div
                         key="floating-island"
                         initial={{ opacity: 0, y: -30, scale: 0.92 }}
@@ -134,7 +156,7 @@ export function Navbar() {
                         className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-fit px-4 pointer-events-none"
                     >
                         <div
-                            className="flex items-center gap-2 rounded-full p-1.5 sm:px-4 sm:py-2.5 pointer-events-auto mx-auto whitespace-nowrap backdrop-blur-md border"
+                            className="flex items-center gap-2 rounded-full p-1.5 sm:px-4 sm:py-2.5 pointer-events-auto mx-auto whitespace-nowrap border"
                             style={{ background: "var(--nav-island-bg)", borderColor: "var(--nav-island-border)" }}
                         >
                             {/* Logo Icon Only on Mobile/Tablet */}
@@ -208,7 +230,7 @@ export function Navbar() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[60] bg-[var(--bg-primary)]/98 backdrop-blur-3xl flex flex-col items-center justify-center gap-8 xl:hidden"
+                        className="fixed inset-0 z-[60] bg-[var(--bg-primary)] flex flex-col items-center justify-center gap-8 xl:hidden"
                     >
                         <div className="absolute top-6 right-6 flex items-center gap-2">
                             <ThemeToggle />

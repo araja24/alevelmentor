@@ -48,7 +48,7 @@ export function GlowButton({
     variant === "primary"
       ? // primary gradient: slightly toned-down, less chunky shadow
         "bg-gradient-to-r from-[var(--accent-2)] to-[var(--accent-2-dark)] text-white shadow-md shadow-[var(--accent-2)]/25 hover:shadow-lg hover:shadow-[var(--accent-2)]/35"
-      : "border border-border bg-card/60 text-foreground backdrop-blur-sm hover:bg-muted",
+      : "border border-border bg-[var(--bg-card)] text-foreground hover:bg-muted",
     disabled && "opacity-50 pointer-events-none",
     className
   );

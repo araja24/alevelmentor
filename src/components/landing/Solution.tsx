@@ -89,8 +89,8 @@ export function DashboardPreview() {
         <div ref={ref} className="relative">
             {/* Ambient glow — hidden in light via .light .solution-glows */}
             <div className="solution-glows absolute -inset-10 pointer-events-none z-0">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-violet-900/20 blur-[80px]" />
-                <div className="absolute top-[70%] left-[20%] w-[200px] h-[200px] rounded-full bg-indigo-900/15 blur-[80px]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[440px] h-[420px] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.2)_0%,rgba(139,92,246,0.1)_40%,transparent_74%)]" />
+                <div className="absolute top-[70%] left-[20%] w-[220px] h-[220px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.16)_0%,transparent_70%)]" />
             </div>
 
             <div className="relative z-10 space-y-3 w-full max-w-[520px]">
@@ -99,7 +99,7 @@ export function DashboardPreview() {
                     initial={{ opacity: 0, y: 16 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}
                     transition={{ delay: 0.1 }}
-                    className="bento-card rounded-2xl p-4 backdrop-blur-sm transition-colors"
+                    className="bento-card rounded-2xl p-4 transition-colors"
                 >
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2.5">
@@ -107,8 +107,8 @@ export function DashboardPreview() {
                                 <Target className="h-4 w-4 text-white" />
                             </div>
                             <div>
-                                <p className="text-[13px] font-semibold text-white">Dashboard</p>
-                                <p className="text-[10px] text-white/35">Week 12 of 18 · 6 weeks left</p>
+                                <p className="text-[13px] font-semibold text-[var(--text-primary)]">Dashboard</p>
+                                <p className="text-[10px] text-muted">Week 12 of 18 · 6 weeks left</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
@@ -130,16 +130,16 @@ export function DashboardPreview() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={inView ? { opacity: 1, y: 0 } : {}}
                                 transition={{ delay: 0.2 + i * 0.08 }}
-                                className="rounded-xl p-2.5 border border-white/10 bg-white/[0.03]"
+                                className="rounded-xl p-2.5 border border-[var(--border-muted)] bg-[var(--surface-subtle)]"
                             >
                                 <stat.icon className="h-3 w-3 mb-1.5" style={{ color: stat.color }} />
-                                <p className="text-[14px] font-bold text-white leading-none">
+                                <p className="text-[14px] font-bold text-[var(--text-primary)] leading-none">
                                     {stat.value.includes("%") || stat.value.includes("*")
                                         ? stat.value
                                         : <AnimatedCounter target={parseInt(stat.value)} />
                                     }
                                 </p>
-                                <p className="text-[8px] text-white/30 mt-0.5">{stat.label}</p>
+                                <p className="text-[8px] text-muted mt-0.5">{stat.label}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -152,9 +152,9 @@ export function DashboardPreview() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={inView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 0.3 }}
-                        className="sm:col-span-3 bento-card rounded-2xl p-4 backdrop-blur-sm transition-colors"
+                        className="sm:col-span-3 bento-card rounded-2xl p-4 transition-colors"
                     >
-                        <p className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-3">Subject Progress</p>
+                        <p className="text-[10px] font-semibold text-muted uppercase tracking-wider mb-3">Subject Progress</p>
                         <div className="flex items-center justify-around">
                             {subjects.map((s, i) => (
                                 <ProgressRing
@@ -175,9 +175,9 @@ export function DashboardPreview() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={inView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 0.4 }}
-                        className="sm:col-span-2 bento-card rounded-2xl p-4 backdrop-blur-sm transition-colors"
+                        className="sm:col-span-2 bento-card rounded-2xl p-4 transition-colors"
                     >
-                        <p className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-3">Up Next</p>
+                        <p className="text-[10px] font-semibold text-muted uppercase tracking-wider mb-3">Up Next</p>
                         <div className="space-y-2">
                             {upcomingTasks.map((t, i) => (
                                 <motion.div
@@ -185,13 +185,13 @@ export function DashboardPreview() {
                                     initial={{ opacity: 0, x: 10 }}
                                     animate={inView ? { opacity: 1, x: 0 } : {}}
                                     transition={{ delay: 0.5 + i * 0.1 }}
-                                    className="flex items-start gap-2 rounded-lg px-2.5 py-2 border border-white/[0.06] bg-white/[0.02]"
+                                    className="flex items-start gap-2 rounded-lg px-2.5 py-2 border border-[var(--border-muted)] bg-[var(--surface-subtle)]"
                                     style={{ background: t.urgent ? "rgba(99,102,241,0.08)" : undefined }}
                                 >
-                                    <div className={`h-1.5 w-1.5 rounded-full mt-1 shrink-0 ${t.urgent ? "bg-[var(--accent-2)] animate-pulse" : "bg-white/20"}`} />
+                                    <div className={`h-1.5 w-1.5 rounded-full mt-1 shrink-0 ${t.urgent ? "bg-[var(--accent-2)] animate-pulse" : "bg-[var(--border-muted)]"}`} />
                                     <div>
-                                        <p className="text-[10px] font-medium text-white/80 leading-tight">{t.task}</p>
-                                        <p className="text-[8px] text-white/30 mt-0.5">{t.time}</p>
+                                        <p className="text-[10px] font-medium text-[var(--text-primary)] leading-tight">{t.task}</p>
+                                        <p className="text-[8px] text-muted mt-0.5">{t.time}</p>
                                     </div>
                                 </motion.div>
                             ))}
@@ -204,7 +204,7 @@ export function DashboardPreview() {
                     initial={{ opacity: 0, y: 16 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}
                     transition={{ delay: 0.6 }}
-                    className="bento-card rounded-2xl p-4 border-[var(--accent-2)]/20 relative overflow-hidden backdrop-blur-sm bg-[var(--accent-2)]/5"
+                    className="bento-card rounded-2xl p-4 border-[var(--accent-2)]/20 relative overflow-hidden bg-[var(--accent-2)]/5"
                 >
                     <div className="flex items-start gap-3 relative z-10">
                         <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center shrink-0">
@@ -213,10 +213,10 @@ export function DashboardPreview() {
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1.5">
                                 <span className="text-[11px] font-semibold text-[var(--accent-2)]">AI Mentor</span>
-                                <span className="text-[8px] text-white/20">Just now</span>
+                                <span className="text-[8px] text-muted">Just now</span>
                             </div>
-                            <p className="text-[12px] text-white/55 leading-relaxed">
-                                You&apos;re <span className="text-emerald-400 font-medium">2 topics ahead</span> in Chemistry — great momentum! Focus on <span className="text-white/80 font-medium">Electrochemistry</span> today. I&apos;ve queued 3 AQA past paper questions that match your weak areas.
+                            <p className="text-[12px] text-muted leading-relaxed">
+                                You&apos;re <span className="text-emerald-400 font-medium">2 topics ahead</span> in Chemistry — great momentum! Focus on <span className="text-[var(--text-primary)] font-medium">Electrochemistry</span> today. I&apos;ve queued 3 AQA past paper questions that match your weak areas.
                             </p>
                             <div className="flex items-center gap-2 mt-2.5">
                                 <button className="text-[10px] font-medium text-[var(--accent-2)] bg-[var(--accent-2)]/10 px-3 py-1 rounded-full border border-[var(--accent-2)]/20 hover:bg-[var(--accent-2)]/15 transition-colors">

@@ -55,12 +55,10 @@ export const fadeUp: Variants = {
   hidden: {
     opacity: 0,
     y: 40,
-    filter: "blur(6px)",
   },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
       duration: dur.base,
       ease: ease.out,
@@ -79,22 +77,20 @@ export const fadeOnly: Variants = {
 
 /** Fade from left. */
 export const fadeLeft: Variants = {
-  hidden: { opacity: 0, x: 40, filter: "blur(4px)" },
+  hidden: { opacity: 0, x: 40 },
   visible: {
     opacity: 1,
     x: 0,
-    filter: "blur(0px)",
     transition: { duration: dur.base, ease: ease.out },
   },
 };
 
 /** Fade from right. */
 export const fadeRight: Variants = {
-  hidden: { opacity: 0, x: -40, filter: "blur(4px)" },
+  hidden: { opacity: 0, x: -40 },
   visible: {
     opacity: 1,
     x: 0,
-    filter: "blur(0px)",
     transition: { duration: dur.base, ease: ease.out },
   },
 };
@@ -128,12 +124,10 @@ export const staggerItem: Variants = {
   hidden: {
     opacity: 0,
     y: 24,
-    filter: "blur(4px)",
   },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
       duration: dur.base,
       ease: ease.out,

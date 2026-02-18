@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { ease, dur, viewport, viewportLoose } from "@/lib/motion";
 
 interface RevealSectionProps {
@@ -13,7 +13,7 @@ interface RevealSectionProps {
   as?: "div" | "section";
   /** Use shorter duration (≤500ms) for landing; default dur.base */
   fast?: boolean;
-  /** If true, only animate opacity/position; no blur (avoids blur-in for carousel etc.) */
+  /** If true, only animate opacity/position; retained for API compatibility. */
   noBlur?: boolean;
 }
 
@@ -33,27 +33,11 @@ export function RevealSection({
   staggerChildren = 0.1,
   as = "div",
   fast = false,
-  noBlur = false,
+  noBlur: _noBlur = false,
 }: RevealSectionProps) {
   const prefersReduced = useReducedMotion();
-  const [isSmallViewport, setIsSmallViewport] = useState(false);
   const Component = as === "section" ? motion.section : motion.div;
   const duration = fast ? dur.revealShort : dur.base;
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 767px)");
-    const updateViewport = () => setIsSmallViewport(mediaQuery.matches);
-
-    updateViewport();
-
-    if (typeof mediaQuery.addEventListener === "function") {
-      mediaQuery.addEventListener("change", updateViewport);
-      return () => mediaQuery.removeEventListener("change", updateViewport);
-    }
-
-    mediaQuery.addListener(updateViewport);
-    return () => mediaQuery.removeListener(updateViewport);
-  }, []);
 
   if (prefersReduced) {
     return (
@@ -70,13 +54,8 @@ export function RevealSection({
   }
 
   const offset = directionOffsets[direction];
-  const shouldUseBlur = !noBlur && !isSmallViewport;
-  const initial = shouldUseBlur
-    ? { opacity: 0, filter: "blur(6px)", ...offset }
-    : { opacity: 0, ...offset };
-  const whileInView = shouldUseBlur
-    ? { opacity: 1, filter: "blur(0px)", x: 0, y: 0 }
-    : { opacity: 1, x: 0, y: 0 };
+  const initial = { opacity: 0, ...offset };
+  const whileInView = { opacity: 1, x: 0, y: 0 };
 
   return (
     <Component
@@ -113,8 +92,8 @@ export function RevealChild({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 24, filter: "blur(4px)" },
-        visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+        hidden: { opacity: 0, y: 24 },
+        visible: { opacity: 1, y: 0 },
       }}
       initial="hidden"
       whileInView="visible"

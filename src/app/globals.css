@@ -215,8 +215,11 @@
  * Reusable classes for the "Opal" feel — theme-aware via CSS vars
  */
 @utility glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-card) 92%, var(--surface-subtle)),
+    var(--bg-card)
+  );
   border: 1px solid var(--glass-border);
   box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.2),
@@ -267,12 +270,27 @@
 }
 
 @utility section-pad {
-  padding-top: 64px;
-  padding-bottom: 64px;
+  padding-top: 56px;
+  padding-bottom: 56px;
 
   @media (min-width: 768px) {
-    padding-top: 128px;
-    padding-bottom: 128px;
+    padding-top: 104px;
+    padding-bottom: 104px;
+  }
+}
+
+@utility section-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (min-width: 640px) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 1280px) {
+    padding-inline: 2rem;
   }
 }
 
@@ -297,8 +315,7 @@
   position: absolute;
   inset: -20px;
   z-index: -1;
-  background: radial-gradient(circle, rgba(90, 53, 248, 0.35) 0%, transparent 60%);
-  filter: blur(40px);
+  background: radial-gradient(circle, rgba(90, 53, 248, 0.24) 0%, rgba(90, 53, 248, 0.12) 42%, transparent 72%);
   opacity: 0.6;
 }
 
@@ -352,23 +369,27 @@
 @utility glow-blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(80px);
   z-index: 0;
   pointer-events: none;
 }
 
 /* Crypton-style Bento cards — theme-aware via CSS vars */
 @utility bento-card {
-  background: var(--surface-subtle);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-secondary) 85%, var(--surface-subtle)),
+    color-mix(in srgb, var(--bg-card) 92%, var(--surface-subtle))
+  );
   border: 1px solid var(--glass-border-strong);
   border-radius: 24px; /* rounded-2xl */
-  backdrop-filter: blur(8px);
   transition: border-color 0.2s, background-color 0.2s;
 }
 
-.bento-card:hover {
-  border-color: var(--border-muted-strong);
-  background: var(--glass-bg);
+@media (hover: hover) {
+  .bento-card:hover {
+    border-color: var(--border-muted-strong);
+    background: color-mix(in srgb, var(--bg-card) 92%, var(--surface-subtle));
+  }
 }
 
 .light .bento-card {
@@ -385,59 +406,39 @@
 /* Crypton-style: headings pure white, tight tracking. Alevels-style hierarchy: 48–64px hero, 28–36px subheadings, 16–20px body. */
 @utility h1 {
   font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
-  font-size: 48px;
+  font-size: clamp(2.25rem, 4.2vw, 4.25rem);
   font-weight: 700;
   letter-spacing: -0.03em;
-  line-height: 1.1;
+  line-height: 1.08;
   color: var(--text-primary);
-
-  @media (min-width: 768px) {
-    font-size: 64px;
-  }
 }
 
 @utility h2 {
   font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
-  font-size: 28px;
+  font-size: clamp(1.75rem, 2.8vw, 2.4rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
   color: var(--text-primary);
-
-  @media (min-width: 768px) {
-    font-size: 36px;
-  }
 }
 
 @utility h3 {
   font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
-  font-size: 20px;
+  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
   font-weight: 600;
   letter-spacing: -0.01em;
-
-  @media (min-width: 768px) {
-    font-size: 24px;
-  }
 }
 
 @utility body-lg {
-  font-size: 16px;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
   line-height: 1.65;
   color: var(--text-secondary);
-
-  @media (min-width: 768px) {
-    font-size: 20px;
-  }
 }
 
 @utility body {
-  font-size: 14px;
+  font-size: clamp(0.9375rem, 0.95vw, 1rem);
   line-height: 1.6;
   color: var(--text-secondary);
-
-  @media (min-width: 768px) {
-    font-size: 16px;
-  }
 }
 
 /* 
@@ -576,7 +577,8 @@ input[type="range"].accent-slider::-moz-range-thumb {
 .impact-stat-glow {
   width: 700px;
   height: 500px;
-  filter: blur(120px);
+  background: radial-gradient(circle at 50% 50%, rgba(74, 222, 128, 0.26) 0%, rgba(74, 222, 128, 0.1) 36%, transparent 72%);
+  box-shadow: 0 0 80px rgba(74, 222, 128, 0.12);
 }
 
 .impact-stat-value {
@@ -587,7 +589,7 @@ input[type="range"].accent-slider::-moz-range-thumb {
   .impact-stat-glow {
     width: 280px;
     height: 160px;
-    filter: blur(32px);
+    box-shadow: 0 0 42px rgba(74, 222, 128, 0.1);
   }
 
   .impact-stat-value {
@@ -599,7 +601,7 @@ input[type="range"].accent-slider::-moz-range-thumb {
   .impact-stat-glow {
     width: 280px;
     height: 160px;
-    filter: blur(32px);
+    box-shadow: 0 0 42px rgba(74, 222, 128, 0.1);
   }
 }
 
@@ -614,13 +616,22 @@ input[type="range"].accent-slider::-moz-range-thumb {
   }
 }
 
-/* Dashboard preview: glow blur reduced on mobile for performance */
+/* Dashboard preview glow surface (non-blur) */
 .dashboard-preview-blur {
-  filter: blur(30px);
+  opacity: 0.85;
 }
 
-@media (max-width: 768px) {
-  .dashboard-preview-blur {
-    filter: blur(18px);
+.mobile-purple-glow {
+  text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+}
+
+@media (max-width: 767px) {
+  .section-pad {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  #join {
+    scroll-margin-bottom: 120px;
   }
 }

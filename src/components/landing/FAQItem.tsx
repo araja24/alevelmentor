@@ -19,7 +19,7 @@ export function FAQItem({
   return (
     <RevealSection delay={index * 0.15}>
       <div
-        className="bento-card rounded-2xl backdrop-blur-sm transition-colors cursor-pointer hover:border-[var(--border-muted-strong)]"
+        className="bento-card rounded-2xl transition-colors cursor-pointer hover:border-[var(--border-muted-strong)]"
         onClick={() => setOpen(!open)}
       >
         <div className="flex items-center justify-between gap-4 p-5">

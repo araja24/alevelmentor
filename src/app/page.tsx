@@ -75,9 +75,14 @@ const Footer = dynamic(
   { ssr: true, loading: () => <footer className="min-h-[200px]" aria-hidden /> }
 );
 
+const StickyCtaBar = dynamic(
+  () => import("@/components/landing/StickyCtaBar").then((m) => ({ default: m.StickyCtaBar })),
+  { ssr: true, loading: () => null }
+);
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] overflow-x-clip selection:bg-indigo-500/30 selection:text-white">
+    <main className="min-h-screen bg-[var(--bg-primary)] overflow-x-clip pb-[calc(88px+env(safe-area-inset-bottom))] md:pb-0 selection:bg-indigo-500/30 selection:text-white">
       <SplashCursorGate />
       <Navbar />
       <Hero />
@@ -101,6 +106,7 @@ export default function Home() {
         <FinalCTA />
         <Footer />
       </Suspense>
+      <StickyCtaBar />
     </main>
   );
 }

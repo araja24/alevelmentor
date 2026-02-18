@@ -51,7 +51,7 @@ export function LaunchCountdown() {
         return (
             <div className="grid grid-cols-4 gap-3 sm:gap-4 max-w-[400px] mx-auto mb-10">
                 {["Days", "Hours", "Minutes", "Seconds"].map((label) => (
-                    <div key={label} className="bento-card rounded-2xl backdrop-blur-sm p-4 text-center transition-colors">
+                    <div key={label} className="bento-card rounded-2xl p-3 sm:p-4 text-center transition-colors">
                         <p className="text-[24px] sm:text-[32px] font-bold tabular-nums gradient-text-heading">--</p>
                         <p className="text-[10px] sm:text-[11px] font-medium text-muted uppercase tracking-wider mt-1">{label}</p>
                     </div>
@@ -66,7 +66,7 @@ export function LaunchCountdown() {
                 Launching {LAUNCH_DATE.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
             </p>
             <motion.div
-                className="grid grid-cols-4 gap-3 sm:gap-4 max-w-[400px] mx-auto mb-10"
+                className="grid grid-cols-4 gap-2.5 sm:gap-4 max-w-[420px] mx-auto mb-10"
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewport}
@@ -81,7 +81,7 @@ export function LaunchCountdown() {
                     <motion.div
                         key={item.label}
                         variants={staggerItem}
-                        className="bento-card rounded-2xl backdrop-blur-sm p-4 text-center transition-colors"
+                        className="bento-card rounded-2xl p-3 sm:p-4 text-center transition-colors"
                     >
                         <p className="text-[24px] sm:text-[32px] font-bold tabular-nums gradient-text-heading">{item.value}</p>
                         <p className="text-[10px] sm:text-[11px] font-medium text-muted uppercase tracking-wider mt-1">{item.label}</p>

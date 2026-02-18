@@ -12,6 +12,7 @@ import {
     Legend,
 } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
+import { EngineAnimation } from "@/components/engine/EngineAnimation";
 
 /* Multi-line chart data: one line per subtopic (weeks W1–W6, score %) */
 const ANALYTICS_CHART_DATA = [
@@ -36,7 +37,7 @@ function AnalyticsCard() {
     return (
         <div className="relative">
             <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
+                className="relative bento-card rounded-2xl overflow-hidden transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
             >
                 <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)] flex items-center gap-2.5">
                     <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center">
@@ -132,7 +133,7 @@ function MentorCard() {
     return (
         <div className="relative">
             <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
+                className="relative bento-card rounded-2xl overflow-hidden transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
             >
                 {/* Header */}
                 <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)] flex items-center gap-2.5">
@@ -228,7 +229,7 @@ function RoadmapPreviewCard() {
     return (
         <div className="relative">
             <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
+                className="relative bento-card rounded-2xl overflow-hidden transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
             >
                 <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)] flex items-center gap-2.5">
                     <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center">
@@ -306,7 +307,7 @@ function PastPaperCard() {
     return (
         <div className="relative">
             <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
+                className="relative bento-card rounded-2xl overflow-hidden transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
             >
                 <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)] flex items-center gap-2.5">
                     <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center">
@@ -358,7 +359,7 @@ function GradeCard() {
     return (
         <div className="relative">
             <div
-                className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
+                className="relative bento-card rounded-2xl overflow-hidden transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]"
             >
                 {/* Header */}
                 <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)]">
@@ -454,20 +455,23 @@ const features = [
 export function FeaturePreviews() {
     return (
         <section id="features" className="section-pad relative z-10" style={{ background: "var(--bg-primary)" }}>
-            <div className="mx-auto max-w-[1100px] px-6 space-y-32">
-                <RevealSection className="text-center mb-20">
+            <div className="section-container max-w-[1100px] space-y-14 md:space-y-28">
+                <RevealSection className="text-center mb-14 md:mb-20">
                     <h2 className="h2 gradient-text-heading">
                         That&apos;s why we built you the complete{" "}
                         <span className="whitespace-nowrap gradient-text-purple-vertical">A-Level revision system</span>.
                     </h2>
                     <p className="body-lg mt-4 text-muted max-w-[55ch] mx-auto">
-                        One place for your plan, past papers, and progress. We handle the rest so you can follow worry-free.
+                        Your raw data—target grades, exam dates, and current struggles—is instantly processed into a dynamic, day-by-day strategy that adapts as you work.
                     </p>
+                </RevealSection>
+                <RevealSection direction="up" delay={0.08}>
+                    <EngineAnimation showLabels={false} />
                 </RevealSection>
                 {features.map((feature, i) => {
                     const isEven = i % 2 === 0;
                     return (
-                        <div key={i} className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                        <div key={i} className="grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-16 items-center">
                             {/* Text: from left when on left, from right when on right */}
                             <RevealSection
                                 direction={isEven ? "right" : "left"}
@@ -480,7 +484,7 @@ export function FeaturePreviews() {
                                 <p className="body mb-8 max-w-[65ch] text-muted">{feature.body}</p>
                                 <Link
                                     href="#join"
-                                    className="inline-flex items-center gap-2 bg-transparent border border-[var(--border-muted-strong)] gradient-text-heading rounded-full px-8 py-3 hover:bg-[var(--surface-subtle)] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--glass-border-strong)] focus:ring-offset-2 focus:ring-offset-[var(--bg-primary)]"
+                                    className="inline-flex items-center gap-2 bg-transparent border border-[var(--border-muted-strong)] gradient-text-heading rounded-full h-12 px-8 py-3 hover:bg-[var(--surface-subtle)] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--glass-border-strong)] focus:ring-offset-2 focus:ring-offset-[var(--bg-primary)]"
                                 >
                                     Start my revision plan <ArrowRight className="h-4 w-4" />
                                 </Link>

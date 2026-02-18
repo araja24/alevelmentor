@@ -1,6 +1,7 @@
 import { RevealSection } from "./RevealSection";
 import { ShimmerButton } from "./ShimmerButton";
 import { ComparisonRows } from "./ComparisonRows";
+import { landingCopy } from "@/content/landingCopy";
 
 const ROWS = [
   {
@@ -48,7 +49,7 @@ export function ComparisonTable() {
       className="section-pad relative z-10 overflow-x-clip"
       style={{ background: "var(--bg-primary)" }}
     >
-      <div className="mx-auto max-w-[900px] w-full px-6">
+      <div className="section-container max-w-[900px]">
         <RevealSection className="text-center mb-12" fast>
           <span className="pill-badge mb-6 inline-flex">Why us</span>
           <h2 className="h2 mt-4 gradient-text-heading">
@@ -62,8 +63,8 @@ export function ComparisonTable() {
         <ComparisonRows rows={ROWS} />
 
         <div className="mt-10 flex justify-center">
-          <ShimmerButton href="#join" className="px-5 py-2">
-            Join the waitlist
+          <ShimmerButton href="#join" className="px-6 py-2.5">
+            {landingCopy.comparison.cta}
           </ShimmerButton>
         </div>
       </div>

@@ -16,7 +16,7 @@ export function GlassCard({
   return (
     <Card
       className={cn(
-        "relative overflow-hidden border backdrop-blur-xl shadow-2xl bg-[var(--bg-card)] border-[var(--glass-border)]",
+        "relative overflow-hidden border shadow-2xl bg-[var(--bg-card)] border-[var(--glass-border)]",
         "shadow-[var(--card-shadow,0_25px_50px_-12px_rgba(0,0,0,0.25))]",
         gradient &&
           "before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-tr before:from-[var(--accent-2)]/10 before:via-transparent before:to-[#3ed6ff]/5",

@@ -15,7 +15,7 @@ const shadowStyle = {
 
 export function ShimmerButton({ href, children, className, disabled, ...props }: ShimmerButtonProps) {
     const baseStyles = cn(
-        "shimmer-btn group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full px-8 py-3.5 text-[18px] font-semibold text-white transition-all duration-300",
+        "shimmer-btn group relative inline-flex h-11 sm:h-12 items-center justify-center gap-2.5 overflow-hidden rounded-full px-6 sm:px-8 py-2.5 sm:py-3.5 text-base sm:text-[18px] font-semibold text-white transition-all duration-300",
         "hover:scale-[1.03] active:scale-[0.98]",
         disabled && "opacity-50 cursor-not-allowed hover:scale-100 hover:shadow-none",
         className
@@ -46,6 +46,7 @@ export function ShimmerButton({ href, children, className, disabled, ...props }:
                 asChild
                 className={baseStyles}
                 style={shadowStyle}
+                {...props}
             >
                 <Link href={href}>{content}</Link>
             </Button>

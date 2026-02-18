@@ -30,7 +30,7 @@ export function MoreFeatures() {
             className="section-pad relative z-10"
             style={{ background: "var(--bg-primary)" }}
         >
-            <div className="mx-auto max-w-[1100px] px-6">
+            <div className="section-container max-w-[1100px]">
                 <RevealSection className="text-center mb-16" fast>
                     <span className="pill-badge mb-6 inline-flex">The complete system</span>
                     <h2 className="h2 mt-4 gradient-text-heading">
@@ -42,7 +42,7 @@ export function MoreFeatures() {
                 </RevealSection>
 
                 <motion.div
-                    className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                    className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
                     initial="hidden"
                     whileInView="visible"
                     viewport={viewport}
@@ -50,7 +50,7 @@ export function MoreFeatures() {
                 >
                     {features.map((item, i) => (
                         <motion.div key={i} variants={staggerItem} className="h-full">
-                            <div className="bento-card rounded-2xl p-5 backdrop-blur-sm transition-colors h-full flex flex-col">
+                            <div className="bento-card rounded-2xl p-4 sm:p-5 transition-colors h-full flex flex-col">
                                 <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center mb-4 shrink-0">
                                     <item.icon className="h-5 w-5 text-white" />
                                 </div>
