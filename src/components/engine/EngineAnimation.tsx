@@ -106,6 +106,7 @@ function buildBezierPath(from: Point, to: Point) {
 function DotOnPath({
   pathRefs,
   pathIndex,
+  pathD,
   color,
   duration,
   delay,
@@ -113,6 +114,7 @@ function DotOnPath({
 }: {
   pathRefs: MutableRefObject<(SVGPathElement | null)[]>;
   pathIndex: number;
+  pathD: string;
   color: string;
   duration: number;
   delay: number;
@@ -151,7 +153,7 @@ function DotOnPath({
     });
 
     return () => controls.stop();
-  }, [delay, duration, pathIndex, pathRefs, prefersReducedMotion, progress]);
+  }, [delay, duration, pathD, pathIndex, pathRefs, prefersReducedMotion, progress]);
 
   if (prefersReducedMotion) return null;
 
@@ -233,19 +235,28 @@ export function EngineAnimation({
   }, []);
 
   useEffect(() => {
+    const DEBOUNCE_MS = 120;
     let rafId = 0;
-    const scheduleMeasure = () => {
+    let timeoutId = 0;
+
+    const runMeasure = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(measurePoints);
     };
 
-    scheduleMeasure();
+    const scheduleMeasure = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(runMeasure, DEBOUNCE_MS);
+    };
+
+    runMeasure();
     window.addEventListener("resize", scheduleMeasure);
 
     const observer = new ResizeObserver(scheduleMeasure);
     if (containerRef.current) observer.observe(containerRef.current);
 
     return () => {
+      if (timeoutId) clearTimeout(timeoutId);
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", scheduleMeasure);
       observer.disconnect();
@@ -261,12 +272,18 @@ export function EngineAnimation({
       return [];
     }
 
+    const inputDuration = 2.5;
+    const inputDelayStep = 0.22;
+    // Time when the last input dot reaches the engine (only then release output dots)
+    const lastInputArrival = (INPUTS.length - 1) * inputDelayStep + inputDuration;
+    const outputDelayStep = 0.24;
+
     const inputLanes = INPUTS.map((item, idx) => ({
       key: `in-${idx}`,
       d: buildBezierPath(points.inputs[idx], points.engineIn!),
       color: item.laneColor,
-      duration: 2.5,
-      delay: idx * 0.22,
+      duration: inputDuration,
+      delay: idx * inputDelayStep,
     }));
 
     const outputLanes = OUTPUTS.map((item, idx) => ({
@@ -274,23 +291,23 @@ export function EngineAnimation({
       d: buildBezierPath(points.engineOut!, points.outputs[idx]),
       color: item.laneColor,
       duration: 2.6,
-      delay: 0.85 + idx * 0.24,
+      delay: lastInputArrival + idx * outputDelayStep,
     }));
 
     return [...inputLanes, ...outputLanes];
   }, [points]);
 
   return (
-    <section className={cn("w-full", className)}>
-      <div className="mx-auto max-w-[1100px]">
-        {showLabels && (
+    <section className={cn("w-full min-w-0", className)}>
+      <div className="mx-auto max-w-[1100px] px-2 sm:px-4">
+        {showLabels && title && (
           <div className="text-center mb-10 md:mb-12">
             <h3 className="h2">{title}</h3>
             <p className="text-muted body mt-2 max-w-[68ch] mx-auto">{subtitle}</p>
           </div>
         )}
 
-        <div ref={containerRef} className="relative py-2 md:py-4 overflow-visible">
+        <div ref={containerRef} className="relative py-2 md:py-4 overflow-visible min-w-0">
           <svg
             className="pointer-events-none absolute inset-0 z-0 overflow-visible"
             width={canvas.width}
@@ -318,6 +335,7 @@ export function EngineAnimation({
                 key={`${lane.key}-dot`}
                 pathRefs={pathRefs}
                 pathIndex={laneIndex}
+                pathD={lane.d}
                 color={lane.color}
                 duration={lane.duration}
                 delay={lane.delay}
@@ -326,31 +344,31 @@ export function EngineAnimation({
             ))}
           </svg>
 
-          {/* Grid layout - Strictly symmetrical 3 columns */}
-          <div className="relative z-10 grid grid-cols-[1fr_auto_1fr] gap-4 md:gap-8 items-center max-w-5xl mx-auto">
+          {/* Grid layout - symmetrical 3 columns; responsive gaps and sizes */}
+          <div className="relative z-10 grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4 md:gap-6 lg:gap-8 items-center max-w-5xl mx-auto min-w-0">
             {/* Inputs - Left Column (Text Right, Icon Inner) */}
-            <div className="flex flex-col gap-6 md:gap-8 items-end">
+            <div className="flex flex-col gap-3 sm:gap-4 md:gap-6 lg:gap-8 items-end min-w-0">
               {INPUTS.map((item, idx) => (
-                <div key={item.label} className="flex flex-row-reverse items-center gap-3 md:gap-4 text-right">
+                <div key={item.label} className="flex flex-row-reverse items-center gap-2 sm:gap-3 md:gap-4 text-right min-w-0">
                   <div
                     ref={(node) => {
                       inputRefs.current[idx] = node;
                     }}
-                    className="h-11 w-11 md:h-12 md:w-12 rounded-2xl border border-[var(--border-muted-strong)] bg-[color-mix(in_srgb,var(--bg-secondary)_70%,transparent)] backdrop-blur-[1px] flex items-center justify-center shrink-0 shadow-sm"
+                    className="h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 rounded-xl sm:rounded-2xl border border-[var(--border-muted-strong)] bg-[color-mix(in_srgb,var(--bg-secondary)_70%,transparent)] backdrop-blur-[1px] flex items-center justify-center shrink-0 shadow-sm"
                   >
-                    <item.icon className="h-5 w-5" style={{ color: item.laneColor }} />
+                    <item.icon className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: item.laneColor }} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm md:text-[15px] font-semibold text-[var(--text-primary)]">{item.label}</p>
-                    <p className="text-xs text-muted leading-relaxed">{item.description}</p>
+                    <p className="text-xs sm:text-sm md:text-[15px] font-semibold text-[var(--text-primary)]">{item.label}</p>
+                    <p className="text-[11px] sm:text-xs text-muted leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Engine - Center Column */}
-            <div className="relative flex flex-col items-center justify-center px-4">
-              <div className="relative h-32 w-32 md:h-40 md:w-40 flex-shrink-0">
+            <div className="relative flex flex-col items-center justify-center px-2 sm:px-4 shrink-0">
+              <div className="relative h-24 w-24 sm:h-32 sm:w-32 md:h-36 md:w-36 lg:h-40 lg:w-40 flex-shrink-0">
                 <div className="absolute inset-2 md:inset-3 rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.26)_0%,rgba(99,102,241,0.18)_38%,rgba(99,102,241,0)_72%)] blur-2xl" />
                 {/* Rings */}
                 {[0, 0.6, 1.2].map((delay, index) => (
@@ -373,45 +391,32 @@ export function EngineAnimation({
 
                 <div
                   ref={engineRef}
-                  className="absolute inset-6 md:inset-8 rounded-full border border-[var(--border-muted-strong)] bg-[color-mix(in_srgb,var(--bg-card)_75%,transparent)] backdrop-blur-sm flex items-center justify-center shadow-lg"
+                  className="absolute inset-4 sm:inset-5 md:inset-6 lg:inset-8 rounded-full border border-[var(--border-muted-strong)] bg-[color-mix(in_srgb,var(--bg-card)_75%,transparent)] backdrop-blur-sm flex items-center justify-center shadow-lg"
                   style={{
                     backgroundImage:
                       "radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--accent-3) 35%, transparent), transparent 60%), radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--accent-2) 35%, transparent), transparent 62%)",
                   }}
                 >
-                  <BrainCircuit className="h-9 w-9 md:h-10 md:w-10 text-[var(--text-primary)]" />
+                  <BrainCircuit className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-10 lg:w-10 text-[var(--text-primary)]" />
                 </div>
               </div>
-              {/* Title as pill badge above/below? User said "place it above the engine thing" - but the rings are large. 
-                  Placing it visually above the rings might cover them or be too high. 
-                  Let's try placing it just below the rings or overlaying? 
-                  "place it above the engine thing" -> likely means above the graphic. 
-                  I'll place it above the `.relative` container or inside it at the top.
-                  Actually, let's put it ABOVE the circle. */}
-              {title && (
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                  <span className="pill-badge px-3 py-1 text-[10px] font-semibold border-[var(--accent-2)]/20 bg-[var(--accent-2)]/5 text-[var(--accent-2)] uppercase tracking-wider">
-                    {title}
-                  </span>
-                </div>
-              )}
             </div>
 
             {/* Outputs - Right Column (Text Left, Icon Inner) */}
-            <div className="flex flex-col gap-6 md:gap-8 items-start">
+            <div className="flex flex-col gap-3 sm:gap-4 md:gap-6 lg:gap-8 items-start min-w-0">
               {OUTPUTS.map((item, idx) => (
-                <div key={item.label} className="flex items-center gap-3 md:gap-4 text-left">
+                <div key={item.label} className="flex items-center gap-2 sm:gap-3 md:gap-4 text-left min-w-0">
                   <div
                     ref={(node) => {
                       outputRefs.current[idx] = node;
                     }}
-                    className="h-11 w-11 md:h-12 md:w-12 rounded-2xl border border-[var(--border-muted-strong)] bg-[color-mix(in_srgb,var(--bg-secondary)_70%,transparent)] backdrop-blur-[1px] flex items-center justify-center shrink-0 shadow-sm"
+                    className="h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 rounded-xl sm:rounded-2xl border border-[var(--border-muted-strong)] bg-[color-mix(in_srgb,var(--bg-secondary)_70%,transparent)] backdrop-blur-[1px] flex items-center justify-center shrink-0 shadow-sm"
                   >
-                    <item.icon className="h-5 w-5" style={{ color: item.laneColor }} />
+                    <item.icon className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: item.laneColor }} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm md:text-[15px] font-semibold text-[var(--text-primary)]">{item.label}</p>
-                    <p className="text-xs text-muted leading-relaxed">{item.description}</p>
+                    <p className="text-xs sm:text-sm md:text-[15px] font-semibold text-[var(--text-primary)]">{item.label}</p>
+                    <p className="text-[11px] sm:text-xs text-muted leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               ))}

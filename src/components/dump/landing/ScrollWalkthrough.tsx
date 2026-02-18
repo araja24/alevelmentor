@@ -9,7 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { Clock, Zap, Target, TrendingUp, Map, BarChart3 } from "lucide-react";
-import { RevealSection } from "./RevealSection";
+import { RevealSection } from "@/components/landing/RevealSection";
 
 // ─── Feature definitions ──────────────────────────────────────────────────────
 

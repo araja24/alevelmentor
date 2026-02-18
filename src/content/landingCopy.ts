@@ -3,8 +3,9 @@ export const landingCopy = {
     badge: "Built by students, for students",
     headline: "The All-In-One Platform for A-Levels.",
     subline: "Plan. Revise. Track. Win.",
-    primaryCta: "Join the A-Level Waitlist",
+    primaryCta: "Join Waitlist",
     secondaryCta: "Browse features",
+    riskCopy: "No credit card required.",
   },
   navbar: {
     mobileCta: "Waitlist",
@@ -21,13 +22,18 @@ export const landingCopy = {
     ],
   },
   comparison: {
-    cta: "Join the A-Level Waitlist",
+    cta: "Join Waitlist",
   },
   finalCta: {
     headline: "Be First. Be Ready.",
     subline: "The A-Level platform built for students who want top grades.",
+    riskCopy: "No credit card required.",
+    disclaimer: "Don't sign up for the waitlist if you don't want A*s.",
   },
   waitlist: {
-    submit: "Join the A-Level Waitlist",
+    submit: "Join Waitlist",
+  },
+  engine: {
+    featuresIntro: "The A Level Engine is the core of the app — everything bounces from it.",
   },
 } as const;

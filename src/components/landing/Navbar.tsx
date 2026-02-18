@@ -19,7 +19,7 @@ const SHOW_AUTH_NAV = false;
 
 const navLinks: { label: string; href: string }[] = [
     { label: "Features", href: "#features" },
-    { label: "How It Works", href: "#text-highlight" },
+    { label: "How It Works", href: "#features" },
     { label: "Why Us", href: "#why-us" },
     { label: "FAQ", href: "#faq" },
 ];
@@ -90,7 +90,7 @@ export function Navbar() {
                             <nav className="hidden xl:flex items-center gap-8">
                                 {navLinks.map((item) => (
                                     <Link
-                                        key={item.href}
+                                        key={item.label}
                                         href={item.href}
                                         className="text-[13px] font-medium text-muted hover:gradient-text-heading transition-colors duration-200"
                                     >
@@ -175,7 +175,7 @@ export function Navbar() {
                             <nav className="hidden xl:flex items-center">
                                 {navLinks.map((item) => (
                                     <Link
-                                        key={item.href}
+                                        key={item.label}
                                         href={item.href}
                                         className="text-[13px] font-medium text-muted hover:gradient-text-heading rounded-full px-4 py-2 transition-all duration-200 hover:bg-[var(--surface-subtle)]"
                                     >

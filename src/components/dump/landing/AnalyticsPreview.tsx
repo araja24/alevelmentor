@@ -1,6 +1,6 @@
 "use client";
 
-import { RevealSection } from "./RevealSection";
+import { RevealSection } from "@/components/landing/RevealSection";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   AreaChart,

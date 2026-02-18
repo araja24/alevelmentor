@@ -1,6 +1,6 @@
 "use client";
 
-import { RevealSection } from "./RevealSection";
+import { RevealSection } from "@/components/landing/RevealSection";
 
 const personas = [
   { initials: "AK", name: "Amara K.", detail: "Y13, London", quote: "Went from averaging Bs to predicted A* in both sciences. The roadmap changed everything." },

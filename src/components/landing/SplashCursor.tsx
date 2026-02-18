@@ -4,11 +4,9 @@
  * SplashCursor — WebGL fluid simulation cursor effect.
  *
  * Based on the Navier-Stokes fluid sim approach (Pavel Dobryakov / react-bits).
- * Modified for brand palette: indigo → purple → violet — occasionally drifting
- * into rose-violet for warmth. The two-colour story is:
+ * Modified for brand palette: unified purple #533fec.
  *
- *   Primary:    brand purple   #5a35f8  (HSV hue ≈ 0.70)
- *   Complement: violet-rose             (HSV hue 0.77-0.84)
+ *   Primary: brand purple #533fec
  *
  * Moving the mouse paints fluid. Clicking creates a burst. Fluid fades quickly
  * (DENSITY_DISSIPATION is high) so it stays ambient, not garish.
@@ -521,27 +519,23 @@ export default function SplashCursor({
     }
 
     // ─── Brand color generation ──────────────────────────────────────────────
-    // Two-colour palette: purple + black.
+    // Two-colour palette: purple (#533fec) + black.
     //
     // "Black" = areas with no fluid — the canvas is transparent there, so the
     //           dark page background shows through naturally.
-    // "Purple" = pure brand purple (#5a35f8), tight hue range, full saturation.
+    // "Purple" = brand purple #533fec (RGB 83, 63, 236).
     //
     // With mix-blend-mode:screen (dark) / multiply (light) on the canvas
     // container, the fluid ILLUMINATES whatever's beneath it — making content
     // POP with a purple cast instead of blocking it.
-    //
-    // Higher multiplier (0.45) ensures the fluid is very visible.
 
     function generateColor(): ColorRGB {
-      // Tight pure-purple range only: 0.68–0.72 = brand purple (#5a35f8)
-      // No violet-rose, no indigo — just clean purple
-      const hue = 0.68 + Math.random() * 0.04;
-      const c = HSVtoRGB(hue, 1.0, 1.0);
-      // Low multiplier — dim colours, just a whisper of purple
-      c.r *= 0.10;
-      c.g *= 0.10;
-      c.b *= 0.10;
+      // Fixed brand purple #533fec (83, 63, 236), dimmed for ambient glow
+      const c: ColorRGB = { r: 83 / 255, g: 63 / 255, b: 236 / 255 };
+      const mult = 0.10;
+      c.r *= mult;
+      c.g *= mult;
+      c.b *= mult;
       return c;
     }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { RevealSection } from "./RevealSection";
+import { RevealSection } from "@/components/landing/RevealSection";
 import { Check, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -61,16 +61,14 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="pricing" className="py-16 md:py-28 px-6 relative">
-      <div className="mx-auto max-w-6xl">
-        <RevealSection className="text-center mb-16">
-          <p className="text-xs text-[var(--accent-2)] uppercase tracking-wider font-semibold mb-3">
-            Pricing
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Invest in your grades
+    <section id="pricing" className="section-pad relative z-10" style={{ background: "var(--bg-primary)" }}>
+      <div className="section-container mx-auto max-w-6xl">
+        <RevealSection className="text-center mb-16" fast>
+          <span className="pill-badge mb-6 inline-flex">Pricing</span>
+          <h2 className="h2 mt-4 gradient-text-heading">
+            Invest in your <span className="gradient-text-purple-vertical">grades</span>
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
+          <p className="body-lg text-muted mt-4 max-w-lg mx-auto">
             Less than the cost of a single tutor session. Cancel anytime.
           </p>
         </RevealSection>

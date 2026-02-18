@@ -50,11 +50,6 @@ const FeaturePreviews = dynamic(
   { ssr: true, loading: () => <section className="min-h-[400px]" aria-hidden /> }
 );
 
-const MoreFeatures = dynamic(
-  () => import("@/components/landing/MoreFeatures").then((m) => ({ default: m.MoreFeatures })),
-  { ssr: true, loading: () => <section className="min-h-[320px]" aria-hidden /> }
-);
-
 const ComparisonTable = dynamic(
   () => import("@/components/landing/ComparisonTable").then((m) => ({ default: m.ComparisonTable })),
   { ssr: true, loading: () => <section className="min-h-[360px]" aria-hidden /> }
@@ -82,7 +77,7 @@ const StickyCtaBar = dynamic(
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] overflow-x-clip pb-[calc(88px+env(safe-area-inset-bottom))] md:pb-0 selection:bg-indigo-500/30 selection:text-white">
+    <main className="min-h-screen bg-dot-grid-page overflow-x-clip pb-[calc(88px+env(safe-area-inset-bottom))] md:pb-0 selection:bg-[#533fec]/30 selection:text-white">
       <SplashCursorGate />
       <Navbar />
       <Hero />
@@ -94,7 +89,6 @@ export default function Home() {
 
       <Suspense fallback={<section className="min-h-[720px]" aria-hidden />}>
         <FeaturePreviews />
-        <MoreFeatures />
       </Suspense>
 
       <Suspense fallback={<section className="min-h-[360px]" aria-hidden />}>

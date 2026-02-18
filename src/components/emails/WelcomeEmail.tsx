@@ -231,7 +231,7 @@ const logoText: React.CSSProperties = {
 };
 
 const logoIcon: React.CSSProperties = {
-  color: "#8b6cf9",
+  color: "#533fec",
   fontWeight: "800",
 };
 
@@ -242,7 +242,7 @@ const hero: React.CSSProperties = {
 };
 
 const eyebrow: React.CSSProperties = {
-  color: "#8b6cf9",
+  color: "#533fec",
   fontSize: "11px",
   fontWeight: "700",
   letterSpacing: "0.12em",
@@ -333,7 +333,7 @@ const linkBox: React.CSSProperties = {
 };
 
 const linkText: React.CSSProperties = {
-  color: "#8b6cf9",
+  color: "#533fec",
   fontSize: "12px",
   fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace',
   margin: 0,
@@ -374,7 +374,7 @@ const footerBrand: React.CSSProperties = {
 };
 
 const footerBrandAccent: React.CSSProperties = {
-  color: "#8b6cf9",
+  color: "#533fec",
 };
 
 const footerText: React.CSSProperties = {

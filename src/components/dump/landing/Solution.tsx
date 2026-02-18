@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { RevealSection } from "./RevealSection";
+import { RevealSection } from "@/components/landing/RevealSection";
 import { Monitor, Tablet, Smartphone, Sparkles, TrendingUp, BookOpen, Target, Clock, Flame } from "lucide-react";
 
 /* ═══════════════════════════════════════════
@@ -35,7 +35,7 @@ function AnimatedCounter({ target, suffix = "", duration = 2000 }: { target: num
 /* ═══════════════════════════════════════════
    Circular Progress Ring
    ═══════════════════════════════════════════ */
-function ProgressRing({ percent, size = 80, strokeWidth = 6, color = "#6366f1", label, value }: {
+function ProgressRing({ percent, size = 80, strokeWidth = 6, color = "#533fec", label, value }: {
     percent: number; size?: number; strokeWidth?: number; color?: string; label: string; value: string;
 }) {
     const r = (size - strokeWidth) / 2;
@@ -74,7 +74,7 @@ export function DashboardPreview() {
     const inView = useInView(ref, { once: true, margin: "-100px" });
 
     const subjects = [
-        { name: "Chemistry", progress: 78, grade: "A*", color: "#6366f1", topics: 24, done: 19 },
+        { name: "Chemistry", progress: 78, grade: "A*", color: "#533fec", topics: 24, done: 19 },
         { name: "Mathematics", progress: 65, grade: "A", color: "#3ed6ff", topics: 30, done: 20 },
         { name: "Physics", progress: 52, grade: "A", color: "#f59e0b", topics: 22, done: 11 },
     ];
@@ -120,7 +120,7 @@ export function DashboardPreview() {
                     {/* Stats row */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {[
-                            { label: "Study Hours", value: "127", icon: Clock, color: "#6366f1" },
+                            { label: "Study Hours", value: "127", icon: Clock, color: "#533fec" },
                             { label: "Papers Done", value: "43", icon: BookOpen, color: "#3ed6ff" },
                             { label: "Avg Score", value: "82%", icon: TrendingUp, color: "#10b981" },
                             { label: "Target", value: "A*A*A", icon: Target, color: "#f59e0b" },

@@ -31,10 +31,15 @@ export function FinalCTA() {
             <p className="body-lg text-muted mb-8 mx-auto max-w-[65ch] leading-relaxed font-medium">
               {landingCopy.finalCta.subline}
             </p>
+            <p className="text-sm text-muted mb-8 mx-auto max-w-[50ch]">
+              {landingCopy.finalCta.disclaimer}
+            </p>
 
             <LaunchCountdown />
 
             <WaitlistForm />
+
+            <p className="text-xs text-muted mt-6">{landingCopy.finalCta.riskCopy}</p>
 
             <div className="flex items-center justify-center gap-6 mt-16 opacity-55 md:opacity-40 md:hover:opacity-100 transition-opacity duration-500">
               {["AQA", "OCR", "Edexcel", "WJEC"].map((board) => (

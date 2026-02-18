@@ -167,7 +167,7 @@ function DataRow({
             className="data-value"
             style={{
               ...rowValue,
-              color: highlight ? "#8b6cf9" : muted ? "#52525b" : "#fafafa",
+              color: highlight ? "#533fec" : muted ? "#52525b" : "#fafafa",
             }}
           >
             {value}
@@ -311,7 +311,7 @@ const milestone: React.CSSProperties = {
 const milestoneText: React.CSSProperties = {
   fontSize: "13px",
   fontWeight: "600",
-  color: "#8b6cf9",
+  color: "#533fec",
   margin: 0,
 };
 

@@ -26,7 +26,7 @@
   --color-foreground: var(--foreground);
 
   /* Chart tokens (shadcn Chart API; aligned with CHART_COLORS in chartConfig) */
-  --chart-1: #5a35f8;
+  --chart-1: #533fec;
   --chart-2: #3ed6ff;
   --chart-3: #f59e0b;
   --chart-4: #22c55e;
@@ -84,18 +84,22 @@
   --nav-island-bg: rgba(0, 0, 0, 0.5);
   --nav-island-border: rgba(255, 255, 255, 0.1);
 
-  /* Brand: keep for compatibility; Blurple for primary CTAs */
-  --accent-1: #6366f1;
-  --accent-2: #9333ea;
-  --accent-2-dark: #6d28d9;
+  /* Brand: keep for compatibility; unified purple #533fec for CTAs and glows */
+  --accent-emphasis: 83, 63, 236;
+  --accent-1: #533fec;
+  --accent-2: #533fec;
+  --accent-2-dark: #4338ca;
   --accent-3: #3ed6ff;
-  --gradient-blurple: linear-gradient(to right, rgb(99 102 241), rgb(147 51 234));
+  --gradient-blurple: linear-gradient(to right, rgb(83 63 236), rgb(83 63 236));
+
+  /* Dot grid background (landing page) */
+  --bg-dot-color: rgba(255, 255, 255, 0.06);
 
   /* Landing typography: match text-highlight section */
   --gradient-text-heading: linear-gradient(180deg, #ffffff 20%, #8a8a94 100%);
   --gradient-text-purple: linear-gradient(135deg, #fff 30%, var(--accent-2) 100%);
-  /* Purple phrase endings: all purple, light (top) to dark (bottom) per letter */
-  --gradient-text-purple-vertical: linear-gradient(180deg, #c4b5fd 0%, #8b5cf6 40%, #6d28d9 70%, #4c1d95 100%);
+  /* Purple phrase endings: all purple #533fec, light (top) to dark (bottom) per letter */
+  --gradient-text-purple-vertical: linear-gradient(180deg, #a59bf5 0%, #7c6cf0 40%, #533fec 70%, #4338ca 100%);
 
   --border: 240 3.7% 15.9%;
   --input: 240 3.7% 15.9%;
@@ -108,16 +112,16 @@
   --color-text-orange-accent: #fb923c;
   --color-pill-light-orange-bg: rgba(251, 146, 60, 0.15);
 
-  /* Hero/CTA blob colors (dark: violet/indigo; overridden in .light with warm) */
-  --hero-blob-a: rgba(139, 92, 246, 0.2);
-  --hero-blob-b: rgba(99, 102, 241, 0.15);
-  --cta-blob: rgba(139, 92, 246, 0.15);
+  /* Hero/CTA blob colors (dark: unified purple #533fec; overridden in .light) */
+  --hero-blob-a: rgba(83, 63, 236, 0.2);
+  --hero-blob-b: rgba(83, 63, 236, 0.15);
+  --cta-blob: rgba(83, 63, 236, 0.15);
 
-  /* ShimmerButton (dark: purple) */
-  --shimmer-btn-bg: #5a35f8;
-  --shimmer-btn-shadow: 0 0 24px rgba(90, 53, 248, 0.4);
-  --shimmer-btn-shadow-hover: 0 0 40px rgba(90, 53, 248, 0.55);
-  --accent-glow: 0 0 24px rgba(90, 53, 248, 0.15);
+  /* ShimmerButton (dark: purple #533fec) */
+  --shimmer-btn-bg: #533fec;
+  --shimmer-btn-shadow: 0 0 24px rgba(83, 63, 236, 0.4);
+  --shimmer-btn-shadow-hover: 0 0 40px rgba(83, 63, 236, 0.55);
+  --accent-glow: 0 0 24px rgba(83, 63, 236, 0.15);
 }
 
 /* Light theme overrides — next-themes sets class="light" on html — Ametrix-aligned */
@@ -174,6 +178,9 @@
   /* Cards: crisp white with subtle shadow (Ametrix depth) */
   --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 
+  /* Dot grid (light): subtle dark dots */
+  --bg-dot-color: rgba(0, 0, 0, 0.06);
+
   /* Light mode accent: solid purple (no vertical gradient on headlines) */
   --accent-2: var(--color-accent-orange-primary);
   --accent-2-dark: var(--color-accent-orange-dark);
@@ -208,6 +215,18 @@
     -webkit-font-smoothing: antialiased;
     scroll-snap-type: y proximity;
   }
+}
+
+/* Dot grid for landing page (hero + body); theme-aware via --bg-dot-color */
+.bg-dot-grid-page {
+  background-color: var(--bg-primary);
+  background-image: radial-gradient(circle, var(--bg-dot-color) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Subtle purple glow for key emphasis (same purple as dashboard top border) */
+.accent-glow-text {
+  text-shadow: 0 0 20px rgba(var(--accent-emphasis), 0.35);
 }
 
 /* 
@@ -315,7 +334,7 @@
   position: absolute;
   inset: -20px;
   z-index: -1;
-  background: radial-gradient(circle, rgba(90, 53, 248, 0.24) 0%, rgba(90, 53, 248, 0.12) 42%, transparent 72%);
+  background: radial-gradient(circle, rgba(83, 63, 236, 0.24) 0%, rgba(83, 63, 236, 0.12) 42%, transparent 72%);
   opacity: 0.6;
 }
 
@@ -340,7 +359,6 @@
 }
 
 /* Hide theme-dependent glows in light mode (avoids hydration mismatch from useTheme) */
-.light .hero-glows,
 .light .cta-glows,
 .light .stat-glows,
 .light .dashboard-preview-glows,
@@ -545,24 +563,24 @@ input[type="range"].accent-slider::-webkit-slider-thumb {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #5a35f8;
+  background: #533fec;
   border: 3px solid #fff;
-  box-shadow: 0 0 16px rgba(90, 53, 248, 0.5);
+  box-shadow: 0 0 16px rgba(83, 63, 236, 0.5);
   cursor: pointer;
   transition: box-shadow 0.2s;
 }
 
 input[type="range"].accent-slider::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 24px rgba(90, 53, 248, 0.7);
+  box-shadow: 0 0 24px rgba(83, 63, 236, 0.7);
 }
 
 input[type="range"].accent-slider::-moz-range-thumb {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #5a35f8;
+  background: #533fec;
   border: 3px solid #fff;
-  box-shadow: 0 0 16px rgba(90, 53, 248, 0.5);
+  box-shadow: 0 0 16px rgba(83, 63, 236, 0.5);
   cursor: pointer;
 }
 
@@ -622,7 +640,7 @@ input[type="range"].accent-slider::-moz-range-thumb {
 }
 
 .mobile-purple-glow {
-  text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+  text-shadow: 0 0 12px rgba(83, 63, 236, 0.5);
 }
 
 @media (max-width: 767px) {

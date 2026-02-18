@@ -4,8 +4,8 @@
  */
 
 export const CHART_COLORS = {
-  primary: '#5a35f8',
-  primaryLight: '#8b6cf9',
+  primary: '#533fec',
+  primaryLight: '#533fec',
   cyan: '#3ed6ff',
   success: '#22c55e',
   warning: '#f59e0b',
@@ -13,8 +13,8 @@ export const CHART_COLORS = {
   grid: 'rgba(128,128,128,0.1)',
   tick: '#71717a',
   tooltipBg: 'rgba(18,18,22,0.96)',
-  tooltipBorder: 'rgba(90,53,248,0.25)',
-  barCursor: 'rgba(90,53,248,0.06)',
+  tooltipBorder: 'rgba(83,63,236,0.25)',
+  barCursor: 'rgba(83,63,236,0.06)',
 } as const;
 
 export const CHART_TYPOGRAPHY = {
@@ -50,8 +50,8 @@ export const CHART_ANIMATION = {
 export const GRADIENT_DEFS = {
   primaryAreaId: 'primaryAreaGradient',
   primaryAreaStops: [
-    { offset: '0%', color: '#5a35f8', opacity: 0.3 },
-    { offset: '100%', color: '#5a35f8', opacity: 0 },
+    { offset: '0%', color: '#533fec', opacity: 0.3 },
+    { offset: '100%', color: '#533fec', opacity: 0 },
   ],
 } as const;
 
@@ -82,10 +82,10 @@ export const BADGE_VARIANTS = {
     dot: 'bg-red-500',
   },
   primary: {
-    bg: 'bg-[#5a35f8]/10',
-    border: 'border-[#5a35f8]/25',
-    text: 'text-[#8b6cf9]',
-    dot: 'bg-[#5a35f8]',
+    bg: 'bg-[#533fec]/10',
+    border: 'border-[#533fec]/25',
+    text: 'text-[#533fec]',
+    dot: 'bg-[#533fec]',
   },
 } as const;
 

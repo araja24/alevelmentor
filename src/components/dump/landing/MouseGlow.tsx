@@ -49,10 +49,10 @@ const BLOBS = [
   { size: 180, alpha: 0.32 },
 ] as const;
 
-// Brand purple
-const COLOR = "90, 53, 248";
-// Accent lighter purple — used on alternating blobs for a slight colour shift
-const COLOR_ALT = "139, 108, 249";
+// Brand purple #533fec
+const COLOR = "83, 63, 236";
+// Same purple for alternating blobs (unified #533fec)
+const COLOR_ALT = "83, 63, 236";
 
 export function MouseGlow() {
   const prefersReduced = useReducedMotion();

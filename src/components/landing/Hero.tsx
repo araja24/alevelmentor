@@ -4,7 +4,6 @@ import { RevealSection } from "./RevealSection";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ShimmerButton } from "./ShimmerButton";
-import { UniversityLogoCarousel } from "./UniversityLogoCarousel";
 import { landingCopy } from "@/content/landingCopy";
 
 export function Hero() {
@@ -12,7 +11,6 @@ export function Hero() {
         <section
             id="hero"
             className="relative overflow-hidden"
-            style={{ background: "var(--bg-primary)" }}
         >
             {/* Mobile-only topography energy */}
             <div className="absolute inset-0 pointer-events-none md:hidden">
@@ -24,8 +22,8 @@ export function Hero() {
                 >
                     <defs>
                         <linearGradient id="heroTopoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#8b5cf6" />
-                            <stop offset="100%" stopColor="#5a35f8" />
+                            <stop offset="0%" stopColor="#533fec" />
+                            <stop offset="100%" stopColor="#533fec" />
                         </linearGradient>
                     </defs>
                     <g fill="none" stroke="url(#heroTopoGradient)" strokeWidth="1">
@@ -38,16 +36,6 @@ export function Hero() {
                 </svg>
             </div>
 
-            {/* Vertical purple glow streaming down from CTA — desktop/tablet only */}
-            <div className="hero-glows absolute inset-0 pointer-events-none overflow-hidden hidden md:block">
-                <div
-                    className="absolute left-1/2 -translate-x-1/2 top-[52%] w-[340px] h-[620px]"
-                    style={{
-                        background: "radial-gradient(ellipse at center, rgba(90,53,248,0.25) 0%, rgba(90,53,248,0.12) 38%, transparent 72%)",
-                    }}
-                />
-            </div>
-
             {/* Mobile layout */}
             <div className="relative z-10 md:hidden mx-auto max-w-[560px] px-5 sm:px-6 pt-24 pb-10 min-h-[62svh] flex items-center justify-center">
                 <RevealSection direction="up" className="w-full flex flex-col items-center text-center">
@@ -56,7 +44,7 @@ export function Hero() {
                     </span>
                     <h1 className="h1 mb-4 text-[clamp(2rem,9vw,2.6rem)] leading-[1.06]">
                         <span className="gradient-text-heading">The All-In-One Platform for </span>
-                        <span className="gradient-text-purple-vertical mobile-purple-glow">A-Levels.</span>
+                        <span className="gradient-text-purple-vertical mobile-purple-glow accent-glow-text">A-Levels.</span>
                     </h1>
                     <p className="text-base text-muted mb-7">{landingCopy.hero.subline}</p>
                     <ShimmerButton
@@ -68,6 +56,7 @@ export function Hero() {
                         {landingCopy.hero.primaryCta}
                         <ArrowRight className="h-4 w-4 ml-2" />
                     </ShimmerButton>
+                    <p className="text-xs text-muted mt-4">{landingCopy.hero.riskCopy}</p>
                 </RevealSection>
             </div>
 
@@ -80,14 +69,14 @@ export function Hero() {
 
                     <h1 className="h1 mb-6 gradient-text-heading">
                         The All-In-One Platform for{" "}
-                        <span className="gradient-text-purple-vertical">A-Levels.</span>
+                        <span className="gradient-text-purple-vertical accent-glow-text">A-Levels.</span>
                     </h1>
 
                     <p className="body-lg leading-relaxed text-muted max-w-[600px] mx-auto mb-10">
                         {landingCopy.hero.subline}
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <ShimmerButton
                             href="#join"
                             className="w-full sm:w-auto justify-center h-12 px-8 py-3 text-base"
@@ -104,9 +93,7 @@ export function Hero() {
                             {landingCopy.hero.secondaryCta}
                         </Link>
                     </div>
-                </RevealSection>
-                <RevealSection direction="none" noBlur className="flex flex-col items-center w-full mt-8">
-                    <UniversityLogoCarousel />
+                    <p className="text-xs text-muted mt-4">{landingCopy.hero.riskCopy}</p>
                 </RevealSection>
             </div>
 

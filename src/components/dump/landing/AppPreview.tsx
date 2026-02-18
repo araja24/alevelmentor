@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { RevealSection } from "./RevealSection";
+import { RevealSection } from "@/components/landing/RevealSection";
 import {
   Download,
   BarChart3,
@@ -180,7 +180,7 @@ function PastPaperPreview() {
    ═══════════════════════════════════════════ */
 function ProgressPreview() {
   const subjects = [
-    { name: "Chemistry", score: 84, prev: 72, color: "#6366f1" },
+    { name: "Chemistry", score: 84, prev: 72, color: "#533fec" },
     { name: "Maths", score: 78, prev: 74, color: "#3ed6ff" },
     { name: "Physics", score: 65, prev: 58, color: "#f59e0b" },
   ];
@@ -195,7 +195,7 @@ function ProgressPreview() {
           {["Week", "Month", "All Time"].map((t, i) => (
             <span key={t} className="text-[9px] px-2 py-0.5 rounded-full font-semibold"
               style={{
-                background: i === 0 ? "#6366f1" : "transparent",
+                background: i === 0 ? "#533fec" : "transparent",
                 color: i === 0 ? "#fff" : "rgba(255,255,255,0.25)",
               }}>{t}</span>
           ))}

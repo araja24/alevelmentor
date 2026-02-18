@@ -1,7 +1,7 @@
 "use client";
 
-import { RevealSection } from "./RevealSection";
-import { ShimmerButton } from "./ShimmerButton";
+import { RevealSection } from "@/components/landing/RevealSection";
+import { ShimmerButton } from "@/components/landing/ShimmerButton";
 
 /**
  * One short, punchy outcome or "how it works" block; outcome-focused copy.
