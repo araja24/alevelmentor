@@ -277,8 +277,12 @@ function getNeighbourIds(nodeId: string): Set<string> {
   return set;
 }
 
-export function EngineAnimationLarge({ className }: { className?: string } = {}) {
+export function EngineAnimationLarge({
+  className,
+  staticDiagram = false,
+}: { className?: string; staticDiagram?: boolean } = {}) {
   const prefersReducedMotion = useReducedMotion();
+  const staticRings = staticDiagram || prefersReducedMotion;
   const pathRefs = useRef<(SVGPathElement | null)[]>([]);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -344,18 +348,19 @@ export function EngineAnimationLarge({ className }: { className?: string } = {})
               );
             })}
             {/* Dots */}
-            {lanePaths.map((lane, laneIndex) => (
-              <DotOnPath
-                key={`${lane.key}-dot`}
-                pathRefs={pathRefs}
-                pathIndex={laneIndex}
-                pathD={lane.d}
-                color={lane.color}
-                duration={lane.duration}
-                delay={lane.delay}
-                prefersReducedMotion={Boolean(prefersReducedMotion)}
-              />
-            ))}
+            {!staticDiagram &&
+              lanePaths.map((lane, laneIndex) => (
+                <DotOnPath
+                  key={`${lane.key}-dot`}
+                  pathRefs={pathRefs}
+                  pathIndex={laneIndex}
+                  pathD={lane.d}
+                  color={lane.color}
+                  duration={lane.duration}
+                  delay={lane.delay}
+                  prefersReducedMotion={Boolean(prefersReducedMotion)}
+                />
+              ))}
           </svg>
 
           {/* HTML nodes - above SVG so lines/dots pass underneath (tunnel effect) */}
@@ -409,14 +414,14 @@ export function EngineAnimationLarge({ className }: { className?: string } = {})
                             <motion.div
                               key={index}
                               className="absolute inset-0 rounded-full border border-[var(--accent-2)]/28"
-                              initial={prefersReducedMotion ? { opacity: 0.2, scale: 1 } : { opacity: 0.33, scale: 1 }}
+                              initial={staticRings ? { opacity: 0.2, scale: 1 } : { opacity: 0.33, scale: 1 }}
                               animate={
-                                prefersReducedMotion
+                                staticRings
                                   ? { opacity: 0.2, scale: 1 }
                                   : { opacity: [0.36, 0.08, 0], scale: [1, 1.5, 1.88] }
                               }
                               transition={
-                                prefersReducedMotion
+                                staticRings
                                   ? undefined
                                   : { duration: 2.5, delay, repeat: Number.POSITIVE_INFINITY, ease: [0.22, 1, 0.36, 1] }
                               }

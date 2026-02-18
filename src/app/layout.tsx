@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono, Cormorant, Plus_Jakarta_Sans, Outfit } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LowTierProvider } from "@/hooks/useLowTierDevice";
 import { SmoothScroll } from "@/components/landing/SmoothScroll";
 import "./globals.css";
 
@@ -52,7 +53,9 @@ export default function RootLayout({
         className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} ${plusJakartaSans.variable} ${outfit.variable} antialiased`}
       >
         <ThemeProvider>
-        <SmoothScroll>{children}</SmoothScroll>
+          <LowTierProvider>
+            <SmoothScroll>{children}</SmoothScroll>
+          </LowTierProvider>
       </ThemeProvider>
       </body>
     </html>

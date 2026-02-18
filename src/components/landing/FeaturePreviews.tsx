@@ -15,6 +15,7 @@ import {
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { EngineAnimation } from "@/components/engine/EngineAnimation";
 import { EngineAnimationLarge } from "@/components/engine/EngineAnimationLarge";
+import { useShouldReduceEngineAnimation } from "@/hooks/useShouldReduceEngineAnimation";
 
 /* Analytics chart data and config */
 const ANALYTICS_CHART_DATA = [
@@ -274,6 +275,7 @@ const FEATURES = [
 ];
 
 export function FeaturePreviews() {
+  const staticDiagram = useShouldReduceEngineAnimation();
   return (
     <section id="features" className="section-pad relative z-10">
       <div className="section-container max-w-[1100px] space-y-14 md:space-y-28">
@@ -291,10 +293,10 @@ export function FeaturePreviews() {
             The A Level Engine
           </h3>
           <div className="md:hidden">
-            <EngineAnimation showLabels={false} title="" />
+            <EngineAnimation showLabels={false} title="" staticDiagram={staticDiagram} />
           </div>
           <div className="hidden md:block">
-            <EngineAnimationLarge />
+            <EngineAnimationLarge staticDiagram={staticDiagram} />
           </div>
         </RevealSection>
 

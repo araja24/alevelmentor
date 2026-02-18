@@ -45,6 +45,8 @@ type EngineAnimationProps = {
   subtitle?: string;
   engineLabel?: string;
   showLabels?: boolean;
+  /** When true, render static diagram (no dots, static rings) for low-tier mobile. */
+  staticDiagram?: boolean;
 };
 
 const INPUTS: NodeItem[] = [
@@ -177,8 +179,10 @@ export function EngineAnimation({
   subtitle = "Your raw data—target grades, exam dates, and current struggles—is instantly processed into a dynamic, day-by-day strategy that adapts as you work.",
   engineLabel = "AI Processing Core",
   showLabels = true,
+  staticDiagram = false,
 }: EngineAnimationProps) {
   const prefersReducedMotion = useReducedMotion();
+  const staticRings = staticDiagram || prefersReducedMotion;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const engineRef = useRef<HTMLDivElement | null>(null);
@@ -330,18 +334,19 @@ export function EngineAnimation({
               />
             ))}
 
-            {lanePaths.map((lane, laneIndex) => (
-              <DotOnPath
-                key={`${lane.key}-dot`}
-                pathRefs={pathRefs}
-                pathIndex={laneIndex}
-                pathD={lane.d}
-                color={lane.color}
-                duration={lane.duration}
-                delay={lane.delay}
-                prefersReducedMotion={Boolean(prefersReducedMotion)}
-              />
-            ))}
+            {!staticDiagram &&
+              lanePaths.map((lane, laneIndex) => (
+                <DotOnPath
+                  key={`${lane.key}-dot`}
+                  pathRefs={pathRefs}
+                  pathIndex={laneIndex}
+                  pathD={lane.d}
+                  color={lane.color}
+                  duration={lane.duration}
+                  delay={lane.delay}
+                  prefersReducedMotion={Boolean(prefersReducedMotion)}
+                />
+              ))}
           </svg>
 
           {/* Grid layout - symmetrical 3 columns; responsive gaps and sizes */}
@@ -375,14 +380,14 @@ export function EngineAnimation({
                   <motion.div
                     key={index}
                     className="absolute inset-0 rounded-full border border-[var(--accent-2)]/28"
-                    initial={prefersReducedMotion ? { opacity: 0.2, scale: 1 } : { opacity: 0.33, scale: 1 }}
+                    initial={staticRings ? { opacity: 0.2, scale: 1 } : { opacity: 0.33, scale: 1 }}
                     animate={
-                      prefersReducedMotion
+                      staticRings
                         ? { opacity: 0.2, scale: 1 }
                         : { opacity: [0.36, 0.08, 0], scale: [1, 1.5, 1.88] }
                     }
                     transition={
-                      prefersReducedMotion
+                      staticRings
                         ? undefined
                         : { duration: 2.5, delay, repeat: Number.POSITIVE_INFINITY, ease: [0.22, 1, 0.36, 1] }
                     }
