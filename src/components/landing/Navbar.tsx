@@ -1,14 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-    motion,
-    useScroll,
-    useMotionValueEvent,
-    AnimatePresence,
-} from "framer-motion";
+import { useState, useEffect, memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { ThemeToggle } from "./ThemeToggle";
@@ -22,14 +17,21 @@ const navLinks: { label: string; href: string }[] = [
     { label: "FAQ", href: "#faq" },
 ];
 
-export function Navbar() {
+function NavbarInner() {
+    const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
-    const { scrollY } = useScroll();
     const { resolvedTheme } = useTheme();
     const isLight = resolvedTheme === "light";
+
+    const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (pathname === "/") {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
 
     useEffect(() => setMounted(true), []);
 
@@ -48,12 +50,15 @@ export function Navbar() {
         };
     }, []);
 
-    useMotionValueEvent(scrollY, "change", (latest) => {
-        setScrolled((prev) => {
-            const next = latest > 60;
+    useEffect(() => {
+        const onScroll = () => setScrolled((prev) => {
+            const next = typeof window !== "undefined" && window.scrollY > 60;
             return next === prev ? prev : next;
         });
-    });
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
     const logoSrc = !mounted
         ? "/logo_large_light.svg"
@@ -67,19 +72,13 @@ export function Navbar() {
     return (
         <>
             {/* ─── Normal flat navbar (visible when NOT scrolled — mobile and desktop) ─── */}
-            <AnimatePresence>
-                {!scrolled && (
-                    <motion.header
-                        key="full-nav"
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+            {!scrolled && (
+                    <header
                         className="fixed top-0 left-0 right-0 z-50 w-full px-6 py-6 sm:px-8 sm:py-8 lg:px-24"
                     >
                         <div className="w-full flex items-center justify-between">
-                            {/* Logo — far left */}
-                            <Link href="/" className="flex items-center gap-2.5 shrink-0">
+                            {/* Logo — far left; on home page click scrolls to top */}
+                            <Link href="/" className="flex items-center gap-2.5 shrink-0" onClick={handleLogoClick}>
                                 <Image src={logoSrc} alt="A Level Mentor" width={120} height={20} className="hidden xl:block h-5 w-auto" priority />
                                 <Image src={smallLogoSrc} alt="Logo" width={20} height={20} className="xl:hidden h-[20px] w-auto" priority />
                             </Link>
@@ -139,28 +138,21 @@ export function Navbar() {
                                     size="icon"
                                     className="text-muted hover:gradient-text-heading shrink-0 cursor-pointer"
                                     onClick={() => setMobileOpen(!mobileOpen)}
+                                    aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                                    aria-expanded={mobileOpen}
                                 >
-                                    {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                                    {mobileOpen ? <X size={20} aria-hidden /> : <Menu size={20} aria-hidden />}
                                 </Button>
                             </div>
                         </div>
-                    </motion.header>
+                    </header>
                 )}
-            </AnimatePresence>
 
             {/* ─── Floating Island (visible only when scrolled) ─── */}
-            <AnimatePresence>
-                {scrolled && (
-                    <motion.div
-                        key="floating-island"
-                        initial={{ opacity: 0, y: -30, scale: 0.92 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                        transition={{
-                            duration: 0.4,
-                            ease: [0.25, 0.1, 0.25, 1],
-                        }}
-                        className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-fit px-4 pointer-events-none"
+            {scrolled && (
+                    <div
+                        className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-fit px-4 pointer-events-none animate-fade-in-up"
+                        style={{ animationDuration: "0.4s" }}
                     >
                         <div
                             className="flex items-center gap-2 rounded-full p-1.5 sm:px-4 sm:py-2.5 pointer-events-auto mx-auto whitespace-nowrap border"
@@ -170,6 +162,7 @@ export function Navbar() {
                             <Link
                                 href="/"
                                 className="flex items-center pl-2 md:pr-4 py-1"
+                                onClick={handleLogoClick}
                             >
                                 <Image src={logoSrc} alt="A Level Mentor" width={108} height={18} className="hidden xl:block h-[18px] w-auto" />
                                 <Image src={smallLogoSrc} alt="Logo" width={20} height={20} className="xl:hidden h-[20px] w-auto" />
@@ -197,8 +190,9 @@ export function Navbar() {
                                 size="icon"
                                 className="xl:hidden text-muted hover:gradient-text-heading cursor-pointer"
                                 onClick={() => setMobileOpen(true)}
+                                aria-label="Open menu"
                             >
-                                <Menu size={18} />
+                                <Menu size={18} aria-hidden />
                             </Button>
 
                             {/* Divider */}
@@ -231,18 +225,14 @@ export function Navbar() {
                                 )}
                             </Link>
                         </div>
-                    </motion.div>
+                    </div>
                 )}
-            </AnimatePresence>
 
             {/* ─── Mobile Menu Overlay ─── */}
-            <AnimatePresence>
-                {mobileOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[60] bg-[var(--bg-primary)] flex flex-col items-center justify-center gap-8 xl:hidden"
+            {mobileOpen && (
+                    <div
+                        className="fixed inset-0 z-[60] bg-[var(--bg-primary)] flex flex-col items-center justify-center gap-8 xl:hidden animate-fade-in-up"
+                        style={{ animationDuration: "0.2s" }}
                     >
                         <div className="absolute top-6 right-6 flex items-center gap-2">
                             <Button
@@ -250,8 +240,9 @@ export function Navbar() {
                                 size="icon"
                                 className="gradient-text-heading rounded-full hover:opacity-90 bg-[var(--surface-subtle)] border-[var(--border-muted-strong)] cursor-pointer"
                                 onClick={() => setMobileOpen(false)}
+                                aria-label="Close menu"
                             >
-                                <X size={24} />
+                                <X size={24} aria-hidden />
                             </Button>
                         </div>
 
@@ -293,9 +284,10 @@ export function Navbar() {
                                 )}
                             </Link>
                         </div>
-                    </motion.div>
+                    </div>
                 )}
-            </AnimatePresence>
         </>
     );
 }
+
+export const Navbar = memo(NavbarInner);

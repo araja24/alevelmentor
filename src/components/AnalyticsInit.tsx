@@ -2,15 +2,24 @@
 
 import { useEffect } from "react";
 
+/** Delay (ms): mobile gets 4s to keep TBT low; desktop 2s. */
+function getAnalyticsDelay(): number {
+    if (typeof window === "undefined") return 2000;
+    const mobile =
+        window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(pointer: coarse)").matches;
+    return mobile ? 4000 : 2000;
+}
+
 /**
  * Inits PostHog after paint to avoid competing with LCP and reduce TBT.
- * Delay of 2s keeps analytics out of the critical path.
+ * Mobile: 4s delay to reduce main-thread work; desktop: 2s.
  */
 export function AnalyticsInit() {
     useEffect(() => {
         const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
         if (!key) return;
 
+        const delay = getAnalyticsDelay();
         const timer = setTimeout(() => {
             import("posthog-js").then(({ default: posthog }) => {
                 posthog.init(key, {
@@ -18,7 +27,7 @@ export function AnalyticsInit() {
                     defaults: "2026-01-30",
                 });
             });
-        }, 2000);
+        }, delay);
 
         return () => clearTimeout(timer);
     }, []);

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "lenis/dist/lenis.css";
+/* Lenis CSS removed from critical path; smooth scroll is applied via JS (SmoothScroll.tsx). */
 
 @theme {
   --radius-sm: 8px;
@@ -288,8 +288,17 @@
   color: var(--text-secondary);
 }
 
-/* Landing page: grays → white (use primary text color instead of muted) */
+/* Landing page: vertical gradient (same as headings) for CTAs and labels */
 .landing-muted {
+  background: var(--gradient-text-heading);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.light .landing-muted {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
   color: var(--text-primary);
 }
 
@@ -353,13 +362,20 @@
   background: linear-gradient(180deg, transparent 0%, var(--bg-primary) 100%);
 }
 
-/* University carousel: modern display font with more pop */
+/* University carousel: modern display font with more pop — vertical gradient for dark, solid for light */
 .university-carousel-text {
   font-family: var(--font-display), var(--font-sans), sans-serif;
-  color: #ffffff;
+  background: var(--gradient-text-heading);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: 0.01em;
 }
 .light .university-carousel-text {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
   color: #0a0a0a;
 }
 
@@ -372,9 +388,28 @@
   display: none !important;
 }
 
-/* Light mode: soften dashboard preview shadow to avoid gray rectangle on phone */
 .light .dashboard-preview-shadow {
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.06));
+}
+
+.dashboard-preview-blur {
+  filter: blur(50px);
+}
+
+/* Radiating shadow from top border — spreads into hero, soft light */
+.dashboard-preview-radiating-shadow {
+  filter: blur(32px);
+  opacity: 0.92;
+}
+
+@media (max-width: 768px) {
+  .dashboard-preview-blur {
+    filter: blur(24px);
+  }
+
+  .dashboard-preview-radiating-shadow {
+    filter: blur(20px);
+  }
 }
 
 /* Impact stats in light: show neon blue glow (exception to .stat-glows hidden above) */
@@ -426,14 +461,17 @@
 /* 
  * TYPOGRAPHY UTILITIES
  */
-/* Crypton-style: headings pure white, tight tracking. Alevels-style hierarchy: 48–64px hero, 28–36px subheadings, 16–20px body. */
+/* Crypton-style: headings use vertical gradient (white→gray dark / dark→gray light). Alevels-style hierarchy: 48–64px hero, 28–36px subheadings, 16–20px body. */
 @utility h1 {
   font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
   font-size: clamp(2.25rem, 4.2vw, 4.25rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.08;
-  color: var(--text-primary);
+  background: var(--gradient-text-heading);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 @utility h2 {
@@ -442,7 +480,10 @@
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  color: var(--text-primary);
+  background: var(--gradient-text-heading);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 @utility h3 {
@@ -450,6 +491,10 @@
   font-size: clamp(1.125rem, 1.8vw, 1.5rem);
   font-weight: 600;
   letter-spacing: -0.01em;
+  background: var(--gradient-text-heading);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 @utility body-lg {
@@ -683,11 +728,6 @@ input[type="range"].accent-slider::-moz-range-thumb {
   .impact-stats-section {
     height: 400vh;
   }
-}
-
-/* Dashboard preview glow surface (non-blur) */
-.dashboard-preview-blur {
-  opacity: 0.85;
 }
 
 .mobile-purple-glow {

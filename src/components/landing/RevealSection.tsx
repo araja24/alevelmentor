@@ -69,6 +69,7 @@ export function RevealSection({
         staggerChildren,
       }}
       className={className}
+      style={{ willChange: "opacity, transform" }}
     >
       {children}
     </Component>

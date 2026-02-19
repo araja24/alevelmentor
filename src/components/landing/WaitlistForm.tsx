@@ -97,7 +97,7 @@ function WaitlistFormContent() {
                             <Trophy className="w-6 h-6" />
                         </div>
                         <div>
-                            <h3 className="text-xl font-bold text-[var(--text-primary)]">
+                            <h3 className="text-xl font-bold gradient-text-heading">
                                 {alreadyRegistered ? "Welcome back!" : "You're on the list!"}
                             </h3>
                             <p className="text-sm font-medium mt-1 text-[var(--accent-2)]">
@@ -112,13 +112,13 @@ function WaitlistFormContent() {
                         <div className="bg-[var(--surface-subtle)] p-5 rounded-[16px] border border-[var(--border-muted-strong)] relative overflow-hidden group">
                             <div className="absolute inset-0 bg-gradient-to-br from-[var(--glass-bg)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             <p className="text-muted text-[10px] font-bold uppercase tracking-widest mb-2">Your Rank</p>
-                            <span className="text-3xl font-bold text-[var(--text-primary)] tracking-tight">#{position?.toLocaleString()}</span>
+                            <span className="text-3xl font-bold gradient-text-heading tracking-tight">#{position?.toLocaleString()}</span>
                         </div>
                         <div className="bg-[var(--surface-subtle)] p-5 rounded-[16px] border border-[var(--border-muted-strong)] relative overflow-hidden group">
                             <div className="absolute inset-0 bg-gradient-to-br from-[var(--glass-bg)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             <p className="text-muted text-[10px] font-bold uppercase tracking-widest mb-2">Total Users</p>
                             <div className="flex flex-col">
-                                <span className="text-3xl font-bold text-[var(--text-primary)] tracking-tight">{totalUsers?.toLocaleString()}</span>
+                                <span className="text-3xl font-bold gradient-text-heading tracking-tight">{totalUsers?.toLocaleString()}</span>
                                 <span className="text-[10px] font-bold mt-1 flex items-center gap-1 text-[var(--color-text-green-accent)]">
                                     <TrendingUp className="w-3 h-3" /> +120 today
                                 </span>
@@ -128,7 +128,7 @@ function WaitlistFormContent() {
 
                     <div className="px-8 pb-8">
                         <p className="text-sm text-muted mb-4 leading-relaxed">
-                            Invite friends to jump the queue. <span className="text-[var(--text-primary)] font-semibold">First 50 Get Pro Free. <span className="text-[var(--accent-2)]">Forever.</span></span>
+                            Invite friends to jump the queue. <span className="gradient-text-heading font-semibold">First 50 Get Pro Free. <span className="text-[var(--accent-2)]">Forever.</span></span>
                         </p>
 
                         <div className="flex gap-3">

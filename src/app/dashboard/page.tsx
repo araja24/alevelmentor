@@ -21,7 +21,7 @@ export default async function DashboardPage() {
             Onboarding complete
           </span>
         </div>
-        <h1 className="text-3xl font-bold text-white mb-4">
+        <h1 className="text-3xl font-bold mb-4 gradient-text-heading">
           Welcome to A-Level Mentor
         </h1>
         <p className="text-white/60 mb-6">
@@ -34,7 +34,7 @@ export default async function DashboardPage() {
               className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-center"
             >
               <p className="text-xs text-white/50">{s}</p>
-              <p className="text-lg font-bold text-white mt-1">
+              <p className="text-lg font-bold mt-1 gradient-text-heading">
                 {targetGrades[s] ?? "—"}
               </p>
             </div>

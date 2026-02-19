@@ -1,91 +1,180 @@
 "use client";
 
-import { RevealSection } from "./RevealSection";
+import { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { landingCopy } from "@/content/landingCopy";
 
+/** Load only when dashboard slot is in view so Recharts chunk doesn’t run on initial load (LCP/TBT). */
+const DashboardPreviewSection = dynamic(
+    () => import("@/components/landing/DashboardPreviewSection").then((m) => ({ default: m.DashboardPreviewSection })),
+    { ssr: false, loading: () => <DashboardPreviewPlaceholder /> }
+);
+
+function DashboardPreviewPlaceholder() {
+    return (
+        <div
+            className="relative z-10 w-full flex justify-center px-4 md:px-6 min-h-[280px] md:min-h-[360px]"
+            aria-hidden
+        >
+            <div className="w-full max-w-[1280px] aspect-[16/10] rounded-2xl bg-[var(--bg-card)] border border-[var(--border-muted)] animate-pulse" />
+        </div>
+    );
+}
+
+const TYPEWRITER_PHRASES = [
+    "A Level Physics",
+    "A Level Maths",
+    "A Level Chemistry",
+    "A Level Biology",
+    "A Level Computer Science",
+];
+
+const TYPING_SPEED_MS = 90;
+const DELETING_SPEED_MS = 55;
+const PAUSE_AFTER_WORD_MS = 1800;
+const CURSOR_BLINK_MS = 530;
+
+function TypewriterSubject({ className = "" }: { className?: string }) {
+    const [displayed, setDisplayed] = useState("");
+    const [wordIndex, setWordIndex] = useState(0);
+    const [charIndex, setCharIndex] = useState(0);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [showCursor, setShowCursor] = useState(true);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const blinkRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    const currentPhrase = TYPEWRITER_PHRASES[wordIndex % TYPEWRITER_PHRASES.length];
+
+    // Type / delete cycle
+    useEffect(() => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+        const delay = isDeleting ? DELETING_SPEED_MS : TYPING_SPEED_MS;
+
+        if (!isDeleting && charIndex < currentPhrase.length) {
+            timeoutRef.current = setTimeout(() => {
+                setDisplayed(currentPhrase.slice(0, charIndex + 1));
+                setCharIndex(charIndex + 1);
+            }, delay);
+        } else if (!isDeleting && charIndex === currentPhrase.length) {
+            timeoutRef.current = setTimeout(() => setIsDeleting(true), PAUSE_AFTER_WORD_MS);
+        } else if (isDeleting && charIndex > 0) {
+            timeoutRef.current = setTimeout(() => {
+                setDisplayed(currentPhrase.slice(0, charIndex - 1));
+                setCharIndex(charIndex - 1);
+            }, delay);
+        } else if (isDeleting && charIndex === 0) {
+            timeoutRef.current = setTimeout(() => {
+                setIsDeleting(false);
+                setWordIndex((i) => (i + 1) % TYPEWRITER_PHRASES.length);
+            }, 400);
+        }
+
+        return () => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        };
+    }, [charIndex, isDeleting, wordIndex, currentPhrase]);
+
+    // Reset charIndex when moving to next phrase
+    useEffect(() => {
+        if (!isDeleting) setCharIndex(0);
+    }, [wordIndex, isDeleting]);
+
+    // Blinking cursor
+    useEffect(() => {
+        blinkRef.current = setInterval(() => setShowCursor((v) => !v), CURSOR_BLINK_MS);
+        return () => {
+            if (blinkRef.current) clearInterval(blinkRef.current);
+        };
+    }, []);
+
+    return (
+        <span className={className} aria-live="polite">
+            {displayed}
+            <span
+                aria-hidden
+                className="inline-block w-0.5 h-[0.9em] align-baseline ml-0.5 bg-current rounded-sm transition-opacity duration-100"
+                style={{ opacity: showCursor ? 1 : 0 }}
+            />
+        </span>
+    );
+}
+
 export function Hero() {
+    const dashboardRef = useRef<HTMLDivElement>(null);
+    const [dashboardInView, setDashboardInView] = useState(false);
+
+    useEffect(() => {
+        const el = dashboardRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const [e] = entries;
+                if (e) setDashboardInView(e.isIntersecting);
+            },
+            { rootMargin: "80px", threshold: 0 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <section
             id="hero"
             className="relative overflow-hidden"
             style={{ backgroundColor: "var(--bg-primary)" }}
         >
-    
-            {/* Mobile-only topography energy */}
-            <div className="absolute inset-0 pointer-events-none md:hidden">
-                <svg
-                    className="absolute -top-20 -left-16 h-[150%] w-[150%] opacity-[0.08] animate-[float-drift_16s_ease-in-out_infinite]"
-                    viewBox="0 0 500 500"
-                    preserveAspectRatio="xMidYMid slice"
-                    aria-hidden
-                >
-                    <defs>
-                        <linearGradient id="heroTopoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#533fec" />
-                            <stop offset="100%" stopColor="#533fec" />
-                        </linearGradient>
-                    </defs>
-                    <g fill="none" stroke="url(#heroTopoGradient)" strokeWidth="1">
-                        <path d="M20 100 C90 60 150 160 240 110 C320 70 380 150 470 100" />
-                        <path d="M10 150 C90 110 150 210 250 160 C330 120 390 200 490 150" />
-                        <path d="M0 200 C80 160 160 260 260 210 C340 170 420 250 500 210" />
-                        <path d="M20 250 C90 210 170 310 270 260 C350 220 430 300 500 260" />
-                        <path d="M0 300 C70 260 160 360 260 310 C340 270 430 350 500 310" />
-                    </g>
-                </svg>
-            </div>
-
-            {/* Mobile layout */}
+            {/* Mobile layout — CSS animation only so LCP is not blocked by framer-motion */}
             <div className="relative z-10 md:hidden mx-auto max-w-[560px] px-5 sm:px-6 pt-36 pb-10 min-h-[62svh] flex flex-col items-center justify-center text-center">
-                <RevealSection direction="up" className="w-full flex flex-col items-center">
+                <div className="w-full flex flex-col items-center animate-fade-in-up">
                     <span className="pill-badge px-4 py-1.5 text-[11px] mb-5">
                         {landingCopy.hero.badge}
                     </span>
                     <h1 className="h1 mb-4 text-[clamp(2rem,9vw,2.6rem)] leading-[1.06]">
-                        <span className="gradient-text-heading">The <span className="gradient-text-heading underline decoration-[var(--accent-2)] decoration-2 underline-offset-4">All-In-One</span> Platform for </span>
-                        <span className="gradient-text-purple-vertical accent-glow-text">A-Levels.</span>
+                        <span className="gradient-text-heading">The All-In-One Platform for </span>
+                        <TypewriterSubject className="gradient-text-purple-vertical" />
                     </h1>
                     <Link
-                        href="#dashboard-preview"
+                        href="#text-highlight"
                         className="mt-5 inline-flex items-center justify-center rounded-full border px-4 py-2 text-xs font-medium cursor-pointer transition-colors hover:opacity-80 landing-muted"
                         style={{ borderColor: "#1e1e1e" }}
                     >
                         {landingCopy.hero.secondaryCta}
                     </Link>
-                </RevealSection>
+                </div>
             </div>
 
-            {/* Desktop/tablet layout */}
+            {/* Desktop/tablet layout — CSS animation only so LCP is not blocked by framer-motion */}
             <div className="hidden md:block mx-auto max-w-[900px] w-full px-6 lg:px-8 relative z-10 text-center pt-36 pb-16 lg:pt-40 lg:pb-20 min-h-[min(100dvh,720px)]">
-                <RevealSection direction="up" className="flex flex-col items-center">
+                <div className="flex flex-col items-center animate-fade-in-up">
                     <span className="pill-badge px-4 py-1.5 text-[11px] sm:text-[12px] mb-6">
                         {landingCopy.hero.badge}
                     </span>
-                    <h1 className="h1 mb-6 gradient-text-heading">
-                        The <span className="gradient-text-heading underline decoration-[var(--accent-2)] decoration-2 underline-offset-4">All-In-One</span> Platform for{" "}
-                        <span className="gradient-text-purple-vertical accent-glow-text">A-Levels.</span>
+                    <h1 className="h1 mb-6">
+                        <span className="gradient-text-heading">The All-In-One Platform for</span>{" "}
+                        <TypewriterSubject className="gradient-text-purple-vertical" />
                     </h1>
                     <Link
-                        href="#dashboard-preview"
+                        href="#text-highlight"
                         className="mt-5 inline-flex items-center justify-center rounded-full border px-4 py-2 text-xs font-medium cursor-pointer transition-colors hover:opacity-80 landing-muted"
                         style={{ borderColor: "#1e1e1e" }}
                     >
                         {landingCopy.hero.secondaryCta}
                     </Link>
-                </RevealSection>
+                </div>
             </div>
 
-            {/* Scroll indicator: scroll to dashboard preview */}
-            <div className="absolute bottom-6 left-0 right-0 z-10 flex flex-col items-center">
+            {/* Scroll indicator: halfway between Browse features and dashboard preview, shifted up 5% */}
+            <div className="relative z-10 flex flex-col items-center mt-[calc(3rem-5vh)] mb-[calc(3rem+5vh)]">
                 <button
                     type="button"
                     onClick={() => {
-                        const next = document.getElementById("dashboard-preview");
-                        next?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+                        const dashboard = document.getElementById("dashboard-preview");
+                        dashboard?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
                     }}
-                    className="flex flex-col items-center gap-1 transition-colors cursor-pointer bg-transparent border-0 landing-muted"
+                    className="flex flex-col items-center justify-center gap-1 min-h-[48px] min-w-[48px] py-3 px-3 transition-colors cursor-pointer bg-transparent border-0 landing-muted"
                     aria-label="Scroll to dashboard preview"
                 >
                     <span className="text-[11px] font-medium tracking-wide uppercase">scroll</span>
@@ -95,6 +184,15 @@ export function Hero() {
                         aria-hidden
                     />
                 </button>
+            </div>
+
+            {/* Dashboard preview — load only when in view so Recharts doesn’t block LCP/TBT */}
+            <div
+                ref={dashboardRef}
+                id="dashboard-preview"
+                className="relative z-10 w-full flex justify-center px-4 md:px-6 min-h-[280px] md:min-h-[360px]"
+            >
+                {dashboardInView ? <DashboardPreviewSection embedInHero /> : <DashboardPreviewPlaceholder />}
             </div>
 
             {/* Bottom fade into dashboard area */}
