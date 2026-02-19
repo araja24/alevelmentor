@@ -57,9 +57,9 @@
 
 :root {
   /*
-   * Crypton-style: Off-black base, Blurple accent (dark theme default)
+   * Crypton-style: Pure black base, Blurple accent (dark theme default)
    */
-  --bg-primary: #050505;
+  --bg-primary: #000000;
   --bg-secondary: #0a0a0a;
   --bg-card: #121212;
   --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -259,12 +259,9 @@
     inset 0 0 0 1px var(--glass-border-strong);
 }
 
-/* White → silver: primary headings (matches text-highlight section) */
+/* Solid primary text for headings (no vertical gradient) */
 @utility gradient-text-heading {
-  background: var(--gradient-text-heading);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 /* White → purple: emphasis phrases */
@@ -275,12 +272,9 @@
   background-clip: text;
 }
 
-/* All purple, light (top) to dark (bottom) for phrase endings / required words */
+/* Solid purple for phrase endings / brand (no vertical gradient) */
 @utility gradient-text-purple-vertical {
-  background: var(--gradient-text-purple-vertical);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent-2);
 }
 
 /* Muted body text (landing) */

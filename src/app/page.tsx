@@ -35,9 +35,9 @@ const Hero = dynamic(
   }
 );
 
-const DashboardPreviewSection = dynamic(
-  () => import("@/components/landing/DashboardPreviewSection").then((m) => ({ default: m.DashboardPreviewSection })),
-  { ssr: true, loading: () => <section className="min-h-[400px] md:min-h-[500px]" aria-hidden /> }
+const WaitlistWithDashboardSection = dynamic(
+  () => import("@/components/landing/WaitlistWithDashboardSection").then((m) => ({ default: m.WaitlistWithDashboardSection })),
+  { ssr: true, loading: () => <section className="min-h-[400px]" style={{ background: "var(--bg-primary)" }} aria-hidden /> }
 );
 
 const Problem = dynamic(
@@ -70,18 +70,17 @@ const Footer = dynamic(
   { ssr: true, loading: () => <footer className="min-h-[200px]" aria-hidden /> }
 );
 
-const StickyCtaBar = dynamic(
-  () => import("@/components/landing/StickyCtaBar").then((m) => ({ default: m.StickyCtaBar })),
-  { ssr: true, loading: () => null }
-);
-
 export default function Home() {
   return (
-    <main className="min-h-screen bg-dot-grid-page overflow-x-clip pb-[calc(88px+env(safe-area-inset-bottom))] md:pb-0 selection:bg-[#533fec]/30 selection:text-white">
+    <main className="min-h-screen overflow-x-clip pb-[env(safe-area-inset-bottom)] md:pb-0 selection:bg-[#533fec]/30 selection:text-white" style={{ backgroundColor: "var(--bg-primary)" }}>
       <SplashCursorGate />
       <Navbar />
       <Hero />
-      <DashboardPreviewSection />
+      {/* First section after hero: waitlist form left, dashboard preview right */}
+      <div className="min-h-[40vh] shrink-0" style={{ backgroundColor: "var(--bg-primary)" }} aria-hidden />
+      <Suspense fallback={<section className="min-h-[480px]" style={{ background: "var(--bg-primary)" }} aria-hidden />}>
+        <WaitlistWithDashboardSection />
+      </Suspense>
 
       <Suspense fallback={<section className="min-h-[600px]" aria-hidden />}>
         <Problem />
@@ -100,7 +99,6 @@ export default function Home() {
         <FinalCTA />
         <Footer />
       </Suspense>
-      <StickyCtaBar />
     </main>
   );
 }

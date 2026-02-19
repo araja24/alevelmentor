@@ -11,14 +11,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
-import { ShimmerButton } from "./ShimmerButton";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 
 const SHOW_AUTH_NAV = false;
 
 const navLinks: { label: string; href: string }[] = [
-    { label: "Features", href: "#features" },
     { label: "How It Works", href: "#features" },
     { label: "Why Us", href: "#why-us" },
     { label: "FAQ", href: "#faq" },
@@ -28,26 +26,26 @@ export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
-    const [useMobileIsland, setUseMobileIsland] = useState(false);
+    const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
     const { scrollY } = useScroll();
     const { resolvedTheme } = useTheme();
     const isLight = resolvedTheme === "light";
 
     useEffect(() => setMounted(true), []);
 
-    // Switch to the mobile island layout at <= 1608px
     useEffect(() => {
-        const mq = window.matchMedia("(max-width: 1608px)");
-        const update = () => setUseMobileIsland(mq.matches);
-        update();
-
-        if (typeof mq.addEventListener === "function") {
-            mq.addEventListener("change", update);
-            return () => mq.removeEventListener("change", update);
-        }
-
-        mq.addListener(update);
-        return () => mq.removeListener(update);
+        let cancelled = false;
+        fetch("/api/waitlist")
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => {
+                if (!cancelled && data && typeof data.total_count === "number") {
+                    setWaitlistCount(data.total_count);
+                }
+            })
+            .catch(() => {});
+        return () => {
+            cancelled = true;
+        };
     }, []);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
@@ -68,26 +66,26 @@ export function Navbar() {
 
     return (
         <>
-            {/* ─── Normal flat navbar (visible when NOT scrolled) ─── */}
+            {/* ─── Normal flat navbar (visible when NOT scrolled — mobile and desktop) ─── */}
             <AnimatePresence>
-                {!scrolled && !useMobileIsland && (
+                {!scrolled && (
                     <motion.header
                         key="full-nav"
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                        className="fixed top-0 left-0 right-0 z-50 px-6 py-5"
+                        className="fixed top-0 left-0 right-0 z-50 w-full px-6 py-6 sm:px-8 sm:py-8 lg:px-24"
                     >
-                        <div className="mx-auto max-w-[1200px] flex items-center justify-between">
-                            {/* Logo */}
+                        <div className="w-full flex items-center justify-between">
+                            {/* Logo — far left */}
                             <Link href="/" className="flex items-center gap-2.5 shrink-0">
                                 <Image src={logoSrc} alt="A Level Mentor" width={120} height={20} className="hidden xl:block h-5 w-auto" priority />
                                 <Image src={smallLogoSrc} alt="Logo" width={20} height={20} className="xl:hidden h-[20px] w-auto" priority />
                             </Link>
 
                             {/* Center links */}
-                            <nav className="hidden xl:flex items-center gap-8">
+                            <nav className="hidden xl:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
                                 {navLinks.map((item) => (
                                     <Link
                                         key={item.label}
@@ -99,8 +97,8 @@ export function Navbar() {
                                 ))}
                             </nav>
 
-                            {/* Right CTA */}
-                            <div className="hidden xl:flex items-center gap-4">
+                            {/* Right CTA — far right, small button */}
+                            <div className="hidden xl:flex items-center gap-4 shrink-0">
                                 <ThemeToggle />
                                 {SHOW_AUTH_NAV && (
                                     <Link
@@ -110,27 +108,36 @@ export function Navbar() {
                                         Sign in
                                     </Link>
                                 )}
-                                <ShimmerButton
-                                    href="#join"
-                                    className="px-5 py-2 text-base"
-                                >
-                                    Join the waitlist →
-                                </ShimmerButton>
-                            </div>
-
-                            {/* Mobile Actions */}
-                            <div className="flex xl:hidden items-center gap-3">
-                                <ThemeToggle />
                                 <Link
                                     href="#join"
-                                    className="text-[13px] font-medium gradient-text-heading rounded-full px-4 py-2 border border-[var(--border-muted-strong)] bg-[var(--surface-subtle)]"
+                                    className="flex items-center gap-2 text-xs font-semibold tracking-wide text-white px-4 py-2 rounded-full transition-all cursor-pointer hover:opacity-90"
+                                    style={{ backgroundColor: "#533fec" }}
                                 >
-                                    Join
+                                    Join the waitlist
+                                    {waitlistCount !== null && (
+                                        <span className="text-[10px] font-medium opacity-75">
+                                            · {waitlistCount.toLocaleString()} joined
+                                        </span>
+                                    )}
+                                </Link>
+                            </div>
+
+                            {/* Mobile Actions — logo left; full waitlist button + hamburger right (theme in menu) */}
+                            <div className="flex xl:hidden items-center gap-3">
+                                <Link
+                                    href="#join"
+                                    className="flex items-center gap-2 text-xs font-semibold tracking-wide text-white px-4 py-2 rounded-full hover:opacity-90 transition-all shrink-0 cursor-pointer"
+                                    style={{ backgroundColor: "#533fec" }}
+                                >
+                                    Join the waitlist
+                                    {waitlistCount !== null && (
+                                        <span className="text-[10px] font-medium opacity-75">· {waitlistCount.toLocaleString()} joined</span>
+                                    )}
                                 </Link>
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="text-muted hover:gradient-text-heading"
+                                    className="text-muted hover:gradient-text-heading shrink-0 cursor-pointer"
                                     onClick={() => setMobileOpen(!mobileOpen)}
                                 >
                                     {mobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -141,9 +148,9 @@ export function Navbar() {
                 )}
             </AnimatePresence>
 
-            {/* ─── Floating Island (visible when scrolled) ─── */}
+            {/* ─── Floating Island (visible only when scrolled) ─── */}
             <AnimatePresence>
-                {(scrolled || useMobileIsland) && (
+                {scrolled && (
                     <motion.div
                         key="floating-island"
                         initial={{ opacity: 0, y: -30, scale: 0.92 }}
@@ -188,7 +195,7 @@ export function Navbar() {
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="xl:hidden text-muted hover:gradient-text-heading"
+                                className="xl:hidden text-muted hover:gradient-text-heading cursor-pointer"
                                 onClick={() => setMobileOpen(true)}
                             >
                                 <Menu size={18} />
@@ -210,14 +217,19 @@ export function Navbar() {
                                 )}
                             </div>
 
-                            {/* CTA */}
-                            <ShimmerButton
+                            {/* CTA — full text on all viewports */}
+                            <Link
                                 href="#join"
-                                className="px-4 sm:px-5 py-2 text-sm sm:text-base"
+                                className="flex items-center gap-2 text-xs font-semibold tracking-wide text-white px-4 py-2 rounded-full transition-all hover:opacity-90 whitespace-nowrap cursor-pointer"
+                                style={{ backgroundColor: "#533fec" }}
                             >
-                                <span className="hidden sm:inline">Join the waitlist →</span>
-                                <span className="sm:hidden">Join</span>
-                            </ShimmerButton>
+                                Join the waitlist
+                                {waitlistCount !== null && (
+                                    <span className="text-[10px] font-medium opacity-75">
+                                        · {waitlistCount.toLocaleString()} joined
+                                    </span>
+                                )}
+                            </Link>
                         </div>
                     </motion.div>
                 )}
@@ -233,11 +245,10 @@ export function Navbar() {
                         className="fixed inset-0 z-[60] bg-[var(--bg-primary)] flex flex-col items-center justify-center gap-8 xl:hidden"
                     >
                         <div className="absolute top-6 right-6 flex items-center gap-2">
-                            <ThemeToggle />
                             <Button
                                 variant="outline"
                                 size="icon"
-                                className="gradient-text-heading rounded-full hover:opacity-90 bg-[var(--surface-subtle)] border-[var(--border-muted-strong)]"
+                                className="gradient-text-heading rounded-full hover:opacity-90 bg-[var(--surface-subtle)] border-[var(--border-muted-strong)] cursor-pointer"
                                 onClick={() => setMobileOpen(false)}
                             >
                                 <X size={24} />
@@ -245,6 +256,10 @@ export function Navbar() {
                         </div>
 
                         <div className="flex flex-col items-center gap-6">
+                            <div className="flex items-center gap-3">
+                                <span className="text-sm font-medium text-muted">Theme</span>
+                                <ThemeToggle />
+                            </div>
                             {navLinks.map((item) => (
                                 <Link
                                     key={item.href}
@@ -267,12 +282,16 @@ export function Navbar() {
                         </div>
 
                         <div className="mt-8" onClick={() => setMobileOpen(false)}>
-                            <ShimmerButton
+                            <Link
                                 href="#join"
-                                className="px-10 py-4"
+                                className="flex items-center gap-2 text-xs font-semibold tracking-wide text-white px-6 py-3 rounded-full hover:opacity-90 transition-all"
+                                style={{ backgroundColor: "#533fec" }}
                             >
-                                Join the waitlist →
-                            </ShimmerButton>
+                                Join the waitlist
+                                {waitlistCount !== null && (
+                                    <span className="text-[10px] font-medium opacity-75">· {waitlistCount.toLocaleString()} joined</span>
+                                )}
+                            </Link>
                         </div>
                     </motion.div>
                 )}

@@ -13,8 +13,9 @@ const CANVAS_HEIGHT = 800;
  * Single prominent product visual right after hero.
  * Sits on main viewport background with no containing box. Scroll-driven tilt only after user scrolls; nothing on load.
  * Top border glow is visible in both light and dark modes; other glows hidden in light via .light .dashboard-preview-glows.
+ * When embedded=true, renders a div (no section/id) with only the desktop preview for use in a two-column layout.
  */
-export function DashboardPreviewSection() {
+export function DashboardPreviewSection({ embedded = false }: { embedded?: boolean }) {
     const sectionRef = useRef<HTMLDivElement>(null);
     const scaleContainerRef = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
@@ -51,67 +52,75 @@ export function DashboardPreviewSection() {
         return () => ro.disconnect();
     }, []);
 
-    return (
-        <section
-            ref={sectionRef}
-            id="dashboard-preview"
-            className="relative z-10 pt-0 pb-8 md:pb-16"
-        >
-            <div className="md:hidden py-4">
-                <MobileProductPreview />
-            </div>
-
+    const content = (
+        <>
+            {!embedded && (
+                <div className="md:hidden py-4">
+                    <MobileProductPreview />
+                </div>
+            )}
             <div
-                className="hidden md:flex section-container max-w-[1400px] justify-center relative z-10"
+                className={embedded ? "flex section-container w-full justify-center relative z-10" : "hidden md:flex section-container max-w-[1400px] justify-center relative z-10"}
                 style={{ perspective: 1400 }}
             >
                 <div
                     ref={scaleContainerRef}
-                    className="dashboard-preview-aspect-wrapper relative w-full max-w-[1280px] max-md:max-w-[100%] aspect-[16/10] mx-auto min-h-0"
+                    className={`dashboard-preview-aspect-wrapper relative w-full max-w-[1280px] max-md:max-w-[100%] aspect-[16/10] mx-auto min-h-0 ${embedded ? "max-h-[78vh]" : ""}`}
                 >
-                    {/* Shadow layer: stronger when tilted (progress 0), GPU-friendly via opacity only */}
+                    {!embedded && (
+                        <motion.div
+                            className="pointer-events-none absolute inset-0 flex justify-center items-center"
+                            style={{ opacity: hasUserScrolled ? shadowOpacity : 0.35 }}
+                            aria-hidden
+                        >
+                            <div
+                                className="w-full h-full max-w-[1280px] aspect-[16/10] rounded-lg"
+                                style={{
+                                    boxShadow: "0 24px 48px rgba(0,0,0,0.35), 0 12px 24px rgba(0,0,0,0.2)",
+                                }}
+                            />
+                        </motion.div>
+                    )}
                     <motion.div
-                        className="pointer-events-none absolute inset-0 flex justify-center items-center"
-                        style={{ opacity: hasUserScrolled ? shadowOpacity : 0.35 }}
-                        aria-hidden
+                        className={`relative flex justify-center w-full h-full ${embedded ? "" : "dashboard-preview-shadow drop-shadow-xl"}`}
+                        style={
+                            embedded
+                                ? {}
+                                : {
+                                      rotateX: hasUserScrolled ? rotateX : 0,
+                                      opacity: hasUserScrolled ? opacity : 1,
+                                      scale: hasUserScrolled ? scaleMotion : 1,
+                                      transformOrigin: "center top",
+                                      transformStyle: "preserve-3d",
+                                      willChange: "transform",
+                                  }
+                        }
                     >
-                        <div
-                            className="w-full h-full max-w-[1280px] aspect-[16/10] rounded-lg"
-                            style={{
-                                boxShadow: "0 24px 48px rgba(0,0,0,0.35), 0 12px 24px rgba(0,0,0,0.2)",
-                            }}
-                        />
-                    </motion.div>
-                    <motion.div
-                        className="dashboard-preview-shadow relative flex justify-center drop-shadow-xl w-full h-full"
-                        style={{
-                            rotateX: hasUserScrolled ? rotateX : 0,
-                            opacity: hasUserScrolled ? opacity : 1,
-                            scale: hasUserScrolled ? scaleMotion : 1,
-                            transformOrigin: "center top",
-                            transformStyle: "preserve-3d",
-                            willChange: "transform",
-                        }}
-                    >
-                        {/* Diffused glow behind top edge */}
-                        <div
-                            className="dashboard-preview-glows dashboard-preview-blur absolute top-0 left-1/2 -translate-x-1/2 h-[120px] w-[48%] max-w-[460px] z-0 pointer-events-none"
-                            style={{ background: "rgba(90,53,248,0.26)" }}
-                        />
-                        {/* Larger soft bloom behind preview */}
-                        <div
-                            className="dashboard-preview-glows absolute top-0 left-1/2 -translate-x-1/2 h-[220px] w-[62%] max-w-[620px] z-0 pointer-events-none"
-                            style={{ background: "radial-gradient(ellipse at center, rgba(90,53,248,0.16) 0%, rgba(90,53,248,0.08) 45%, transparent 76%)" }}
-                        />
+                        {!embedded && (
+                            <>
+                                <div
+                                    className="dashboard-preview-glows absolute top-0 left-1/2 -translate-x-1/2 h-[120px] w-[48%] max-w-[460px] z-0 pointer-events-none"
+                                    style={{ background: "rgba(90,53,248,0.26)" }}
+                                />
+                                <div
+                                    className="dashboard-preview-glows absolute top-0 left-1/2 -translate-x-1/2 h-[220px] w-[62%] max-w-[620px] z-0 pointer-events-none"
+                                    style={{ background: "radial-gradient(ellipse at center, rgba(90,53,248,0.16) 0%, rgba(90,53,248,0.08) 45%, transparent 76%)" }}
+                                />
+                            </>
+                        )}
                         <div className="relative z-10 w-full h-full flex items-center justify-center min-h-0">
                             <div
                                 className="relative shrink-0"
-                                style={{
-                                    width: CANVAS_WIDTH,
-                                    height: CANVAS_HEIGHT,
-                                    transform: `scale(${scale})`,
-                                    transformOrigin: "center center",
-                                }}
+                                style={
+                                    embedded
+                                        ? { width: CANVAS_WIDTH, height: CANVAS_HEIGHT, zoom: scale }
+                                        : {
+                                              width: CANVAS_WIDTH,
+                                              height: CANVAS_HEIGHT,
+                                              transform: `scale(${scale})`,
+                                              transformOrigin: "center center",
+                                          }
+                                }
                             >
                                 {/* Top border glow â€” visible in both light and dark (no dashboard-preview-glows) */}
                                 <div className="absolute top-0 left-0 right-0 h-[2px] z-20 pointer-events-none">
@@ -122,20 +131,31 @@ export function DashboardPreviewSection() {
                                         }}
                                     />
                                 </div>
-                                <div className="absolute top-0 left-0 right-0 h-[18px] z-10 pointer-events-none blur-[12px]">
-                                    <div
-                                        className="h-full w-full max-w-[86%] mx-auto"
-                                        style={{
-                                            background: "linear-gradient(to right, transparent 0%, rgba(83,63,236,0.7) 50%, transparent 100%)",
-                                        }}
-                                    />
-                                </div>
+                                {!embedded && (
+                                    <div className="absolute top-0 left-0 right-0 h-[18px] z-10 pointer-events-none blur-[12px]">
+                                        <div
+                                            className="h-full w-full max-w-[86%] mx-auto"
+                                            style={{
+                                                background: "linear-gradient(to right, transparent 0%, rgba(83,63,236,0.7) 50%, transparent 100%)",
+                                            }}
+                                        />
+                                    </div>
+                                )}
                                 <LaptopDashboardPreview />
                             </div>
                         </div>
                     </motion.div>
                 </div>
             </div>
+        </>
+    );
+
+    if (embedded) {
+        return <div ref={sectionRef} className="relative z-10 w-full min-h-0">{content}</div>;
+    }
+    return (
+        <section ref={sectionRef} id="dashboard-preview" className="relative z-10 pt-0 pb-8 md:pb-16">
+            {content}
         </section>
     );
 }

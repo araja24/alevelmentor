@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,11 +11,12 @@ import {
     Copy,
     Check,
     TrendingUp,
-    Sparkles
+    Users,
 } from "lucide-react";
-import { ShimmerButton } from "./ShimmerButton";
 import { waitlistSchema } from "@/lib/validations";
 import { landingCopy } from "@/content/landingCopy";
+
+const JOIN_BUTTON_COLOR = "#533fec";
 
 function WaitlistFormContent() {
     const searchParams = useSearchParams();
@@ -28,8 +29,22 @@ function WaitlistFormContent() {
     const [copied, setCopied] = useState(false);
     const [error, setError] = useState("");
     const [alreadyRegistered, setAlreadyRegistered] = useState(false);
+    const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
 
     const referralCode = searchParams.get("ref");
+
+    useEffect(() => {
+        let cancelled = false;
+        fetch("/api/waitlist")
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => {
+                if (!cancelled && data && typeof data.total_count === "number") {
+                    setWaitlistCount(data.total_count);
+                }
+            })
+            .catch(() => {});
+        return () => { cancelled = true; };
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -143,63 +158,50 @@ function WaitlistFormContent() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="w-full max-w-[540px] mx-auto relative group">
-            <div className={cn(
-                "relative flex flex-col md:flex-row items-center gap-3 md:gap-0",
-                // Desktop Styles
-                "md:p-2 md:rounded-full md:bg-[var(--surface-subtle)] md:border md:border-[var(--border-muted-strong)] md:shadow-2xl md:transition-all md:duration-300",
-                "md:focus-within:border-[var(--accent-2)]/50 md:focus-within:shadow-[0_0_40px_color-mix(in_srgb,var(--accent-2)_15%,transparent)]"
-            )}>
+        <div className="w-full max-w-md mx-auto">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <Input
                     type="email"
                     required
-                    placeholder="Enter your email address..."
+                    placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={cn(
-                        "w-full h-14 text-[16px] focus:outline-none focus:ring-0 transition-all text-[var(--text-primary)] placeholder:text-muted border-[var(--border-muted-strong)] bg-[var(--surface-subtle)] focus-visible:border-[var(--accent-2)]/50 focus-visible:bg-[var(--accent-2)]/5 focus-visible:ring-0",
-                        "rounded-2xl px-6 text-center md:bg-transparent md:border-0 md:rounded-full md:px-6 md:text-left md:focus-visible:bg-transparent"
-                    )}
+                    className="flex-1 min-w-0 h-12 rounded-xl border-0 px-5 text-[15px] placeholder:text-muted-foreground focus:outline-none focus:ring-0 bg-[var(--surface-subtle)] text-[var(--text-primary)]"
                 />
-                <ShimmerButton
+                <Button
                     type="submit"
                     disabled={loading}
-                    className={cn(
-                        "h-14 w-full md:w-auto px-8 font-medium shrink-0 text-[15px]",
-                        "rounded-2xl md:rounded-full"
-                    )}
-                    data-ph-capture="final_cta_submit_click"
-                    data-ph-target="final_cta_submit"
+                    className="h-12 rounded-xl px-6 font-bold shrink-0 cursor-pointer text-white"
+                    style={{ backgroundColor: JOIN_BUTTON_COLOR }}
                 >
                     {loading ? (
-                        <div className="w-5 h-5 border-2 border-[var(--text-secondary)]/30 border-t-[var(--text-primary)] rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
-                        `${landingCopy.waitlist.submit} →`
+                        landingCopy.waitlist.submit
                     )}
-                </ShimmerButton>
-            </div>
+                </Button>
+            </form>
 
             {error && (
                 <motion.p
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-red-400 text-sm mt-4 text-center bg-red-500/10 border border-red-500/20 py-2 rounded-lg"
+                    className="text-red-400 text-sm mt-4 text-center"
                 >
                     {error}
                 </motion.p>
             )}
 
-            <div className="mt-12 flex items-center justify-center gap-5 sm:gap-8 flex-wrap">
-                <div className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-[var(--color-pill-light-green-bg)] border border-[var(--color-text-green-accent)]/30">
-                    <Check className="w-4 h-4 text-[var(--color-text-green-accent)]" />
-                    <span className="text-[12px] font-semibold text-[var(--color-text-green-accent)]">Free beta access</span>
-                </div>
-                <div className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-[var(--color-pill-light-orange-bg)] border border-[var(--color-text-orange-accent)]/30">
-                    <Sparkles className="w-4 h-4 text-[var(--color-text-orange-accent)]" />
-                    <span className="text-[12px] font-semibold text-[var(--color-text-orange-accent)]">First 50 Get Pro Free. <span className="font-bold underline">Forever.</span></span>
-                </div>
-            </div>
-        </form>
+            <p className="flex items-center justify-center gap-1.5 mt-4 text-center text-[11px] sm:text-xs text-neutral-500">
+                <Users className="h-3.5 w-3.5 shrink-0" />
+                <span>
+                    {waitlistCount !== null
+                        ? `${waitlistCount.toLocaleString()} ${landingCopy.waitlist.peopleOnWaitlist}`
+                        : "—"}
+                </span>
+                <span>• You&apos;ll be notified when we launch.</span>
+            </p>
+        </div>
     );
 }
 

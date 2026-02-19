@@ -289,9 +289,6 @@ export function FeaturePreviews() {
         </RevealSection>
 
         <RevealSection direction="up" delay={0.08} className="space-y-6 mb-52 md:mb-72 lg:mb-80">
-          <h3 className="text-center h3 gradient-text-heading mb-4">
-            The A Level Engine
-          </h3>
           <div className="md:hidden">
             <EngineAnimation showLabels={false} title="" staticDiagram={staticDiagram} />
           </div>

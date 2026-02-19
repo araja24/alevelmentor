@@ -57,6 +57,19 @@ async function getTotalCount(): Promise<number> {
   return count ?? 0;
 }
 
+export async function GET() {
+  try {
+    const total_count = await getTotalCount();
+    return NextResponse.json({ total_count });
+  } catch (err) {
+    console.error("Waitlist count API Error:", err);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const start = Date.now();

@@ -1,72 +1,63 @@
 import Link from "next/link";
-import { Instagram } from "lucide-react";
+import { Mail, Instagram } from "lucide-react";
 
 export function Footer() {
   return (
     <footer
-      className="px-6 py-16"
+      className="px-6 py-20"
       style={{
-        background: "var(--bg-secondary)",
+        background: "var(--bg-primary)",
         borderTop: "1px solid var(--border-muted)",
       }}
     >
-      <div className="w-full mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
-        {/* Brand */}
-        <div>
-          <p className="text-lg font-semibold gradient-text-heading">
+      <div className="w-full mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-16 lg:gap-20">
+        {/* Brand — strong hierarchy */}
+        <div className="space-y-5">
+          <p className="text-xl font-bold gradient-text-heading tracking-tight">
             A Level Mentor
           </p>
-          <p className="body mt-2 max-w-[260px] text-muted opacity-80">
-            Personalised revision for A-Level students. Built by students who now study at UBC, Warwick, Nottingham, and McGill — real revision, real results.
-          </p>
-          <a
-            href="https://www.instagram.com/alevelmentorapp/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 mt-4 text-muted hover:gradient-text-heading transition-colors duration-200"
-            aria-label="Follow us on Instagram"
-          >
-            <Instagram className="h-5 w-5" />
-            <span className="text-sm">@alevelmentorapp</span>
-          </a>
+          <div className="space-y-2 max-w-[28ch]">
+            <p className="text-sm leading-relaxed font-normal text-[var(--text-secondary)] opacity-90">
+              Personalised revision for A-Level students.
+            </p>
+            <p className="text-sm leading-relaxed font-normal text-[var(--text-secondary)] opacity-90">
+              Built by former A-Level students now at UBC, Warwick, Nottingham & McGill.
+            </p>
+            <p className="text-sm leading-relaxed font-normal text-[var(--text-secondary)] opacity-90">
+              Real revision. Real results.
+            </p>
+          </div>
         </div>
 
-        {/* Supported subjects & exam boards */}
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider mb-4 text-muted">
-            Supported subjects & exam boards
+        {/* Academics — exam boards + subjects in one column */}
+        <div className="space-y-6">
+          <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)] opacity-80">
+            Academics
           </p>
-          <p className="text-xs text-muted mb-3">Exam boards</p>
-          <div className="flex flex-wrap gap-2 mb-4">
-            {["AQA", "OCR", "Edexcel", "WJEC"].map((board) => (
-              <span
-                key={board}
-                className="text-xs font-medium text-muted rounded-full px-3 py-1.5 bg-[var(--surface-subtle)] border border-[var(--border-muted)]"
-              >
-                {board}
-              </span>
-            ))}
+          <div className="space-y-4">
+            <p className="text-xs text-[var(--text-secondary)] opacity-85">
+              <span className="font-medium opacity-90">Exam boards:</span> AQA · OCR · Edexcel · WJEC
+            </p>
+            <p className="text-xs text-[var(--text-secondary)] opacity-85 leading-relaxed">
+              <span className="font-medium opacity-90">Subjects:</span> Chemistry, Mathematics, Physics, Biology
+            </p>
           </div>
-          <p className="text-xs text-muted mb-2">Subjects (more coming)</p>
-          <p className="body text-sm text-muted opacity-90">
-            Chemistry, Mathematics, Physics, Biology
-          </p>
         </div>
 
         {/* Product */}
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider mb-4 text-muted">
+        <div className="space-y-6">
+          <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)] opacity-80">
             Product
           </p>
-          <ul className="space-y-2.5">
+          <ul className="space-y-3">
             {[
-              { label: "Roadmap", href: "#features" },
-              { label: "Study Mentor", href: "#features" },
-              { label: "Grade Predictions", href: "#features" },
-              { label: "Past Papers", href: "#features" },
+              { label: "Adaptive Plan", href: "#features" },
+              { label: "AI Mentor", href: "#features" },
+              { label: "Analytics", href: "#features" },
+              { label: "Past Paper Engine", href: "#features" },
             ].map((link) => (
               <li key={link.label}>
-                <a href={link.href} className="body text-sm transition-colors duration-200 text-muted hover:gradient-text-heading">
+                <a href={link.href} className="text-sm font-normal text-[var(--text-secondary)] opacity-85 hover:opacity-100 hover:underline transition-colors duration-200">
                   {link.label}
                 </a>
               </li>
@@ -75,28 +66,57 @@ export function Footer() {
         </div>
 
         {/* Legal */}
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider mb-4 text-muted">
+        <div className="space-y-6">
+          <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)] opacity-80">
             Legal
           </p>
-          <ul className="space-y-2.5">
+          <ul className="space-y-3">
             {[
               { label: "Privacy Policy", href: "/privacy" },
               { label: "Terms of Service", href: "/terms" },
-              { label: "Contact", href: "mailto:hello@alevelmentor.com" },
             ].map((link) => (
               <li key={link.label}>
-                <Link href={link.href} className="body text-sm transition-colors duration-200 text-muted hover:gradient-text-heading">
+                <Link href={link.href} className="text-sm font-normal text-[var(--text-secondary)] opacity-70 hover:opacity-100 hover:underline transition-colors duration-200">
                   {link.label}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
+
+        {/* Contact */}
+        <div className="space-y-6">
+          <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)] opacity-80">
+            Contact
+          </p>
+          <ul className="space-y-3">
+            <li>
+              <a
+                href="mailto:hello@alevelmentor.com"
+                className="inline-flex items-center gap-2 text-sm font-normal text-[var(--text-secondary)] opacity-85 hover:opacity-100 hover:underline transition-colors duration-200"
+              >
+                <Mail className="h-4 w-4 shrink-0" />
+                hello@alevelmentor.com
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.instagram.com/alevelmentorapp/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-normal text-[var(--text-secondary)] opacity-85 hover:opacity-100 hover:underline transition-colors duration-200"
+                aria-label="Follow us on Instagram"
+              >
+                <Instagram className="h-4 w-4 shrink-0" />
+                @alevelmentorapp
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <div className="w-full mx-auto max-w-7xl mt-12 pt-8 text-center" style={{ borderTop: "1px solid var(--border-muted)" }}>
-        <p className="text-xs text-muted opacity-70">
+      <div className="w-full mx-auto max-w-7xl mt-16 pt-8 text-center" style={{ borderTop: "1px solid var(--border-muted)" }}>
+        <p className="text-[11px] text-[var(--text-secondary)] opacity-60">
           © {new Date().getFullYear()} A Level Mentor. All rights reserved.
         </p>
       </div>

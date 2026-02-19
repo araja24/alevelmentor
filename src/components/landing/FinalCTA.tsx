@@ -11,7 +11,7 @@ export function FinalCTA() {
   const blobY = useTransform(scrollY, (v) => v * 0.5);
 
   return (
-    <section id="join" className="section-pad relative overflow-hidden overflow-x-clip" style={{ background: "var(--bg-primary)" }}>
+    <section className="section-pad relative overflow-hidden overflow-x-clip" style={{ background: "var(--bg-primary)" }}>
       {/* CTA glow — hidden in light via .light .cta-glows */}
       <div className="cta-glows absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
@@ -38,8 +38,6 @@ export function FinalCTA() {
             <LaunchCountdown />
 
             <WaitlistForm />
-
-            <p className="text-xs text-muted mt-6">{landingCopy.finalCta.riskCopy}</p>
 
             <div className="flex items-center justify-center gap-6 mt-16 opacity-55 md:opacity-40 md:hover:opacity-100 transition-opacity duration-500">
               {["AQA", "OCR", "Edexcel", "WJEC"].map((board) => (

@@ -176,9 +176,9 @@ function DotOnPath({
 // Lane 2 (y 50): Exam Date ← → Past Paper Engine → …
 // Lane 3 (y 85): Struggles ← → Adaptive Plan → Recall → AI Follow-up
 const NODES: NodeDef[] = [
-  { id: "targetGrades", label: "Target Grades", tooltip: "Desired outcomes across subjects", icon: Target, color: "#f59e0b", point: { x: -20, y: 15 } },
-  { id: "examDate", label: "Exam Date", tooltip: "Time pressure and remaining weeks", icon: Clock, color: "#fbbf24", point: { x: -20, y: 50 } },
-  { id: "struggles", label: "Struggles", tooltip: "Weak topics and confidence gaps", icon: AlertCircle, color: "#ef4444", point: { x: -20, y: 85 } },
+  { id: "targetGrades", label: "Target Grades", tooltip: "Desired outcomes across subjects", icon: Target, color: "#f59e0b", point: { x: -63, y: 15 } },
+  { id: "examDate", label: "Exam Date", tooltip: "Time pressure and remaining weeks", icon: Clock, color: "#fbbf24", point: { x: -63, y: 50 } },
+  { id: "struggles", label: "Struggles", tooltip: "Weak topics and confidence gaps", icon: AlertCircle, color: "#ef4444", point: { x: -63, y: 85 } },
   { id: "engine", label: "A Level Engine", tooltip: "Central intelligence", icon: BrainCircuit, color: "#8b5cf6", point: { x: 21, y: 50 } },
   { id: "weeklySchedule", label: "Weekly Schedule", tooltip: "Clear day-by-day study priorities", icon: Calendar, color: "#22c55e", point: { x: 45, y: 15 } },
   { id: "pastPaperEngine", label: "Past Paper Engine", tooltip: "Practice + feedback tied to your plan", icon: FileText, color: "#3ed6ff", point: { x: 45, y: 50 } },
@@ -314,10 +314,10 @@ export function EngineAnimationLarge({
     <section className={cn("w-full min-w-0 overflow-visible", className)}>
       <div className="relative w-full min-h-[480px] md:min-h-[520px] lg:min-h-[600px]">
         <div
-          className="absolute left-[48%] overflow-visible min-h-[480px] md:min-h-[520px] lg:min-h-[600px] w-full max-w-[1100px]"
+          className="absolute left-1/2 overflow-visible min-h-[480px] md:min-h-[520px] lg:min-h-[600px] w-full max-w-[1100px]"
           style={{
             aspectRatio: `${VIEWBOX_WIDTH} / ${VIEWBOX_HEIGHT}`,
-            transform: `translateX(calc(-${engineCenterFraction * 100}%))`,
+            transform: `translateX(-${engineCenterFraction * 100}%)`,
           }}
         >
           <svg
@@ -382,14 +382,9 @@ export function EngineAnimationLarge({
                     }}
                   >
                     {isEngine && (
-                      <p
-                        className={cn(
-                          "mb-1.5 text-center text-[10px] font-medium max-w-[110px] leading-tight whitespace-nowrap",
-                          isHovered || isRelated ? "text-[var(--text-primary)]" : "text-muted"
-                        )}
-                      >
+                      <span className="pill-badge mb-1 inline-flex text-[8px] sm:text-[9px] px-2 py-0.5 whitespace-nowrap justify-center">
                         {node.label}
-                      </p>
+                      </span>
                     )}
                     <motion.div
                       className={cn(

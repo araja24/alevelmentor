@@ -27,7 +27,7 @@ function Word({
             <motion.span style={{ opacity: dimOpacity, color: "var(--text-dimmed)" }}>
                 {children}
             </motion.span>
-            {/* Highlighted — matches landing gradient-text-heading (bright white → warm silver) */}
+            {/* Highlighted — theme-aware gradient (dark: white→silver, light: dark→gray) */}
             <motion.span
                 className={`absolute left-0 top-0 ${isSpecial ? "underline decoration-[var(--accent-2)] decoration-2 underline-offset-4" : ""}`}
                 style={{
@@ -35,7 +35,7 @@ function Word({
                     backgroundImage: "var(--gradient-text-heading)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: isSpecial ? undefined : "transparent",
-                    color: isSpecial ? "var(--text-primary)" : undefined, // Fallback for underline visibility if text-fill-color transparent hides it
+                    color: isSpecial ? "var(--text-primary)" : undefined,
                     backgroundClip: "text",
                 }}
             >
