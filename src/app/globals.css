@@ -1,5 +1,5 @@
 @import "tailwindcss";
-/* Lenis CSS removed from critical path; smooth scroll is applied via JS (SmoothScroll.tsx). */
+@import "lenis/dist/lenis.css";
 
 @theme {
   --radius-sm: 8px;

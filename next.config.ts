@@ -21,25 +21,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   async headers() {
-    const security = [{ source: "/:path*", headers: securityHeaders }];
-    // Long cache for hashed static chunks (improves repeat-visit LCP; bfcache benefits from cached resources).
-    const staticCache = [
-      {
-        source: "/_next/static/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-    ];
-    return [...security, ...staticCache];
+    return [{ source: "/:path*", headers: securityHeaders }];
   },
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-  },
-  // Tree-shake large icon/chart libs so only imported symbols are bundled (reduces unused JS).
-  experimental: {
-    optimizePackageImports: ["lucide-react", "recharts"],
   },
 };
 

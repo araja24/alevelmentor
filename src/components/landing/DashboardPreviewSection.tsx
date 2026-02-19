@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import dynamic from "next/dynamic";
 import { motion, useInView, useScroll, useMotionValueEvent } from "framer-motion";
 import { ease } from "@/lib/motion";
+import { LaptopDashboardPreview } from "@/components/landing/LaptopDashboardPreview";
 
 const DIM = { opacity: 0.6 };
 const BRIGHT = { opacity: 1 };
@@ -12,48 +12,6 @@ const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 800;
 
 const SCROLL_THRESHOLD = 80; // bright only after user has scrolled down past this
-
-/** Placeholder preserves 16:10 aspect and layout; avoids CLS. Recharts + 20+ icons load after idle. */
-function DashboardPreviewPlaceholder() {
-  return (
-    <div
-      className="w-full h-full min-h-0 max-w-[1200px] mx-auto flex flex-col rounded-t-2xl rounded-b-2xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border-muted)]"
-      aria-hidden
-    >
-      <div className="rounded-t-2xl px-4 py-2.5 flex items-center gap-3 bg-[var(--bg-card)]">
-        <div className="flex gap-1.5 shrink-0">
-          <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-          <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
-          <span className="w-3 h-3 rounded-full bg-[#28c840]" />
-        </div>
-        <div className="flex-1 min-w-0 rounded-full h-8 bg-[var(--surface-subtle)] max-w-[280px] mx-auto" />
-      </div>
-      <div className="flex-1 min-h-[480px] flex gap-4 p-4">
-        <div className="w-[180px] shrink-0 rounded-xl bg-[var(--surface-subtle)]" />
-        <div className="flex-1 space-y-4">
-          <div className="h-12 rounded-xl bg-[var(--surface-subtle)] w-3/4" />
-          <div className="h-[88px] rounded-2xl bg-[var(--surface-subtle)]" />
-          <div className="grid grid-cols-3 gap-2">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-24 rounded-2xl bg-[var(--surface-subtle)]" />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const LaptopDashboardPreview = dynamic(
-  () =>
-    import("@/components/landing/LaptopDashboardPreview").then((m) => ({
-      default: m.LaptopDashboardPreview,
-    })),
-  {
-    ssr: false,
-    loading: () => <DashboardPreviewPlaceholder />,
-  }
-);
 
 /**
  * Single prominent product visual right after hero.
@@ -67,7 +25,6 @@ export function DashboardPreviewSection({ embedInHero }: { embedInHero?: boolean
     const viewportRef = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
     const [hasScrolledToIt, setHasScrolledToIt] = useState(false);
-    const [loadPreview, setLoadPreview] = useState(false);
     const inView = useInView(sectionRef, { amount: 0.2, margin: "-50px" });
     const { scrollY } = useScroll();
 
@@ -76,28 +33,6 @@ export function DashboardPreviewSection({ embedInHero }: { embedInHero?: boolean
     });
 
     const isBright = inView && hasScrolledToIt;
-
-    // Defer loading Recharts + heavy dashboard: desktop after idle; mobile only when in view (saves ~200KB+ JS and TBT for bouncers).
-    useEffect(() => {
-        const isMobile =
-            typeof window !== "undefined" &&
-            (window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(pointer: coarse)").matches);
-        if (isMobile) return; // mobile: load when inView (effect below)
-        const useIdle = typeof requestIdleCallback !== "undefined";
-        const id = useIdle
-            ? requestIdleCallback(() => setLoadPreview(true), { timeout: 800 })
-            : setTimeout(() => setLoadPreview(true), 150);
-        return () => {
-            if (useIdle) cancelIdleCallback(id as number);
-            else clearTimeout(id as ReturnType<typeof setTimeout>);
-        };
-    }, []);
-    useEffect(() => {
-        if (typeof window === "undefined") return;
-        const isMobile =
-            window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(pointer: coarse)").matches;
-        if (isMobile && inView) setLoadPreview(true);
-    }, [inView]);
 
     useEffect(() => {
         const el = viewportRef.current;
@@ -143,7 +78,6 @@ export function DashboardPreviewSection({ embedInHero }: { embedInHero?: boolean
                             duration: 0.9,
                             ease: ease.out,
                         }}
-                        style={{ willChange: "opacity" }}
                     >
                         {/* Diffused glow behind top edge — from f11a063 */}
                         <div
@@ -185,7 +119,7 @@ export function DashboardPreviewSection({ embedInHero }: { embedInHero?: boolean
                                         }}
                                     />
                                 </div>
-                                {loadPreview ? <LaptopDashboardPreview /> : <DashboardPreviewPlaceholder />}
+                                <LaptopDashboardPreview />
                             </div>
                         </div>
                     </motion.div>
@@ -196,7 +130,7 @@ export function DashboardPreviewSection({ embedInHero }: { embedInHero?: boolean
 
     if (embedInHero) {
         return (
-            <div ref={sectionRef} className="relative z-10 w-full overflow-visible">
+            <div ref={sectionRef} id="dashboard-preview" className="relative z-10 w-full overflow-visible">
                 {content}
             </div>
         );

@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
+/** Set to true to re-enable Lenis smooth scroll. */
+const LENIS_ENABLED = false;
+
 function isTouchDevice(): boolean {
   if (typeof window === "undefined") return false;
   return window.matchMedia("(pointer: coarse)").matches;
@@ -27,7 +30,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   const teardownRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    if (isTouchDevice()) {
+    if (!LENIS_ENABLED || isTouchDevice()) {
       return setupNativeAnchorScroll();
     }
 

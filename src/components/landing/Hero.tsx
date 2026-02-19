@@ -1,27 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
+import { RevealSection } from "./RevealSection";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { landingCopy } from "@/content/landingCopy";
-
-/** Load only when dashboard slot is in view so Recharts chunk doesn’t run on initial load (LCP/TBT). */
-const DashboardPreviewSection = dynamic(
-    () => import("@/components/landing/DashboardPreviewSection").then((m) => ({ default: m.DashboardPreviewSection })),
-    { ssr: false, loading: () => <DashboardPreviewPlaceholder /> }
-);
-
-function DashboardPreviewPlaceholder() {
-    return (
-        <div
-            className="relative z-10 w-full flex justify-center px-4 md:px-6 min-h-[280px] md:min-h-[360px]"
-            aria-hidden
-        >
-            <div className="w-full max-w-[1280px] aspect-[16/10] rounded-2xl bg-[var(--bg-card)] border border-[var(--border-muted)] animate-pulse" />
-        </div>
-    );
-}
+import { DashboardPreviewSection } from "./DashboardPreviewSection";
 
 const TYPEWRITER_PHRASES = [
     "A Level Physics",
@@ -103,32 +87,15 @@ function TypewriterSubject({ className = "" }: { className?: string }) {
 }
 
 export function Hero() {
-    const dashboardRef = useRef<HTMLDivElement>(null);
-    const [dashboardInView, setDashboardInView] = useState(false);
-
-    useEffect(() => {
-        const el = dashboardRef.current;
-        if (!el) return;
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const [e] = entries;
-                if (e) setDashboardInView(e.isIntersecting);
-            },
-            { rootMargin: "80px", threshold: 0 }
-        );
-        observer.observe(el);
-        return () => observer.disconnect();
-    }, []);
-
     return (
         <section
             id="hero"
             className="relative overflow-hidden"
             style={{ backgroundColor: "var(--bg-primary)" }}
         >
-            {/* Mobile layout — CSS animation only so LCP is not blocked by framer-motion */}
+            {/* Mobile layout */}
             <div className="relative z-10 md:hidden mx-auto max-w-[560px] px-5 sm:px-6 pt-36 pb-10 min-h-[62svh] flex flex-col items-center justify-center text-center">
-                <div className="w-full flex flex-col items-center animate-fade-in-up">
+                <RevealSection direction="up" className="w-full flex flex-col items-center">
                     <span className="pill-badge px-4 py-1.5 text-[11px] mb-5">
                         {landingCopy.hero.badge}
                     </span>
@@ -143,12 +110,12 @@ export function Hero() {
                     >
                         {landingCopy.hero.secondaryCta}
                     </Link>
-                </div>
+                </RevealSection>
             </div>
 
-            {/* Desktop/tablet layout — CSS animation only so LCP is not blocked by framer-motion */}
+            {/* Desktop/tablet layout */}
             <div className="hidden md:block mx-auto max-w-[900px] w-full px-6 lg:px-8 relative z-10 text-center pt-36 pb-16 lg:pt-40 lg:pb-20 min-h-[min(100dvh,720px)]">
-                <div className="flex flex-col items-center animate-fade-in-up">
+                <RevealSection direction="up" className="flex flex-col items-center">
                     <span className="pill-badge px-4 py-1.5 text-[11px] sm:text-[12px] mb-6">
                         {landingCopy.hero.badge}
                     </span>
@@ -163,10 +130,10 @@ export function Hero() {
                     >
                         {landingCopy.hero.secondaryCta}
                     </Link>
-                </div>
+                </RevealSection>
             </div>
 
-            {/* Scroll indicator: halfway between Browse features and dashboard preview, shifted up 5% */}
+            {/* Scroll indicator */}
             <div className="relative z-10 flex flex-col items-center mt-[calc(3rem-5vh)] mb-[calc(3rem+5vh)]">
                 <button
                     type="button"
@@ -174,7 +141,7 @@ export function Hero() {
                         const dashboard = document.getElementById("dashboard-preview");
                         dashboard?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
                     }}
-                    className="flex flex-col items-center justify-center gap-1 min-h-[48px] min-w-[48px] py-3 px-3 transition-colors cursor-pointer bg-transparent border-0 landing-muted"
+                    className="flex flex-col items-center gap-1 transition-colors cursor-pointer bg-transparent border-0 landing-muted"
                     aria-label="Scroll to dashboard preview"
                 >
                     <span className="text-[11px] font-medium tracking-wide uppercase">scroll</span>
@@ -186,13 +153,9 @@ export function Hero() {
                 </button>
             </div>
 
-            {/* Dashboard preview — load only when in view so Recharts doesn’t block LCP/TBT */}
-            <div
-                ref={dashboardRef}
-                id="dashboard-preview"
-                className="relative z-10 w-full flex justify-center px-4 md:px-6 min-h-[280px] md:min-h-[360px]"
-            >
-                {dashboardInView ? <DashboardPreviewSection embedInHero /> : <DashboardPreviewPlaceholder />}
+            {/* Dashboard preview */}
+            <div className="relative z-10 w-full flex justify-center px-4 md:px-6">
+                <DashboardPreviewSection embedInHero />
             </div>
 
             {/* Bottom fade into dashboard area */}

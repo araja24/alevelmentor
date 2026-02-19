@@ -10,23 +10,21 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "600", "700"],
-  display: "optional", // Don’t block LCP on font; use system fallback if not cached
-  preload: true,
+  display: "swap", // Don’t block LCP on font; use system fallback if not cached
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   weight: ["400"],
-  display: "optional",
+  display: "swap",
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["400", "600", "700"],
-  display: "optional", // Don’t block LCP; hero can paint with fallback immediately
-  preload: false,
+  display: "swap", // Don’t block LCP; hero can paint with fallback immediately
 });
 
 export const metadata: Metadata = {
