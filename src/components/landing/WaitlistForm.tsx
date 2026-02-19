@@ -2,7 +2,6 @@
 
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -91,11 +90,7 @@ function WaitlistFormContent() {
 
     if (success) {
         return (
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-md mx-auto text-left"
-            >
+            <div className="w-full max-w-md mx-auto text-left animate-scale-in">
                 <div className="glass-card mb-6 overflow-hidden rounded-[24px] bg-[var(--bg-card)] border-[var(--glass-border-strong)] shadow-2xl">
                     <div className="bg-gradient-to-r from-[var(--accent-2)]/20 to-[#3ed6ff]/10 p-8 border-b border-[var(--border-muted)] flex items-center gap-5">
                         <div className="bg-[var(--accent-2)] rounded-full p-3 text-white shadow-lg ring-4 ring-[var(--accent-2)]/20" style={{ boxShadow: "0 10px 24px color-mix(in srgb, var(--accent-2) 40%, transparent)" }}>
@@ -153,25 +148,26 @@ function WaitlistFormContent() {
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </div>
         );
     }
 
     return (
-        <div className="w-full max-w-md mx-auto">
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <div className="w-full max-w-md mx-auto px-4 sm:px-0">
+            {/* Same layout as hero section: stacked on mobile, row on sm+ */}
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-x-3 gap-y-3 items-center">
                 <Input
                     type="email"
                     required
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 min-w-0 h-12 rounded-xl border-0 px-5 text-[15px] placeholder:text-muted-foreground focus:outline-none focus:ring-0 bg-[var(--surface-subtle)] text-[var(--text-primary)]"
+                    className="col-span-1 sm:col-span-1 h-12 w-full rounded-xl border-0 px-5 text-[15px] placeholder:text-muted-foreground focus:outline-none focus:ring-0 bg-[var(--surface-subtle)] text-[var(--text-primary)]"
                 />
                 <Button
                     type="submit"
                     disabled={loading}
-                    className="h-12 rounded-xl px-6 font-bold shrink-0 cursor-pointer text-white"
+                    className="col-span-1 sm:col-span-1 h-12 w-full sm:w-auto rounded-xl px-6 font-bold shrink-0 cursor-pointer text-white sm:col-start-2 sm:row-start-1"
                     style={{ backgroundColor: JOIN_BUTTON_COLOR }}
                 >
                     {loading ? (
@@ -183,13 +179,9 @@ function WaitlistFormContent() {
             </form>
 
             {error && (
-                <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-red-400 text-sm mt-4 text-center"
-                >
+                <p className="text-red-400 text-sm mt-4 text-center animate-fade-in-up">
                     {error}
-                </motion.p>
+                </p>
             )}
 
             <p className="flex items-center justify-center gap-1.5 mt-4 text-center text-[11px] sm:text-xs text-neutral-500">

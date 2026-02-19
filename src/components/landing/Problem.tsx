@@ -58,24 +58,6 @@ export function Problem() {
 
     return (
         <>
-            <section id="text-highlight-mobile" className="md:hidden relative z-0 py-12 px-6" style={{ background: "var(--bg-primary)" }}>
-                <div className="mx-auto max-w-[560px]">
-                    <h2 className="h2 text-[36px] leading-[1.1] mb-5 gradient-text-heading">
-                        {landingCopy.problem.mobileHeading}
-                    </h2>
-                    <ul className="space-y-2.5">
-                        {landingCopy.problem.mobileBullets.map((bullet) => (
-                            <li
-                                key={bullet}
-                                className="rounded-xl border border-[var(--border-muted)] bg-[var(--surface-subtle)] px-4 py-3 text-sm text-muted"
-                            >
-                                {bullet}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </section>
-
             <section
                 id="text-highlight"
                 ref={containerRef}

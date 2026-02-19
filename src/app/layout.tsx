@@ -1,38 +1,29 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono, Cormorant, Plus_Jakarta_Sans, Outfit } from "next/font/google";
+import { Inter, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LowTierProvider } from "@/hooks/useLowTierDevice";
 import { SmoothScroll } from "@/components/landing/SmoothScroll";
+import { AnalyticsInit } from "@/components/AnalyticsInit";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const cormorant = Cormorant({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: "variable",
+  weight: ["400"],
   display: "swap",
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-display",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const outfit = Outfit({
-  variable: "--font-uni",
-  subsets: ["latin"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 
@@ -50,11 +41,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} ${plusJakartaSans.variable} ${outfit.variable} antialiased`}
+        className={`${inter.variable} ${geistMono.variable} ${plusJakartaSans.variable} antialiased`}
       >
         <ThemeProvider>
           <LowTierProvider>
             <SmoothScroll>{children}</SmoothScroll>
+            <AnalyticsInit />
           </LowTierProvider>
       </ThemeProvider>
       </body>

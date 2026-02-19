@@ -344,7 +344,7 @@
 
 /* University carousel: modern display font with more pop */
 .university-carousel-text {
-  font-family: var(--font-uni), var(--font-display), var(--font-sans), sans-serif;
+  font-family: var(--font-display), var(--font-sans), sans-serif;
   color: #ffffff;
   letter-spacing: 0.01em;
 }
@@ -540,6 +540,52 @@
 
 .shimmer-radial {
   animation: shimmer-radial 2.5s ease-in-out infinite;
+}
+
+/* Lightweight CSS alternatives to Framer for simple reveals (performance) */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes stagger-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-stagger-fade-in-up {
+  animation: stagger-fade-in-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* ─── Custom range slider (onboarding) ─── */

@@ -1,10 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { RevealSection } from "./RevealSection";
-import { viewport } from "@/lib/motion";
-import { staggerContainer, staggerItem } from "@/lib/motion";
 
 /**
  * Configurable launch countdown (1–3 months). Target date via env or constant.
@@ -60,34 +57,30 @@ export function LaunchCountdown() {
         );
     }
 
+    const items = [
+            { value: pad(diff.days), label: "Days" },
+            { value: pad(diff.hours), label: "Hours" },
+            { value: pad(diff.minutes), label: "Minutes" },
+            { value: pad(diff.seconds), label: "Seconds" },
+        ];
+
     return (
         <RevealSection>
             <p className="text-[11px] font-semibold text-muted uppercase tracking-wider mb-4">
                 Launching {LAUNCH_DATE.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
             </p>
-            <motion.div
-                className="grid grid-cols-4 gap-2.5 sm:gap-4 max-w-[420px] mx-auto mb-10"
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewport}
-                variants={staggerContainer}
-            >
-                {[
-                    { value: pad(diff.days), label: "Days" },
-                    { value: pad(diff.hours), label: "Hours" },
-                    { value: pad(diff.minutes), label: "Minutes" },
-                    { value: pad(diff.seconds), label: "Seconds" },
-                ].map((item) => (
-                    <motion.div
+            <div className="grid grid-cols-4 gap-2.5 sm:gap-4 max-w-[420px] mx-auto mb-10">
+                {items.map((item, i) => (
+                    <div
                         key={item.label}
-                        variants={staggerItem}
-                        className="bento-card rounded-2xl p-3 sm:p-4 text-center transition-colors"
+                        className="bento-card rounded-2xl p-3 sm:p-4 text-center transition-colors animate-stagger-fade-in-up"
+                        style={{ animationDelay: `${i * 0.15}s`, opacity: 0 }}
                     >
                         <p className="text-[24px] sm:text-[32px] font-bold tabular-nums gradient-text-heading">{item.value}</p>
                         <p className="text-[10px] sm:text-[11px] font-medium text-muted uppercase tracking-wider mt-1">{item.label}</p>
-                    </motion.div>
+                    </div>
                 ))}
-            </motion.div>
+            </div>
         </RevealSection>
     );
 }
