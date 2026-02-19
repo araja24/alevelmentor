@@ -47,6 +47,8 @@ type EngineAnimationProps = {
   showLabels?: boolean;
   /** When true, render static diagram (no dots, static rings) for low-tier mobile. */
   staticDiagram?: boolean;
+  /** When false, dots are visible but not animated (e.g. when section is out of view). */
+  inView?: boolean;
 };
 
 const INPUTS: NodeItem[] = [
@@ -97,12 +99,21 @@ const OUTPUTS: NodeItem[] = [
   },
 ];
 
-function buildBezierPath(from: Point, to: Point) {
-  const deltaX = to.x - from.x;
-  const curveStrength = Math.max(40, Math.abs(deltaX) * 0.42);
-  const c1x = from.x + curveStrength;
-  const c2x = to.x - curveStrength;
-  return `M ${from.x} ${from.y} C ${c1x} ${from.y}, ${c2x} ${to.y}, ${to.x} ${to.y}`;
+/** Input path: from input node to engine left port; lines bundle inward (same style as EngineAnimationLarge). */
+function buildInputPath(fromCenter: Point, engineIn: Point): string {
+  const k = Math.max(4, (engineIn.x - fromCenter.x) * 0.25);
+  const c1x = fromCenter.x + k;
+  const c2x = engineIn.x - 12;
+  const c2y = engineIn.y;
+  return `M ${fromCenter.x} ${fromCenter.y} C ${c1x} ${fromCenter.y}, ${c2x} ${c2y}, ${engineIn.x} ${engineIn.y}`;
+}
+
+/** Output path: from engine right port so lines fan out (same style as EngineAnimationLarge). */
+function buildOutputPath(engineOut: Point, toCenter: Point): string {
+  const c1x = engineOut.x + 6;
+  const c1y = engineOut.y;
+  const c2x = toCenter.x - 4;
+  return `M ${engineOut.x} ${engineOut.y} C ${c1x} ${c1y}, ${c2x} ${toCenter.y}, ${toCenter.x} ${toCenter.y}`;
 }
 
 function DotOnPath({
@@ -113,6 +124,7 @@ function DotOnPath({
   duration,
   delay,
   prefersReducedMotion,
+  inView,
 }: {
   pathRefs: MutableRefObject<(SVGPathElement | null)[]>;
   pathIndex: number;
@@ -121,6 +133,7 @@ function DotOnPath({
   duration: number;
   delay: number;
   prefersReducedMotion: boolean;
+  inView: boolean;
 }) {
   const progress = useMotionValue(0);
   const dotX = useMotionValue(-9999);
@@ -145,6 +158,13 @@ function DotOnPath({
     const total = path.getTotalLength();
     if (!Number.isFinite(total) || total <= 0) return;
 
+    if (!inView) {
+      const point = path.getPointAtLength(0);
+      dotX.set(point.x);
+      dotY.set(point.y);
+      return;
+    }
+
     progress.set(0);
     const controls = animate(progress, total, {
       duration,
@@ -155,7 +175,7 @@ function DotOnPath({
     });
 
     return () => controls.stop();
-  }, [delay, duration, pathD, pathIndex, pathRefs, prefersReducedMotion, progress]);
+  }, [delay, duration, pathD, pathIndex, pathRefs, prefersReducedMotion, progress, inView]);
 
   if (prefersReducedMotion) return null;
 
@@ -180,6 +200,7 @@ export function EngineAnimation({
   engineLabel = "AI Processing Core",
   showLabels = true,
   staticDiagram = false,
+  inView = true,
 }: EngineAnimationProps) {
   const prefersReducedMotion = useReducedMotion();
   const staticRings = staticDiagram || prefersReducedMotion;
@@ -284,7 +305,7 @@ export function EngineAnimation({
 
     const inputLanes = INPUTS.map((item, idx) => ({
       key: `in-${idx}`,
-      d: buildBezierPath(points.inputs[idx], points.engineIn!),
+      d: buildInputPath(points.inputs[idx], points.engineIn!),
       color: item.laneColor,
       duration: inputDuration,
       delay: idx * inputDelayStep,
@@ -292,7 +313,7 @@ export function EngineAnimation({
 
     const outputLanes = OUTPUTS.map((item, idx) => ({
       key: `out-${idx}`,
-      d: buildBezierPath(points.engineOut!, points.outputs[idx]),
+      d: buildOutputPath(points.engineOut!, points.outputs[idx]),
       color: item.laneColor,
       duration: 2.6,
       delay: lastInputArrival + idx * outputDelayStep,
@@ -345,6 +366,7 @@ export function EngineAnimation({
                   duration={lane.duration}
                   delay={lane.delay}
                   prefersReducedMotion={Boolean(prefersReducedMotion)}
+                  inView={inView}
                 />
               ))}
           </svg>

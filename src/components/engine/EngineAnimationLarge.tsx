@@ -110,6 +110,7 @@ function DotOnPath({
   duration,
   delay,
   prefersReducedMotion,
+  inView,
 }: {
   pathRefs: MutableRefObject<(SVGPathElement | null)[]>;
   pathIndex: number;
@@ -118,6 +119,7 @@ function DotOnPath({
   duration: number;
   delay: number;
   prefersReducedMotion: boolean;
+  inView: boolean;
 }) {
   const progress = useMotionValue(0);
   const dotX = useMotionValue(-9999);
@@ -142,6 +144,13 @@ function DotOnPath({
     const total = path.getTotalLength();
     if (!Number.isFinite(total) || total <= 0) return;
 
+    if (!inView) {
+      const point = path.getPointAtLength(0);
+      dotX.set(point.x);
+      dotY.set(point.y);
+      return;
+    }
+
     progress.set(0);
     const controls = animate(progress, total, {
       duration,
@@ -152,7 +161,7 @@ function DotOnPath({
     });
 
     return () => controls.stop();
-  }, [delay, duration, pathD, pathIndex, pathRefs, prefersReducedMotion, progress]);
+  }, [delay, duration, pathD, pathIndex, pathRefs, prefersReducedMotion, progress, inView]);
 
   if (prefersReducedMotion) return null;
 
@@ -280,7 +289,8 @@ function getNeighbourIds(nodeId: string): Set<string> {
 export function EngineAnimationLarge({
   className,
   staticDiagram = false,
-}: { className?: string; staticDiagram?: boolean } = {}) {
+  inView = true,
+}: { className?: string; staticDiagram?: boolean; inView?: boolean } = {}) {
   const prefersReducedMotion = useReducedMotion();
   const staticRings = staticDiagram || prefersReducedMotion;
   const pathRefs = useRef<(SVGPathElement | null)[]>([]);
@@ -359,6 +369,7 @@ export function EngineAnimationLarge({
                   duration={lane.duration}
                   delay={lane.delay}
                   prefersReducedMotion={Boolean(prefersReducedMotion)}
+                  inView={inView}
                 />
               ))}
           </svg>

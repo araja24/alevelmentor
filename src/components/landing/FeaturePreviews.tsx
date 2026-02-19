@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { RevealSection } from "./RevealSection";
 import { landingCopy } from "@/content/landingCopy";
-import { ArrowRight, BarChart3, TrendingUp, CheckCircle2, Circle, Clock, Upload, BookOpen, Route } from "lucide-react";
+import { ArrowRight, BarChart3, TrendingUp, CheckCircle2, Circle, Clock, Upload, BookOpen, Route, Sparkles } from "lucide-react";
 import Link from "next/link";
 import {
   LineChart,
@@ -16,7 +16,6 @@ import {
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { EngineAnimation } from "@/components/engine/EngineAnimation";
 import { EngineAnimationLarge } from "@/components/engine/EngineAnimationLarge";
-import { useShouldReduceEngineAnimation } from "@/hooks/useShouldReduceEngineAnimation";
 
 /* Analytics chart data and config */
 const ANALYTICS_CHART_DATA = [
@@ -208,6 +207,77 @@ function RoadmapPreviewCard() {
   );
 }
 
+function AIMentorCard() {
+  return (
+    <div className="relative">
+      <div className="relative bento-card rounded-2xl overflow-hidden backdrop-blur-sm transition-colors border-[var(--glass-border-strong)] shadow-[0_0_40px_-12px_rgba(99,102,241,0.2)]">
+        {/* Header */}
+        <div className="px-5 pt-5 pb-3 border-b border-[var(--border-muted)] flex items-center gap-2.5">
+          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[var(--accent-2)] to-[var(--accent-2-dark)] flex items-center justify-center">
+            <Sparkles className="h-4 w-4 text-white" />
+          </div>
+          <div>
+            <p className="text-[13px] font-semibold text-[var(--text-primary)]">AI Mentor</p>
+            <div className="flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <p className="text-[10px] text-emerald-400">Online · Chemistry mode</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Chat messages */}
+        <div className="p-5 space-y-3">
+          {/* User message */}
+          <div className="flex justify-end">
+            <div className="rounded-2xl rounded-br-sm px-4 py-2.5 max-w-[80%] bg-gradient-to-r from-[var(--accent-2)] to-[var(--accent-2-dark)]">
+              <p className="text-[12px] text-white leading-relaxed">
+                What order should I cover Chemistry AQA topics in?
+              </p>
+            </div>
+          </div>
+
+          {/* AI response */}
+          <div className="flex justify-start">
+            <div className="rounded-2xl rounded-bl-sm px-4 py-3 max-w-[88%] border border-[var(--border-muted)] bg-[var(--surface-subtle)]">
+              <p className="text-[12px] text-muted leading-relaxed">
+                <span className="text-[var(--text-primary)] font-medium">Your roadmap:</span> Start with Atomic Structure & periodicity, then Bonding. After that, move to Energetics and Kinetics — they build on the foundations.
+              </p>
+              <p className="text-[12px] text-muted leading-relaxed mt-2">
+                I’ve ordered topics by the spec and what’s easiest to build on. Your week-by-week plan will follow this sequence.
+              </p>
+              <div className="flex items-center gap-2 mt-3 pt-2.5 border-t border-[var(--border-muted)]">
+                <span className="text-[9px] text-[var(--accent-2)] bg-[var(--accent-2)]/10 px-2 py-0.5 rounded-full font-medium">Chemistry AQA</span>
+                <span className="text-[9px] text-muted">Feeds into your plan</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Typing indicator */}
+          <div className="flex justify-start">
+            <div className="rounded-2xl rounded-bl-sm px-4 py-2.5 border border-[var(--border-muted)] bg-[var(--surface-subtle)]">
+              <div className="flex gap-1 items-center">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-2)] animate-bounce" style={{ animationDelay: "0ms" }} />
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-2)] animate-bounce" style={{ animationDelay: "150ms" }} />
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-2)] animate-bounce" style={{ animationDelay: "300ms" }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Input bar */}
+        <div className="px-5 pb-4">
+          <div className="flex items-center gap-2 rounded-full px-4 py-2.5 border border-[var(--border-muted)] bg-[var(--surface-subtle)]">
+            <span className="text-[12px] flex-1 text-muted">Ask about your roadmap or syllabus...</span>
+            <div className="h-7 w-7 rounded-full bg-[var(--accent-2)] flex items-center justify-center shrink-0">
+              <span className="text-white text-[12px]">↑</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const PAST_PAPER_ROWS = [
   { name: "June 2023 — Paper 1", board: "AQA", score: "78%" },
   { name: "Nov 2022 — Paper 1", board: "OCR", score: "82%" },
@@ -256,21 +326,27 @@ function PastPaperCard() {
 
 const FEATURES = [
   {
+    pill: "AI Mentor",
+    heading: "Your curated roadmap — what to cover, in what order.",
+    body: "Your subjects and exam board become a clear roadmap—what to cover and in what order. No more guessing where to start.",
+    Card: AIMentorCard,
+  },
+  {
     pill: "Personalized plan",
     heading: "A plan that adapts — so you can follow it worry-free.",
-    body: "Your week-by-week plan fits real life: topic tests, sick days, lazy days. We manage the reshuffling so you don't have to. Built by A-Level students who now study at top universities like UBC, Warwick, Nottingham, and McGill — real revision, not just another revision app on the block.",
+    body: "Your roadmap turns into a week-by-week plan that adapts to real life. Topic tests, sick days, lazy days—we reshuffle so you don't have to.",
     Card: RoadmapPreviewCard,
   },
   {
     pill: "Past paper engine",
     heading: "Upload for marking or do them digitally.",
-    body: "Drop your completed paper and get instant AI marking and feedback. Prefer to work on-screen? Do past papers digitally and see your score and weak spots as you go.",
+    body: "Past papers are part of your plan. Upload for instant marking or do them digitally—see scores and weak spots as you go.",
     Card: PastPaperCard,
   },
   {
     pill: "Data analytics dashboard",
     heading: "See all your progress in one place.",
-    body: "Track performance by subject and topic. Charts and trends show where you're strong and where to focus — no more guessing what to revise next.",
+    body: "Track progress by topic and see predicted vs target grades. Know where you stand and what to tackle next.",
     Card: AnalyticsCard,
   },
 ];
@@ -279,7 +355,6 @@ const FEATURES = [
 const ENGINE_PLACEHOLDER_CLASS = "min-h-[420px] md:min-h-[480px] lg:min-h-[520px]";
 
 export function FeaturePreviews() {
-  const staticDiagram = useShouldReduceEngineAnimation();
   const engineSectionRef = useRef<HTMLDivElement>(null);
   const [engineInView, setEngineInView] = useState(false);
 
@@ -311,20 +386,16 @@ export function FeaturePreviews() {
 
         <RevealSection direction="up" delay={0.08} className="space-y-6 mb-52 md:mb-72 lg:mb-80">
           <div ref={engineSectionRef} className={ENGINE_PLACEHOLDER_CLASS}>
-            {engineInView ? (
-              <>
-                <div className="md:hidden">
-                  <EngineAnimation showLabels={false} title="" staticDiagram={staticDiagram} />
-                </div>
-                <div className="hidden md:block">
-                  <EngineAnimationLarge staticDiagram={staticDiagram} />
-                </div>
-              </>
-            ) : null}
+            <div className="md:hidden">
+              <EngineAnimation showLabels={false} title="" inView={engineInView} />
+            </div>
+            <div className="hidden md:block">
+              <EngineAnimationLarge inView={engineInView} />
+            </div>
           </div>
         </RevealSection>
 
-        <RevealSection className="text-center mb-8">
+        <RevealSection className="text-center mb-16 md:mb-20">
           <p className="body text-muted">{landingCopy.engine.featuresIntro}</p>
         </RevealSection>
 
