@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import { DeferSplashCursorGate } from "@/components/landing/DeferSplashCursorGate";
 import { LazyWhenVisible } from "@/components/landing/LazyWhenVisible";

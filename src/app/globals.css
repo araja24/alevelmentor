@@ -1,4 +1,5 @@
 @import "tailwindcss";
+/* Lenis import is intentional: allows quick re-enable via LENIS_ENABLED in SmoothScroll.tsx */
 @import "lenis/dist/lenis.css";
 
 @theme {
