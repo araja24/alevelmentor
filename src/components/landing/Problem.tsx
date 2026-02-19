@@ -27,7 +27,7 @@ function Word({
             <motion.span style={{ opacity: dimOpacity, color: "var(--text-dimmed)" }}>
                 {children}
             </motion.span>
-            {/* Highlighted — theme-aware gradient (dark: white→silver, light: dark→gray) */}
+            {/* Highlighted — matches landing gradient-text-heading (bright white → warm silver) */}
             <motion.span
                 className={`absolute left-0 top-0 ${isSpecial ? "underline decoration-[var(--accent-2)] decoration-2 underline-offset-4" : ""}`}
                 style={{

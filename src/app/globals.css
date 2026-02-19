@@ -259,9 +259,12 @@
     inset 0 0 0 1px var(--glass-border-strong);
 }
 
-/* Solid primary text for headings (no vertical gradient) */
+/* Vertical gradient for headings (white→gray dark / dark→gray light) — same as Problem paragraph */
 @utility gradient-text-heading {
-  color: var(--text-primary);
+  background: var(--gradient-text-heading);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* White → purple: emphasis phrases */
@@ -272,14 +275,22 @@
   background-clip: text;
 }
 
-/* Solid purple for phrase endings / brand (no vertical gradient) */
+/* Purple vertical gradient for phrase endings / brand */
 @utility gradient-text-purple-vertical {
-  color: var(--accent-2);
+  background: var(--gradient-text-purple-vertical);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Muted body text (landing) */
 @utility text-muted {
   color: var(--text-secondary);
+}
+
+/* Landing page: grays → white (use primary text color instead of muted) */
+.landing-muted {
+  color: var(--text-primary);
 }
 
 @utility section-pad {

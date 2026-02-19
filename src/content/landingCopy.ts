@@ -1,6 +1,6 @@
 export const landingCopy = {
   hero: {
-    badge: "Built by students, for students",
+    badge: "Built for students, by students",
     headline: "The All-In-One Platform for A-Levels.",
     /** Headline parts for hero: white / gray / accent (no gradients) */
     headlineWhite: "The All-In-One",

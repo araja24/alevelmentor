@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { LaptopDashboardPreview } from "./LaptopDashboardPreview";
-import { MobileProductPreview } from "./MobileProductPreview";
 
 const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 800;
@@ -12,13 +11,15 @@ const CANVAS_HEIGHT = 800;
 /**
  * Single prominent product visual right after hero.
  * Sits on main viewport background with no containing box. Scroll-driven tilt only after user scrolls; nothing on load.
- * Top border glow is visible in both light and dark modes; other glows hidden in light via .light .dashboard-preview-glows.
+ * On mobile, shows a mini responsive LaptopDashboardPreview that scales with viewport.
  * When embedded=true, renders a div (no section/id) with only the desktop preview for use in a two-column layout.
  */
 export function DashboardPreviewSection({ embedded = false }: { embedded?: boolean }) {
     const sectionRef = useRef<HTMLDivElement>(null);
     const scaleContainerRef = useRef<HTMLDivElement>(null);
+    const mobileScaleContainerRef = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
+    const [mobileScale, setMobileScale] = useState(0.25);
     const [hasUserScrolled, setHasUserScrolled] = useState(false);
 
     const { scrollYProgress } = useScroll({
@@ -42,7 +43,6 @@ export function DashboardPreviewSection({ embedded = false }: { embedded?: boole
         if (!el) return;
         const updateScale = () => {
             const w = el.clientWidth;
-            // Width-driven scaling: keep full size on large screens; only shrink as viewport narrows.
             const raw = Math.min(1, w / CANVAS_WIDTH);
             setScale(Math.max(0.2, raw));
         };
@@ -52,11 +52,47 @@ export function DashboardPreviewSection({ embedded = false }: { embedded?: boole
         return () => ro.disconnect();
     }, []);
 
+    useEffect(() => {
+        const el = mobileScaleContainerRef.current;
+        if (!el) return;
+        const updateMobileScale = () => {
+            const w = el.clientWidth;
+            const raw = Math.min(1, w / CANVAS_WIDTH);
+            setMobileScale(Math.max(0.15, raw));
+        };
+        updateMobileScale();
+        const ro = new ResizeObserver(updateMobileScale);
+        ro.observe(el);
+        return () => ro.disconnect();
+    }, []);
+
     const content = (
         <>
             {!embedded && (
-                <div className="md:hidden py-4">
-                    <MobileProductPreview />
+                <div
+                    ref={mobileScaleContainerRef}
+                    className="md:hidden w-full flex justify-center items-center py-4 px-4 min-h-0 max-h-[50vh]"
+                    style={{ aspectRatio: "16/10" }}
+                >
+                    <div
+                        className="relative shrink-0 origin-center"
+                        style={{
+                            width: CANVAS_WIDTH,
+                            height: CANVAS_HEIGHT,
+                            transform: `scale(${mobileScale})`,
+                            transformOrigin: "center center",
+                        }}
+                    >
+                        <div className="absolute top-0 left-0 right-0 h-[2px] z-20 pointer-events-none">
+                            <div
+                                className="h-full w-full max-w-[92%] mx-auto"
+                                style={{
+                                    background: "linear-gradient(to right, transparent 0%, rgba(83,63,236,0.95) 40%, rgba(240,230,255,1) 50%, rgba(83,63,236,0.95) 60%, transparent 100%)",
+                                }}
+                            />
+                        </div>
+                        <LaptopDashboardPreview />
+                    </div>
                 </div>
             )}
             <div
