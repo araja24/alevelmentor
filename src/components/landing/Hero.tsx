@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import { RevealSection } from "./RevealSection";
-import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ShimmerButton } from "./ShimmerButton";
 import { landingCopy } from "@/content/landingCopy";
 import { DashboardPreviewSection } from "./DashboardPreviewSection";
+import { Meteors } from "@/components/ui/meteors";
+import { HandwrittenAnnotation } from "@/components/HandwrittenAnnotation";
 
 const TYPEWRITER_PHRASES = [
     "A Level Physics",
@@ -93,8 +94,13 @@ export function Hero() {
             className="relative overflow-hidden"
             style={{ backgroundColor: "var(--bg-primary)" }}
         >
+      {/* Background effect */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <Meteors number={36} className="opacity-40 bg-[#533fec]" />
+      </div>
+
             {/* Mobile layout */}
-            <div className="relative z-10 md:hidden mx-auto max-w-[560px] px-5 sm:px-6 pt-36 pb-10 min-h-[62svh] flex flex-col items-center justify-center text-center">
+      <div className="relative z-10 md:hidden mx-auto max-w-[560px] px-5 sm:px-6 pt-36 pb-6 flex flex-col items-center justify-center text-center">
                 <RevealSection direction="up" className="w-full flex flex-col items-center">
                     <span className="pill-badge px-4 py-1.5 text-[11px] mb-5">
                         {landingCopy.hero.badge}
@@ -103,19 +109,22 @@ export function Hero() {
                         <span className="gradient-text-heading">The All-In-One Platform for </span>
                         <TypewriterSubject className="gradient-text-purple-vertical" />
                     </h1>
-                    <Link
-                        href="#text-highlight"
-                        className="mt-5 inline-flex items-center justify-center rounded-full border px-4 py-2 text-xs font-medium cursor-pointer transition-colors hover:opacity-80 landing-muted"
-                        style={{ borderColor: "#1e1e1e" }}
-                    >
-                        {landingCopy.hero.secondaryCta}
-                    </Link>
+          <div className="mt-8">
+            <ShimmerButton href="#join" className="px-6 py-2.5 w-full justify-center">
+              {landingCopy.hero.primaryCta}
+            </ShimmerButton>
+          </div>
                 </RevealSection>
+
+                {/* Inline annotation (mobile) */}
+                <div className="mt-10 w-full flex justify-end">
+                  <HandwrittenAnnotation text="Secure A* grades with ALevelMentor*" delay={0.5} direction="down-left" />
+                </div>
             </div>
 
             {/* Desktop/tablet layout */}
-            <div className="hidden md:block mx-auto max-w-[900px] w-full px-6 lg:px-8 relative z-10 text-center pt-36 pb-16 lg:pt-40 lg:pb-20 min-h-[min(100dvh,720px)]">
-                <RevealSection direction="up" className="flex flex-col items-center">
+      <div className="hidden md:block mx-auto max-w-6xl px-6 lg:px-8 relative z-10 pt-36 pb-10 lg:pt-40 lg:pb-12">
+                <RevealSection direction="up" className="flex flex-col items-center text-center">
                     <span className="pill-badge px-4 py-1.5 text-[11px] sm:text-[12px] mb-6">
                         {landingCopy.hero.badge}
                     </span>
@@ -123,39 +132,22 @@ export function Hero() {
                         <span className="gradient-text-heading">The All-In-One Platform for</span>{" "}
                         <TypewriterSubject className="gradient-text-purple-vertical" />
                     </h1>
-                    <Link
-                        href="#text-highlight"
-                        className="mt-5 inline-flex items-center justify-center rounded-full border px-4 py-2 text-xs font-medium cursor-pointer transition-colors hover:opacity-80 landing-muted"
-                        style={{ borderColor: "#1e1e1e" }}
-                    >
-                        {landingCopy.hero.secondaryCta}
-                    </Link>
+          <div className="mt-6">
+            <ShimmerButton href="#join" className="px-6 py-2.5">
+              {landingCopy.hero.primaryCta}
+            </ShimmerButton>
+          </div>
                 </RevealSection>
+
+                {/* Inline annotation + screenshot (desktop) */}
+                <div className="mt-10 w-full flex justify-end">
+                  <HandwrittenAnnotation text="Secure A* grades with ALevelMentor*" delay={0.5} direction="down-left" />
+                </div>
             </div>
 
-            {/* Scroll indicator */}
-            <div className="relative z-10 flex flex-col items-center mt-[calc(3rem-5vh)] mb-[calc(3rem+5vh)]">
-                <button
-                    type="button"
-                    onClick={() => {
-                        const dashboard = document.getElementById("dashboard-preview");
-                        dashboard?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
-                    }}
-                    className="flex flex-col items-center gap-1 transition-colors cursor-pointer bg-transparent border-0 landing-muted"
-                    aria-label="Scroll to dashboard preview"
-                >
-                    <span className="text-[11px] font-medium tracking-wide uppercase">scroll</span>
-                    <ChevronDown
-                        className="h-5 w-5 animate-bounce"
-                        strokeWidth={2.5}
-                        aria-hidden
-                    />
-                </button>
-            </div>
-
-            {/* Dashboard preview */}
-            <div className="relative z-10 w-full flex justify-center px-4 md:px-6">
-                <DashboardPreviewSection embedInHero />
+            {/* Dashboard preview (wider, matches previous sizing) */}
+            <div className="relative z-10 w-full flex justify-center px-4 md:px-6 lg:px-[6rem] mt-3">
+              <DashboardPreviewSection embedInHero />
             </div>
 
             {/* Bottom fade into dashboard area */}

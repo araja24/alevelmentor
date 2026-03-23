@@ -13,11 +13,18 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export async function updateSession(request: NextRequest) {
+  const url = supabaseUrl;
+  const key = supabaseAnonKey;
+  if (!url || !key) {
+    throw new Error(
+      "Missing Supabase env vars: set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your environment (e.g. Netlify UI → Site → Environment variables)."
+    );
+  }
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
-    supabaseUrl,
-    supabaseAnonKey,
+    url,
+    key,
     {
       cookies: {
         getAll() {

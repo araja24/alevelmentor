@@ -151,7 +151,7 @@ export function LaptopDashboardPreview() {
   const sidebarLogoSrc = !mounted ? "/logo_small_light.svg" : (isLight ? "/logo_small.svg" : "/logo_small_light.svg");
 
   return (
-    <div className="w-full h-full min-h-0 max-w-[1200px] mx-auto flex flex-col">
+    <div className="w-full h-full min-h-0 max-w-[1280px] mx-auto flex flex-col">
       {/* Browser chrome — match reference: nav, URL pill (lock, domain, star), tabs */}
       <div className="rounded-t-2xl px-4 py-2.5 flex items-center gap-3 bg-[var(--bg-card)]">
         <div className="flex gap-1.5 shrink-0">

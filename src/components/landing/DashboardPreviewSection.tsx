@@ -10,6 +10,7 @@ const BRIGHT = { opacity: 1 };
 
 const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 800;
+const MAX_SCALE = 1.35;
 
 const SCROLL_THRESHOLD = 80; // bright only after user has scrolled down past this
 
@@ -40,8 +41,8 @@ export function DashboardPreviewSection({ embedInHero }: { embedInHero?: boolean
         const updateScale = () => {
             const w = el.clientWidth;
             const h = el.clientHeight;
-            const raw = Math.min(1, w / CANVAS_WIDTH, h / CANVAS_HEIGHT);
-            setScale(Math.max(0.2, raw));
+            const raw = Math.min(w / CANVAS_WIDTH, h / CANVAS_HEIGHT);
+            setScale(Math.max(0.2, Math.min(MAX_SCALE, raw)));
         };
         updateScale();
         const ro = new ResizeObserver(updateScale);
@@ -51,11 +52,15 @@ export function DashboardPreviewSection({ embedInHero }: { embedInHero?: boolean
 
     const content = (
         <div
-            className="mx-auto max-w-[1400px] px-6 max-md:px-2 flex justify-center relative z-10"
+            className={
+                embedInHero
+                    ? "w-full flex justify-center relative z-10"
+                    : "mx-auto max-w-[1400px] px-6 max-md:px-2 flex justify-center relative z-10"
+            }
             style={{ perspective: 1200 }}
         >
                 {/* Relative wrapper so radiating shadow can sit above dashboard and spread into hero */}
-                <div className="relative w-full max-w-[1280px] max-md:max-w-[100%] mx-auto">
+                <div className="relative w-full mx-auto">
                     {/* Radiating shadow from top-center of dashboard — spreads upward into hero, theme purple */}
                     <div
                         className="dashboard-preview-glows dashboard-preview-radiating-shadow absolute left-0 right-0 w-full h-[280px] pointer-events-none z-20"
@@ -67,7 +72,7 @@ export function DashboardPreviewSection({ embedInHero }: { embedInHero?: boolean
                     />
                     {/* Wrapper keeps aspect ratio and scales down on mobile for performance */}
                     <div
-                        className="dashboard-preview-aspect-wrapper w-full max-w-[1280px] max-md:max-w-[100%] aspect-[16/10] overflow-hidden"
+                        className="dashboard-preview-aspect-wrapper w-full aspect-[16/10] overflow-hidden"
                         style={{ contain: "paint" }}
                     >
                     <motion.div
@@ -103,19 +108,19 @@ export function DashboardPreviewSection({ embedInHero }: { embedInHero?: boolean
                                 }}
                             >
                                 {/* Top border line glow — visible in both light and dark (no dashboard-preview-glows) */}
-                                <div className="absolute top-0 left-0 right-0 h-[2px] z-20 pointer-events-none">
+                                <div className="absolute top-0 left-0 right-0 h-[1px] z-20 pointer-events-none">
                                     <div
                                         className="h-full w-full max-w-[92%] mx-auto"
                                         style={{
-                                            background: "linear-gradient(to right, transparent 0%, rgba(83,63,236,0.95) 40%, rgba(240,230,255,1) 50%, rgba(83,63,236,0.95) 60%, transparent 100%)",
+                                            background: "linear-gradient(to right, transparent 0%, rgba(83,63,236,0.65) 40%, rgba(240,230,255,0.9) 50%, rgba(83,63,236,0.65) 60%, transparent 100%)",
                                         }}
                                     />
                                 </div>
-                                <div className="absolute top-0 left-0 right-0 h-[18px] z-10 pointer-events-none blur-[12px]">
+                                <div className="absolute top-0 left-0 right-0 h-[14px] z-10 pointer-events-none blur-[8px]">
                                     <div
                                         className="h-full w-full max-w-[86%] mx-auto"
                                         style={{
-                                            background: "linear-gradient(to right, transparent 0%, rgba(83,63,236,0.7) 50%, transparent 100%)",
+                                            background: "linear-gradient(to right, transparent 0%, rgba(83,63,236,0.45) 50%, transparent 100%)",
                                         }}
                                     />
                                 </div>

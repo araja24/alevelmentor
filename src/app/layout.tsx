@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Caveat, Inter, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LowTierProvider } from "@/hooks/useLowTierDevice";
 import { SmoothScroll } from "@/components/landing/SmoothScroll";
@@ -27,6 +27,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   display: "swap", // Don’t block LCP; hero can paint with fallback immediately
 });
 
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-caveat",
+});
+
 export const metadata: Metadata = {
   title: "A Level Mentor — Your Personal Revision Mentor",
   description:
@@ -39,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={caveat.variable}>
       <body
         className={`${inter.variable} ${geistMono.variable} ${plusJakartaSans.variable} antialiased`}
       >

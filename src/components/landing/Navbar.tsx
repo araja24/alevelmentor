@@ -22,7 +22,6 @@ function NavbarInner() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
-    const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
     const { resolvedTheme } = useTheme();
     const isLight = resolvedTheme === "light";
 
@@ -34,21 +33,6 @@ function NavbarInner() {
     };
 
     useEffect(() => setMounted(true), []);
-
-    useEffect(() => {
-        let cancelled = false;
-        fetch("/api/waitlist")
-            .then((res) => (res.ok ? res.json() : null))
-            .then((data) => {
-                if (!cancelled && data && typeof data.total_count === "number") {
-                    setWaitlistCount(data.total_count);
-                }
-            })
-            .catch(() => {});
-        return () => {
-            cancelled = true;
-        };
-    }, []);
 
     useEffect(() => {
         const onScroll = () => setScrolled((prev) => {
@@ -79,8 +63,8 @@ function NavbarInner() {
                         <div className="w-full flex items-center justify-between">
                             {/* Logo — far left; on home page click scrolls to top */}
                             <Link href="/" className="flex items-center gap-2.5 shrink-0" onClick={handleLogoClick}>
-                                <Image src={logoSrc} alt="A Level Mentor" width={120} height={20} className="hidden xl:block h-5 w-auto" priority />
-                                <Image src={smallLogoSrc} alt="Logo" width={20} height={20} className="xl:hidden h-[20px] w-auto" priority />
+                                <Image src={logoSrc} alt="A Level Mentor" width={120} height={20} className="hidden xl:block h-6 w-auto" priority />
+                                <Image src={smallLogoSrc} alt="Logo" width={20} height={20} className="xl:hidden h-[22px] w-auto" priority />
                             </Link>
 
                             {/* Center links */}
@@ -89,7 +73,7 @@ function NavbarInner() {
                                     <Link
                                         key={item.label}
                                         href={item.href}
-                                        className="text-[13px] font-medium text-muted hover:gradient-text-heading transition-colors duration-200"
+                                        className="text-[14px] font-medium text-muted hover:gradient-text-heading transition-colors duration-200"
                                     >
                                         {item.label}
                                     </Link>
@@ -102,37 +86,15 @@ function NavbarInner() {
                                 {SHOW_AUTH_NAV && (
                                     <Link
                                         href="/login"
-                                        className="text-[13px] font-medium text-muted hover:gradient-text-heading transition-colors"
+                                        className="text-[14px] font-medium text-muted hover:gradient-text-heading transition-colors"
                                     >
                                         Sign in
                                     </Link>
                                 )}
-                                <Link
-                                    href="#join"
-                                    className="flex items-center gap-2 text-xs font-semibold tracking-wide text-white px-4 py-2 rounded-full transition-all cursor-pointer hover:opacity-90"
-                                    style={{ backgroundColor: "#533fec" }}
-                                >
-                                    Join the waitlist
-                                    {waitlistCount !== null && (
-                                        <span className="text-[10px] font-medium opacity-75">
-                                            · {waitlistCount.toLocaleString()} joined
-                                        </span>
-                                    )}
-                                </Link>
                             </div>
 
-                            {/* Mobile Actions — logo left; full waitlist button + hamburger right (theme in menu) */}
+                            {/* Mobile Actions — logo + hamburger */}
                             <div className="flex xl:hidden items-center gap-3">
-                                <Link
-                                    href="#join"
-                                    className="flex items-center gap-2 text-xs font-semibold tracking-wide text-white px-4 py-2 rounded-full hover:opacity-90 transition-all shrink-0 cursor-pointer"
-                                    style={{ backgroundColor: "#533fec" }}
-                                >
-                                    Join the waitlist
-                                    {waitlistCount !== null && (
-                                        <span className="text-[10px] font-medium opacity-75">· {waitlistCount.toLocaleString()} joined</span>
-                                    )}
-                                </Link>
                                 <Button
                                     variant="ghost"
                                     size="icon"
@@ -141,7 +103,7 @@ function NavbarInner() {
                                     aria-label={mobileOpen ? "Close menu" : "Open menu"}
                                     aria-expanded={mobileOpen}
                                 >
-                                    {mobileOpen ? <X size={20} aria-hidden /> : <Menu size={20} aria-hidden />}
+                                    {mobileOpen ? <X size={22} aria-hidden /> : <Menu size={22} aria-hidden />}
                                 </Button>
                             </div>
                         </div>
@@ -164,8 +126,8 @@ function NavbarInner() {
                                 className="flex items-center pl-2 md:pr-4 py-1"
                                 onClick={handleLogoClick}
                             >
-                                <Image src={logoSrc} alt="A Level Mentor" width={108} height={18} className="hidden xl:block h-[18px] w-auto" />
-                                <Image src={smallLogoSrc} alt="Logo" width={20} height={20} className="xl:hidden h-[20px] w-auto" />
+                                <Image src={logoSrc} alt="A Level Mentor" width={108} height={18} className="hidden xl:block h-[20px] w-auto" />
+                                <Image src={smallLogoSrc} alt="Logo" width={20} height={20} className="xl:hidden h-[22px] w-auto" />
                             </Link>
 
                             {/* Divider */}
@@ -177,7 +139,7 @@ function NavbarInner() {
                                     <Link
                                         key={item.label}
                                         href={item.href}
-                                        className="text-[13px] font-medium text-muted hover:gradient-text-heading rounded-full px-4 py-2 transition-all duration-200 hover:bg-[var(--surface-subtle)]"
+                                        className="text-[14px] font-medium text-muted hover:gradient-text-heading rounded-full px-4 py-2 transition-all duration-200 hover:bg-[var(--surface-subtle)]"
                                     >
                                         {item.label}
                                     </Link>
@@ -192,7 +154,7 @@ function NavbarInner() {
                                 onClick={() => setMobileOpen(true)}
                                 aria-label="Open menu"
                             >
-                                <Menu size={18} aria-hidden />
+                                <Menu size={20} aria-hidden />
                             </Button>
 
                             {/* Divider */}
@@ -204,26 +166,12 @@ function NavbarInner() {
                                 {SHOW_AUTH_NAV && (
                                     <Link
                                         href="/login"
-                                        className="text-[13px] font-medium text-muted hover:gradient-text-heading px-3 py-2 transition-colors"
+                                        className="text-[14px] font-medium text-muted hover:gradient-text-heading px-3 py-2 transition-colors"
                                     >
                                         Sign in
                                     </Link>
                                 )}
                             </div>
-
-                            {/* CTA — full text on all viewports */}
-                            <Link
-                                href="#join"
-                                className="flex items-center gap-2 text-xs font-semibold tracking-wide text-white px-4 py-2 rounded-full transition-all hover:opacity-90 whitespace-nowrap cursor-pointer"
-                                style={{ backgroundColor: "#533fec" }}
-                            >
-                                Join the waitlist
-                                {waitlistCount !== null && (
-                                    <span className="text-[10px] font-medium opacity-75">
-                                        · {waitlistCount.toLocaleString()} joined
-                                    </span>
-                                )}
-                            </Link>
                         </div>
                     </div>
                 )}
@@ -270,19 +218,6 @@ function NavbarInner() {
                                     Sign in
                                 </Link>
                             )}
-                        </div>
-
-                        <div className="mt-8" onClick={() => setMobileOpen(false)}>
-                            <Link
-                                href="#join"
-                                className="flex items-center gap-2 text-xs font-semibold tracking-wide text-white px-6 py-3 rounded-full hover:opacity-90 transition-all"
-                                style={{ backgroundColor: "#533fec" }}
-                            >
-                                Join the waitlist
-                                {waitlistCount !== null && (
-                                    <span className="text-[10px] font-medium opacity-75">· {waitlistCount.toLocaleString()} joined</span>
-                                )}
-                            </Link>
                         </div>
                     </div>
                 )}

@@ -15,11 +15,18 @@ if (!supabaseUrl || !supabaseAnonKey) {
 let browserClient: SupabaseClient | null = null;
 
 export function createClient() {
+  const url = supabaseUrl;
+  const key = supabaseAnonKey;
+  if (!url || !key) {
+    throw new Error(
+      "Missing Supabase env vars: set NEXT_PUBLIC_SUPABASE_URL (or SUPABASE_URL) and NEXT_PUBLIC_SUPABASE_ANON_KEY (or SUPABASE_ANON_KEY) in your environment (e.g. Netlify UI → Site → Environment variables)."
+    );
+  }
   if (typeof window === "undefined") {
-    return createBrowserClient(supabaseUrl, supabaseAnonKey);
+    return createBrowserClient(url, key);
   }
   if (!browserClient) {
-    browserClient = createBrowserClient(supabaseUrl, supabaseAnonKey);
+    browserClient = createBrowserClient(url, key);
   }
   return browserClient;
 }

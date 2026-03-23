@@ -2,6 +2,8 @@
 /* Lenis import is intentional: allows quick re-enable via LENIS_ENABLED in SmoothScroll.tsx */
 @import "lenis/dist/lenis.css";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -745,3 +747,26 @@ input[type="range"].accent-slider::-moz-range-thumb {
     scroll-margin-bottom: 120px;
   }
 }
+
+@theme inline {
+  --animate-gradient: gradient 8s linear infinite;
+  @keyframes gradient {
+  to {
+    background-position: var(--bg-size, 300%) 0;
+    }
+  }
+  --animate-meteor: meteor 5s linear infinite
+;
+  @keyframes meteor {
+  0% {
+    transform: rotate(var(--angle)) translateX(0);
+    opacity: 1;
+    }
+  70% {
+    opacity: 1;
+    }
+  100% {
+    transform: rotate(var(--angle)) translateX(-500px);
+    opacity: 0;
+    }
+  }}
