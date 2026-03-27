@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { RevealSection } from "./RevealSection";
-import { landingCopy } from "@/content/landingCopy";
 import { ArrowRight, BarChart3, TrendingUp, CheckCircle2, Circle, Clock, Upload, BookOpen, Route, Sparkles } from "lucide-react";
 import Link from "next/link";
 import {
@@ -14,8 +12,6 @@ import {
   Legend,
 } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
-import { EngineAnimation } from "@/components/engine/EngineAnimation";
-import { EngineAnimationLarge } from "@/components/engine/EngineAnimationLarge";
 
 /* Analytics chart data and config */
 const ANALYTICS_CHART_DATA = [
@@ -351,27 +347,7 @@ const FEATURES = [
   },
 ];
 
-/** Min height matching engine section so placeholder doesn’t shift layout when engine mounts/unmounts. */
-const ENGINE_PLACEHOLDER_CLASS = "min-h-[420px] md:min-h-[480px] lg:min-h-[520px]";
-
 export function FeaturePreviews() {
-  const engineSectionRef = useRef<HTMLDivElement>(null);
-  const [engineInView, setEngineInView] = useState(false);
-
-  useEffect(() => {
-    const el = engineSectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [e] = entries;
-        if (e) setEngineInView(e.isIntersecting);
-      },
-      { rootMargin: "120px", threshold: 0 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section id="features" className="section-pad relative z-10">
       <div className="section-container max-w-[1100px] space-y-14 md:space-y-28">
@@ -382,21 +358,6 @@ export function FeaturePreviews() {
           <p className="body-lg mt-4 text-muted max-w-[55ch] mx-auto">
             Your raw data—target grades, exam dates, and current struggles—is instantly processed into a dynamic, day-by-day strategy that adapts as you work.
           </p>
-        </RevealSection>
-
-        <RevealSection direction="up" delay={0.08} className="space-y-6 mb-52 md:mb-72 lg:mb-80">
-          <div ref={engineSectionRef} className={ENGINE_PLACEHOLDER_CLASS}>
-            <div className="md:hidden">
-              <EngineAnimation showLabels={false} title="" inView={engineInView} />
-            </div>
-            <div className="hidden md:block">
-              <EngineAnimationLarge inView={engineInView} />
-            </div>
-          </div>
-        </RevealSection>
-
-        <RevealSection className="text-center mb-16 md:mb-20">
-          <p className="body text-muted">{landingCopy.engine.featuresIntro}</p>
         </RevealSection>
 
         {FEATURES.map((feature, i) => {
